@@ -2,14 +2,12 @@ import React from 'react';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    LineChart,
+    Line,
+    BarChart,
+    Bar
 } from 'recharts';
-import Logo from './assets/logo.png';
 
-
-import {
-    BarChart, Bar, Brush, ReferenceLine
-} from 'recharts';
 
 const barChartData = [
     { name: '1', uv: 300, pv: 456 },
@@ -81,12 +79,24 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             flexGrow: 1,
         },
+        title: {
+            fontFamily: 'Gelion'
+        },
+        description: {
+            fontFamily: 'Gelion'
+        },
+        header: {
+            fontFamily: 'Gelion',
+            fontWeight: 550,
+            margin: 30,
+        },
         topContainer: {
         },
         container: {
-            backgroundColor: '#e0e0e0',
+            backgroundColor: '#e0e0e054',
             marginTop: 40,
-            paddingTop: 30
+            paddingTop: 30,
+            width: '100%'
         },
     }),
 );
@@ -118,7 +128,8 @@ export default function App() {
     const charts = [
         {
             title: 'Claimed',
-            subtitle: '$357,057 cUSD',
+            subtitle: '$357,057',
+            postsubtitle: 'cUSD',
             data: barChartData,
             growth: '-12',
             line: false,
@@ -126,6 +137,7 @@ export default function App() {
         {
             title: 'Communities',
             subtitle: '271',
+            postsubtitle: '',
             data: lineChartData,
             growth: '20',
             line: true,
@@ -133,6 +145,7 @@ export default function App() {
         {
             title: 'Beneficiaries',
             subtitle: '4,761',
+            postsubtitle: '',
             data: lineChartData,
             growth: '12',
             line: true,
@@ -143,8 +156,8 @@ export default function App() {
         <>
             <Container maxWidth="xl" className={classes.topContainer}>
                 <div style={{ textAlign: 'center' }}>
-                    <img src={Logo} alt="Logo" height="200" />
-                    <Typography variant="h3" component="h3" gutterBottom>
+                    <img src="assets/logo.png" alt="Logo" height="200" />
+                    <Typography variant="h3" gutterBottom className={classes.header}>
                         Global Basic Income Distribution Scanner
                     </Typography>
                 </div>
@@ -154,12 +167,12 @@ export default function App() {
                             {totalValues.map((total) => (
                                 <Grid key={total.title} item>
                                     <Paper elevation={3} style={{ ...paper, width: 250 }}>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="h6" className={classes.title} gutterBottom>
                                             {total.title}
                                         </Typography>
-                                        <Typography variant="body1" gutterBottom>
-                                            ${total.value} cUSD
-                                    </Typography>
+                                        <Typography variant="body1" className={classes.description} gutterBottom>
+                                            <span style={{ fontFamily: 'Gelion', fontWeight: 550, fontSize: 30 }}>${total.value}</span> cUSD
+                                        </Typography>
                                     </Paper>
                                 </Grid>
                             ))}
@@ -167,47 +180,49 @@ export default function App() {
                     </Grid>
                 </Grid>
             </Container>
-            <Container maxWidth="xl" className={classes.container}>
-                <div style={{ textAlign: 'center' }}>
-                    <Typography variant="h3" component="h3" gutterBottom>
-                        Montly Activity (last 30 days)
-                    </Typography>
-                    <Typography variant="h4" component="h4" gutterBottom>
-                        Distribution (Outflow)
-                    </Typography>
-                </div>
-                <Grid container className={classes.root} spacing={2}>
-                    <Grid item xs={12}>
-                        <Grid container justify="center" spacing={2}>
-                            {charts.map((chart) => (
-                                <Grid key={chart.title} item>
-                                    <Paper elevation={3} style={{ ...paper, width: (chart.line ? 250 : 515) }}>
-                                        <Typography variant="h6" gutterBottom>
-                                            {chart.title}
-                                        </Typography>
-                                        <Typography variant="body1" gutterBottom>
-                                            {chart.subtitle}
-                                        </Typography>
-                                        {chart.line ? <LineChart width={250} height={200} data={chart.data}>
-                                            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} dot={<></>} />
-                                        </LineChart> : <BarChart
-                                            width={500}
-                                            height={200}
-                                            data={chart.data}
-                                        >
-                                                <Bar dataKey="pv" fill="#8884d8" />
-                                                <Bar dataKey="uv" fill="#82ca9d" />
-                                            </BarChart>}
-                                        <Typography variant="body1" gutterBottom>
-                                            {chart.growth}% Last 30 days
+            <div className={classes.container}>
+                <Container maxWidth="lg">
+                    <div style={{ marginLeft: 35 }}>
+                        <Typography variant="h3" component="h3" gutterBottom className={classes.header}>
+                            Montly Activity (last 30 days)
+                        </Typography>
+                        <Typography variant="h4" component="h4" gutterBottom className={classes.header}>
+                            Distribution (Outflow)
+                        </Typography>
+                    </div>
+                    <Grid container className={classes.root} spacing={2}>
+                        <Grid item xs={12}>
+                            <Grid container justify="center" spacing={2}>
+                                {charts.map((chart) => (
+                                    <Grid key={chart.title} item>
+                                        <Paper elevation={3} style={{ ...paper, width: (chart.line ? 250 : 515) }}>
+                                            <Typography variant="h6" className={classes.title} gutterBottom>
+                                                {chart.title}
+                                            </Typography>
+                                            <Typography variant="body1" className={classes.description} gutterBottom>
+                                                <span style={{ fontFamily: 'Gelion', fontWeight: 550, fontSize: 30 }}>{chart.subtitle}</span> {chart.postsubtitle}
+                                            </Typography>
+                                            {chart.line ? <LineChart width={250} height={200} data={chart.data}>
+                                                <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} dot={<></>} />
+                                            </LineChart> : <BarChart
+                                                width={500}
+                                                height={200}
+                                                data={chart.data}
+                                            >
+                                                    <Bar dataKey="pv" fill="#8884d8" />
+                                                    <Bar dataKey="uv" fill="#82ca9d" />
+                                                </BarChart>}
+                                            <Typography variant="body1" className={classes.description} gutterBottom>
+                                                {chart.growth}% Last 30 days
                                     </Typography>
-                                    </Paper>
-                                </Grid>
-                            ))}
+                                        </Paper>
+                                    </Grid>
+                                ))}
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Container>
+                </Container>
+            </div>
         </>
     );
 }
