@@ -1,9 +1,8 @@
 import React from 'react';
 import { Container, Typography } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import ImpactMarketLogoSvg from './components/ImpactMarketLogoSvg';
 import GlobalScanner from './components/GlobalScanner';
-import Distribution from './components/Distribution';
+// import Distribution from './components/Distribution';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,7 +25,7 @@ export default function App() {
             <div className={classes.headerContainer}>
                 <Container maxWidth="xl">
                     <div style={{ textAlign: 'center' }}>
-                        <ImpactMarketLogoSvg />
+                        <img src="assets/impactmarket.svg" alt="impactmarket logo" />
                         <Typography variant="h3" gutterBottom className={classes.header}>
                             Global Basic Income Distribution Scanner
                         </Typography>
@@ -34,14 +33,14 @@ export default function App() {
                     <GlobalScanner />
                 </Container>
             </div>
-            <Container maxWidth="lg">
+            {/* <Container maxWidth="lg">
                 <div style={{ marginLeft: 35 }}>
                     <Typography variant="h3" component="h3" gutterBottom className={classes.header}>
                         Montly Activity (last 30 days)
                     </Typography>
                 </div>
                 <Distribution />
-            </Container>
+            </Container> */}
         </>
     );
 }
