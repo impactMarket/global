@@ -1,4 +1,5 @@
 import { createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import Api from '../services/api';
 
@@ -23,7 +24,7 @@ const paper = {
 
 interface IGlobalValue {
     title: string;
-    value: number;
+    value: string;
     isMoney: boolean;
 }
 export default function GlobalScanner() {
@@ -33,17 +34,16 @@ export default function GlobalScanner() {
     useEffect(() => {
         const loadGlobalValues = async () => {
             const values = await Api.getGlobalValues();
-            console.log(values)
             if (values !== undefined) {
                 const totalValues = [
                     {
                         title: 'Total Raised',
-                        value: values.totalRaised,
+                        value: new BigNumber(values.totalRaised).dividedBy(10 ** 18).toString(),
                         isMoney: true,
                     },
                     {
                         title: 'Total Distributed',
-                        value: values.totalDistributed,
+                        value: new BigNumber(values.totalDistributed).dividedBy(10 ** 18).toString(),
                         isMoney: true,
                     },
                     {
@@ -64,7 +64,7 @@ export default function GlobalScanner() {
     }, []);
 
 
-    const dataText = (data: { title: string, value: number, isMoney: boolean }) => {
+    const dataText = (data: { title: string, value: string, isMoney: boolean }) => {
         if (data.isMoney) {
             return <Typography variant="body1" className={classes.description} gutterBottom>
                 <span style={{ fontFamily: 'Gelion', fontWeight: 550, fontSize: 30 }}>${data.value}</span> cUSD
