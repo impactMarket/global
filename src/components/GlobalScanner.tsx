@@ -38,12 +38,12 @@ export default function GlobalScanner() {
                 const totalValues = [
                     {
                         title: 'Total Raised',
-                        value: new BigNumber(values.totalRaised).dividedBy(10 ** 18).toString(),
+                        value: new BigNumber(values.totalRaised).dividedBy(10 ** 18).toFixed(2, 1),
                         isMoney: true,
                     },
                     {
                         title: 'Total Distributed',
-                        value: new BigNumber(values.totalDistributed).dividedBy(10 ** 18).toString(),
+                        value: new BigNumber(values.totalDistributed).dividedBy(10 ** 18).toFixed(2, 1),
                         isMoney: true,
                     },
                     {
