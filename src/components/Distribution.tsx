@@ -44,13 +44,13 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
             const preClaimedData = [];
             const communitiesData = [];
             const beneficiariesData = [];
-            let totalClaimed = 0;
+            let totalClaimed = new BigNumber(0);
             let totalCommunities = 0;
             let totalBeneficiaries = 0;
             for (const day in props.outflow.claimed) {
                 preClaimedData.push({ name: day, uv: props.outflow.claimed[day].length });
                 // TODO: improce total calculation
-                totalClaimed += props.outflow.claimed[day].reduce((a: number, b: { values: { _amount: string } }) => a + (new BigNumber(b.values._amount).dividedBy(10 ** 18).toNumber()), totalClaimed);
+                totalClaimed = props.outflow.claimed[day].reduce((a: BigNumber, b: { values: { _amount: string } }) => a.plus(b.values._amount), totalClaimed);
             }
             const claimedData = Array(30 - preClaimedData.length).fill({ name: '', uv: 0 }).concat(preClaimedData);
             for (const day in props.outflow.communities) {
@@ -64,7 +64,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
             const charts = [
                 {
                     title: 'Claimed',
-                    subtitle: '$' + totalClaimed,
+                    subtitle: '$' + totalClaimed.dividedBy(10 ** 18).toFixed(2, 1),
                     postsubtitle: 'cUSD',
                     data: claimedData,
                     line: false,
