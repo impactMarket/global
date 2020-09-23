@@ -1,7 +1,6 @@
+import React from 'react';
 import { createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import BigNumber from 'bignumber.js';
-import React, { useEffect, useState } from 'react';
-import Api from '../services/api';
+import { IGlobalValue } from '../types';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,47 +21,9 @@ const paper = {
     padding: 10
 };
 
-interface IGlobalValue {
-    title: string;
-    value: string;
-    isMoney: boolean;
-}
-export default function GlobalScanner() {
+
+export default function GlobalScanner(props: { globalValues: IGlobalValue[] }) {
     const classes = useStyles();
-    const [globalValues, setGlobalValues] = useState<IGlobalValue[]>([]);
-
-    useEffect(() => {
-        const loadGlobalValues = async () => {
-            const values = await Api.getGlobalValues();
-            if (values !== undefined) {
-                const totalValues = [
-                    {
-                        title: 'Total Raised',
-                        value: new BigNumber(values.totalRaised).dividedBy(10 ** 18).toFixed(2, 1),
-                        isMoney: true,
-                    },
-                    {
-                        title: 'Total Distributed',
-                        value: new BigNumber(values.totalDistributed).dividedBy(10 ** 18).toFixed(2, 1),
-                        isMoney: true,
-                    },
-                    {
-                        title: 'Total Beneficiaries',
-                        value: values.totalBeneficiaries,
-                        isMoney: false,
-                    },
-                    {
-                        title: 'Total Claims',
-                        value: values.totalClaims,
-                        isMoney: false,
-                    },
-                ];
-                setGlobalValues(totalValues);
-            }
-        }
-        loadGlobalValues();
-    }, []);
-
 
     const dataText = (data: { title: string, value: string, isMoney: boolean }) => {
         if (data.isMoney) {
@@ -78,7 +39,7 @@ export default function GlobalScanner() {
     return <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>
             <Grid container justify="center" spacing={2}>
-                {globalValues.map((total) => (
+                {props.globalValues.map((total) => (
                     <Grid key={total.title} item>
                         <Paper elevation={3} style={{ ...paper, width: 250 }}>
                             <Typography variant="h6" className={classes.title} gutterBottom>

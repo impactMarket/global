@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGlobalStatus } from '../types';
+import { IGlobalApiResult, IGlobalStatus } from '../types';
 
 import config from './../config';
 
@@ -25,8 +25,8 @@ async function getRequest<T>(endpoint: string): Promise<T | undefined> {
 }
 
 export default class Api {
-    static async getGlobalValues(): Promise<IGlobalStatus | undefined> {
-        const result = await getRequest<IGlobalStatus>(
+    static async getGlobalValues(): Promise<IGlobalApiResult | undefined> {
+        const result = await getRequest<IGlobalApiResult>(
             '/global-status'
         );
         return result;
