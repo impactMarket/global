@@ -1,4 +1,4 @@
-import { createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 
@@ -8,30 +8,9 @@ import {
     BarChart,
     Bar, Tooltip, XAxis
 } from 'recharts';
+import { colors } from '../contants';
+import { useStyles } from '../helpers/theme';
 import { IGlobalOutflowStatus } from '../types';
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        header: {
-            fontFamily: 'Gelion',
-            fontWeight: 550,
-            margin: 30,
-        },
-        root: {
-            flexGrow: 1,
-        },
-        title: {
-            fontFamily: 'Gelion'
-        },
-        description: {
-            fontFamily: 'Gelion'
-        },
-    }),
-);
-
-const paper = {
-    padding: 10
-};
 
 export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     const classes = useStyles();
@@ -91,37 +70,39 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
 
     return <>
         <div style={{ marginLeft: 35 }}>
-            <Typography variant="h4" component="h4" gutterBottom className={classes.header}>
-                Distribution (Outflow)
+            <Typography variant="h2" className={classes.header}>
+                Montly Distribution (Outflow)
+            </Typography>
+            <Typography variant="subtitle1" className={classes.subtitle1}>
+                Beneficiaries from different communities have access to an unconditional basic income, by claiming $cUSD on a regular basis from their community contracts. Each contract UBI parameters take into consideration their beneficiaries' basic needs, and assessment by local social organizations and community leaders.
             </Typography>
         </div>
-        <Grid container className={classes.root} spacing={2}>
+        <Grid container style={{ flexGrow: 1 }} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={2}>
                     {outflow.map((chart) => (
                         <Grid key={chart.title} item>
-                            <Paper elevation={3} style={{ ...paper, width: (chart.line ? 250 : 515) }}>
-                                <Typography variant="h6" className={classes.title} gutterBottom>
+                            <Paper elevation={3} style={{ padding: 10, width: (chart.line ? 250 : 515) }}>
+                                <Typography variant="h6">
                                     {chart.title}
                                 </Typography>
-                                <Typography variant="body1" className={classes.description} gutterBottom>
+                                <Typography variant="body1">
                                     <span style={{ fontFamily: 'Gelion', fontWeight: 550, fontSize: 30 }}>{chart.subtitle}</span> {chart.postsubtitle}
                                 </Typography>
                                 {chart.line ? <LineChart width={250} height={200} data={chart.data}>
                                     <XAxis dataKey="name" hide />
                                     <Tooltip />
-                                    <Line type="monotone" dataKey="uv" stroke="#5E72E4" strokeWidth={2} dot={<></>} />
+                                    <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
                                 </LineChart> : <BarChart
                                     width={500}
                                     height={200}
                                     data={chart.data}
                                 >
-                                        {/* <Bar dataKey="pv" fill="#8884d8" /> */}
                                         <XAxis dataKey="name" hide />
                                         <Tooltip />
-                                        <Bar dataKey="uv" fill="#5E72E4" />
+                                        <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
                                     </BarChart>}
-                                {/* <Typography variant="body1" className={classes.description} gutterBottom>
+                                {/* <Typography variant="body1" className={classes.description}>
                                     {chart.growth}% Last 30 days
                                 </Typography> */}
                             </Paper>
