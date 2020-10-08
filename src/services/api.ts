@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGlobalApiResult, IGlobalStatus } from '../types';
+import { ICommunityInfo, IGlobalApiResult, IGlobalStatus } from '../types';
 
 import config from './../config';
 
@@ -30,5 +30,12 @@ export default class Api {
             '/global-status'
         );
         return result;
+    }
+
+    static async getAllValidCommunities(): Promise<ICommunityInfo[]> {
+        const result = await getRequest<ICommunityInfo[]>(
+            '/community/all/valid'
+        );
+        return result ? result : [];
     }
 }
