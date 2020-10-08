@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import BigNumber from 'bignumber.js';
+import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
 import GlobalScanner from './components/GlobalScanner';
 import Distribution from './components/Distribution';
 import { IGlobalOutflowStatus, IGlobalValue } from './types';
+import Communities from './components/Communities';
+import { muiTheme, useStyles } from './helpers/theme';
+import { humanifyNumber } from './helpers';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        header: {
-            fontFamily: 'Gelion',
-            fontWeight: 550,
-            margin: 30,
-        },
-        headerContainer: {
-            backgroundColor: 'white',
-            padding: '5% 0px',
-        },
-    }),
-);
+
 export default function App() {
     const classes = useStyles();
 
@@ -38,12 +28,12 @@ export default function App() {
                 const totalValues = [
                     {
                         title: 'Total Raised',
-                        value: new BigNumber(gValues.totalRaised).dividedBy(10 ** 18).toFixed(2, 1),
+                        value: humanifyNumber(gValues.totalRaised),
                         isMoney: true,
                     },
                     {
                         title: 'Total Distributed',
-                        value: new BigNumber(gValues.totalDistributed).dividedBy(10 ** 18).toFixed(2, 1),
+                        value: humanifyNumber(gValues.totalDistributed),
                         isMoney: true,
                     },
                     {
@@ -65,12 +55,12 @@ export default function App() {
     }, []);
 
     return (
-        <>
+        <ThemeProvider theme={muiTheme}>
             <div className={classes.headerContainer}>
-                <Container maxWidth="xl">
+                <Container maxWidth="lg">
                     <div style={{ textAlign: 'center' }}>
                         <img src="assets/impactmarket.svg" alt="impactmarket logo" />
-                        <Typography variant="h3" gutterBottom className={classes.header}>
+                        <Typography variant="h1" className={classes.header}>
                             Global Basic Income Distribution Scanner
                         </Typography>
                     </div>
@@ -78,13 +68,9 @@ export default function App() {
                 </Container>
             </div>
             <Container maxWidth="lg">
-                <div style={{ marginLeft: 35 }}>
-                    <Typography variant="h3" component="h3" gutterBottom className={classes.header}>
-                        Montly Activity (last 30 days)
-                    </Typography>
-                </div>
                 <Distribution outflow={globalOutflowValues} />
+                <Communities />
             </Container>
-        </>
+        </ThemeProvider>
     );
 }
