@@ -34,7 +34,7 @@ export default function Communities() {
     }
 
     return <>
-        <div style={{ marginLeft: 35 }}>
+        <div>
             <Typography variant="h2" className={classes.header}>
                 Communities
             </Typography>

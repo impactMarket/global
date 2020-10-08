@@ -1,6 +1,6 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
     LineChart,
@@ -15,6 +15,8 @@ import { IGlobalOutflowStatus } from '../types';
 export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     const classes = useStyles();
     const [outflow, setOutflow] = useState<any[]>([]);
+    const [charLineWidth, setChartLineWidth] = useState(100);
+    const [charBarWidth, setChartBarWidth] = useState(100);
 
 
     useEffect(() => {
@@ -68,8 +70,19 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
         loadOutflow();
     }, [props.outflow]);
 
+    const paperSize = (instance: unknown, isLine: boolean) => {
+        if (instance === null) {
+            return;
+        }
+        if (isLine) {
+            setChartLineWidth((instance as any).getBoundingClientRect().width - 20);
+        } else {
+            setChartBarWidth((instance as any).getBoundingClientRect().width - 20);
+        }
+    }
+
     return <>
-        <div style={{ marginLeft: 35 }}>
+        <div>
             <Typography variant="h2" className={classes.header}>
                 Montly Distribution (Outflow)
             </Typography>
@@ -77,39 +90,32 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                 Beneficiaries from different communities have access to an unconditional basic income, by claiming $cUSD on a regular basis from their community contracts. Each contract UBI parameters take into consideration their beneficiaries' basic needs, and assessment by local social organizations and community leaders.
             </Typography>
         </div>
-        <Grid container style={{ flexGrow: 1 }} spacing={2}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={2}>
-                    {outflow.map((chart) => (
-                        <Grid key={chart.title} item>
-                            <Paper elevation={3} style={{ padding: 10, width: (chart.line ? 250 : 515) }}>
-                                <Typography variant="h6">
-                                    {chart.title}
-                                </Typography>
-                                <Typography variant="body1">
-                                    <span style={{ fontFamily: 'Gelion', fontWeight: 550, fontSize: 30 }}>{chart.subtitle}</span> {chart.postsubtitle}
-                                </Typography>
-                                {chart.line ? <LineChart width={250} height={200} data={chart.data}>
-                                    <XAxis dataKey="name" hide />
-                                    <Tooltip />
-                                    <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
-                                </LineChart> : <BarChart
-                                    width={500}
-                                    height={200}
-                                    data={chart.data}
-                                >
-                                        <XAxis dataKey="name" hide />
-                                        <Tooltip />
-                                        <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
-                                    </BarChart>}
-                                {/* <Typography variant="body1" className={classes.description}>
-                                    {chart.growth}% Last 30 days
-                                </Typography> */}
-                            </Paper>
-                        </Grid>
-                    ))}
+        <Grid container justify="space-between" spacing={2}>
+            {outflow.map((chart) => (
+                <Grid key={chart.title} item xs={(chart.line ? 3 : 6)}>
+                    <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
+                        <Typography variant="h4">
+                            {chart.title}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                            <Typography variant="h3" display="inline">{chart.subtitle}</Typography> {chart.postsubtitle}
+                        </Typography>
+                        {chart.line ? <LineChart width={charLineWidth} height={200} data={chart.data}>
+                            <XAxis dataKey="name" hide />
+                            <Tooltip />
+                            <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
+                        </LineChart> : <BarChart
+                            width={charBarWidth}
+                            height={200}
+                            data={chart.data}
+                        >
+                                <XAxis dataKey="name" hide />
+                                <Tooltip />
+                                <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
+                            </BarChart>}
+                    </Paper>
                 </Grid>
-            </Grid>
+            ))}
         </Grid>
     </>
 

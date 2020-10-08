@@ -37,10 +37,25 @@ const muiTheme = createMuiTheme({
             fontSize: '28px',
             lineHeight: '52px'
         },
+        h3: {
+            fontWeight: 550,
+            fontSize: '26px',
+            lineHeight: '52px'
+        },
+        h4: {
+            fontWeight: 400,
+            fontSize: '18px',
+            lineHeight: '17px'
+        },
         subtitle1: {
             fontWeight: 400,
             fontSize: '18px',
             lineHeight: '22px'
+        },
+        subtitle2: {
+            fontWeight: 400,
+            fontSize: '18px',
+            lineHeight: '17px'
         },
     },
     shape: {
