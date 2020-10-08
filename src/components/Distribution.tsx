@@ -97,9 +97,8 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                         <Typography variant="h4">
                             {chart.title}
                         </Typography>
-                        <Typography variant="subtitle2">
-                            <Typography variant="h3" display="inline">{chart.subtitle}</Typography> {chart.postsubtitle}
-                        </Typography>
+                        <Typography variant="h3" component="p" display="inline">{chart.subtitle}</Typography>&nbsp;
+                        <Typography variant="subtitle2" display="inline">{chart.postsubtitle}</Typography>
                         {chart.line ? <LineChart width={charLineWidth} height={200} data={chart.data}>
                             <XAxis dataKey="name" hide />
                             <Tooltip />
