@@ -15,8 +15,7 @@ export default function App() {
 
     const [globalValues, setGlobalValues] = useState<IGlobalValue[]>([]);
     const [globalOutflowValues, setGlobalOutflowValues] = useState<IGlobalOutflowStatus>({
-        claimed: {},
-        communities: {},
+        claims: {},
         beneficiaries: {}
     });
 

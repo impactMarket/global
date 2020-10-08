@@ -12,6 +12,27 @@ import { colors } from '../contants';
 import { useStyles } from '../helpers/theme';
 import { IGlobalOutflowStatus } from '../types';
 
+import moment from 'moment';
+import { humanifyNumber } from '../helpers';
+
+function CustomTooltip(props: {
+    tooltip: string,
+    type?: string,
+    payload?: any[],
+    label?: string,
+    active?: boolean,
+}) {
+    const { active, payload, label, tooltip } = props;
+    if (active && payload !== null && tooltip !== undefined) {
+        return (
+            <Paper elevation={3} style={{ padding: 10, textAlign: "center" }}>
+                <p>{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</p>
+            </Paper>
+        );
+    }
+    return null;
+}
+
 export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     const classes = useStyles();
     const [outflow, setOutflow] = useState<any[]>([]);
@@ -22,40 +43,62 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     useEffect(() => {
         const loadOutflow = () => {
             // TODO: remove this preClaimedData after having more than 30 days of data
-            const preClaimedData = [];
-            const communitiesData = [];
-            const beneficiariesData = [];
+            const claimedData: any[] = [];
+            const claimsData: any[] = [];
+            const beneficiariesData: any[] = [];
             let totalClaimed = new BigNumber(0);
-            let totalCommunities = 0;
+            let totalClaims = 0;
             let totalBeneficiaries = 0;
-            for (const day in props.outflow.claimed) {
-                preClaimedData.push({ name: day, uv: props.outflow.claimed[day].length });
-                // TODO: improce total calculation
-                totalClaimed = props.outflow.claimed[day].reduce((a: BigNumber, b: { values: { _amount: string } }) => a.plus(b.values._amount), totalClaimed);
+
+
+            const buildLast30Days = (data: any, callback: (date: number, daydata: any | undefined) => void) => {
+                const today = moment().utc().startOf('day').toDate().getTime();
+                for (let day = 30; day >= 0; day -= 1) {
+                    callback(today - day * 86400000, data[today - day * 86400000]);
+                }
             }
-            const claimedData = Array(30 - preClaimedData.length).fill({ name: '', uv: 0 }).concat(preClaimedData);
-            for (const day in props.outflow.communities) {
-                communitiesData.push({ name: day, uv: props.outflow.communities[day].length });
-                totalCommunities += props.outflow.communities[day].length;
-            }
-            for (const day in props.outflow.beneficiaries) {
-                beneficiariesData.push({ name: day, uv: props.outflow.beneficiaries[day].length });
-                totalBeneficiaries += props.outflow.beneficiaries[day].length;
-            }
+
+            buildLast30Days(props.outflow.claims, (date: number, daydata: any | undefined) => {
+                if (daydata === undefined) {
+                    claimedData.push({ name: date, uv: 0 });
+                    claimsData.push({ name: date, uv: 0 });
+                } else {
+                    let claimedThisDay = new BigNumber(0)
+                    for (let x = 0; x < daydata.length; x += 1) {
+                        claimedThisDay = claimedThisDay.plus(daydata[x].values._amount)
+                    }
+                    // console.log(day, humanifyNumber(claimedThisDay))
+                    claimedData.push({ name: date, uv: humanifyNumber(claimedThisDay) });
+                    claimsData.push({ name: date, uv: daydata.length });
+                    totalClaimed = totalClaimed.plus(claimedThisDay)
+                    totalClaims += daydata.length;
+                }
+            });
+            buildLast30Days(props.outflow.beneficiaries, (date: number, daydata: any | undefined) => {
+                if (daydata === undefined) {
+                    beneficiariesData.push({ name: date, uv: 0 });
+                } else {
+                    beneficiariesData.push({ name: date, uv: daydata.length });
+                    totalBeneficiaries += daydata.length;
+                }
+            });
+
             const charts = [
                 {
                     title: 'Claimed',
-                    subtitle: '$' + totalClaimed.dividedBy(10 ** 18).toFixed(2, 1),
+                    subtitle: '$' + humanifyNumber(totalClaimed),
                     postsubtitle: 'cUSD',
                     data: claimedData,
                     line: false,
+                    tooltip: '{{date}} were claimed ${{value}}',
                 },
                 {
-                    title: 'Communities',
-                    subtitle: totalCommunities,
+                    title: 'Claims',
+                    subtitle: totalClaims,
                     postsubtitle: '',
-                    data: communitiesData,
+                    data: claimsData,
                     line: true,
+                    tooltip: '{{date}} were realized {{value}} claims',
                 },
                 {
                     title: 'Beneficiaries',
@@ -63,6 +106,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                     postsubtitle: '',
                     data: beneficiariesData,
                     line: true,
+                    tooltip: '{{date}} were added {{value}} new beneficiaries',
                 },
             ]
             setOutflow(charts);
@@ -97,11 +141,11 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                         <Typography variant="h4">
                             {chart.title}
                         </Typography>
-                        <Typography variant="h3" component="p" display="inline">{chart.subtitle}</Typography>&nbsp;
+                        <Typography variant="h3" display="inline">{chart.subtitle}</Typography>&nbsp;
                         <Typography variant="subtitle2" display="inline">{chart.postsubtitle}</Typography>
                         {chart.line ? <LineChart width={charLineWidth} height={200} data={chart.data}>
                             <XAxis dataKey="name" hide />
-                            <Tooltip />
+                            <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
                             <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
                         </LineChart> : <BarChart
                             width={charBarWidth}
@@ -109,7 +153,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                             data={chart.data}
                         >
                                 <XAxis dataKey="name" hide />
-                                <Tooltip />
+                                <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
                                 <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
                             </BarChart>}
                     </Paper>
