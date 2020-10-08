@@ -12,4 +12,9 @@ export default {
      * Base URL to api
      */
     baseApiUrl: process.env.REACT_APP_BASE_URL_API + '/api',
+
+    /**
+     * cUSD decimals to use in ui format
+     */
+    cUSDDecimals: 18,
 };
