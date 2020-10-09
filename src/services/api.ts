@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICommunityInfo, IGlobalApiResult, IGlobalStatus } from '../types';
+import { ICommunityInfo, IGlobalApiResult } from '../types';
 
 import config from './../config';
 

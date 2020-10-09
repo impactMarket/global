@@ -1,6 +1,6 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     LineChart,
@@ -36,8 +36,8 @@ function CustomTooltip(props: {
 export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     const classes = useStyles();
     const [outflow, setOutflow] = useState<any[]>([]);
-    const [charLineWidth, setChartLineWidth] = useState(100);
-    const [charBarWidth, setChartBarWidth] = useState(100);
+    const [chartLineWidth, setChartLineWidth] = useState(100);
+    const [chartBarWidth, setChartBarWidth] = useState(100);
 
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                         claimedThisDay = claimedThisDay.plus(daydata[x].values._amount)
                     }
                     // console.log(day, humanifyNumber(claimedThisDay))
-                    claimedData.push({ name: date, uv: humanifyNumber(claimedThisDay) });
+                    claimedData.push({ name: date, uv: parseFloat(humanifyNumber(claimedThisDay)) });
                     claimsData.push({ name: date, uv: daydata.length });
                     totalClaimed = totalClaimed.plus(claimedThisDay)
                     totalClaims += daydata.length;
@@ -78,8 +78,8 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                 if (daydata === undefined) {
                     beneficiariesData.push({ name: date, uv: 0 });
                 } else {
-                    beneficiariesData.push({ name: date, uv: daydata.length });
-                    totalBeneficiaries += daydata.length;
+                    beneficiariesData.push({ name: date, uv: parseInt(daydata[0].total) });
+                    totalBeneficiaries += parseInt(daydata[0].total);
                 }
             });
 
@@ -125,6 +125,25 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
         }
     }
 
+    const drawChart = (chart: any) => {
+        if (chart.line) {
+            return <LineChart width={chartLineWidth} height={200} data={chart.data}>
+                <XAxis dataKey="name" hide />
+                <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
+                <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
+            </LineChart>
+        }
+        return <BarChart
+            width={chartBarWidth}
+            height={200}
+            data={chart.data}
+        >
+            <XAxis dataKey="name" hide />
+            <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
+            <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
+        </BarChart>
+    }
+
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
@@ -143,19 +162,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                         </Typography>
                         <Typography variant="h3" display="inline">{chart.subtitle}</Typography>&nbsp;
                         <Typography variant="subtitle2" display="inline">{chart.postsubtitle}</Typography>
-                        {chart.line ? <LineChart width={charLineWidth} height={200} data={chart.data}>
-                            <XAxis dataKey="name" hide />
-                            <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
-                            <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
-                        </LineChart> : <BarChart
-                            width={charBarWidth}
-                            height={200}
-                            data={chart.data}
-                        >
-                                <XAxis dataKey="name" hide />
-                                <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
-                                <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
-                            </BarChart>}
+                        {drawChart(chart)}
                     </Paper>
                 </Grid>
             ))}

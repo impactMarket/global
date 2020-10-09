@@ -14,6 +14,7 @@ import Api from '../services/api';
 import { ICommunityInfo } from '../types';
 import { claimFrequencyToText, humanifyNumber } from '../helpers';
 import { useStyles } from '../helpers/theme';
+import config from '../config';
 
 
 export default function Communities() {
@@ -27,10 +28,11 @@ export default function Communities() {
 
     const shortenAddress = (address: string) => `${address.slice(0, 8)}..${address.slice(36, 42)}`;
     const currentSSI = (ssi: { dates: Date[], values: number[] }) => {
-        if (ssi.dates.length === 0) {
+        const total = ssi.dates.length;
+        if (total === 0) {
             return 'N/A';
         }
-        return ssi.values[0];
+        return ssi.values[total - 1];
     }
 
     return <>
@@ -49,7 +51,7 @@ export default function Communities() {
                         <TableCell className={classes.subtitle2}>Community name</TableCell>
                         <TableCell align="center" className={classes.subtitle2}>UBI Rate</TableCell>
                         <TableCell align="center" className={classes.subtitle2}>SSI</TableCell>
-                        <TableCell align="center" className={classes.subtitle2}>Beneficiary</TableCell>
+                        <TableCell align="center" className={classes.subtitle2}>Beneficiaries</TableCell>
                         <TableCell align="center" className={classes.subtitle2}>Backers</TableCell>
                         <TableCell align="center" className={classes.subtitle2}>Claimed</TableCell>
                         <TableCell align="center" className={classes.subtitle2}>Raised</TableCell>
@@ -70,7 +72,7 @@ export default function Communities() {
                             <TableCell align="center">{community.backers.length}</TableCell>
                             <TableCell align="center">{new BigNumber(community.totalClaimed).dividedBy(community.totalRaised).multipliedBy(100).decimalPlaces(2, 1).toString()}%</TableCell>
                             <TableCell align="center">${humanifyNumber(community.totalRaised)}</TableCell>
-                            <TableCell align="center">{shortenAddress(community.contractAddress)}</TableCell>
+                            <TableCell align="center"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
