@@ -147,7 +147,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
-                Montly Distribution (Outflow)
+                Monthly Distribution (Outflow)
             </Typography>
             <Typography variant="subtitle1" className={classes.subtitle1}>
                 Beneficiaries from different communities have access to an unconditional basic income, by claiming $cUSD on a regular basis from their community contracts. Each contract UBI parameters take into consideration their beneficiaries' basic needs, and assessment by local social organizations and community leaders.
