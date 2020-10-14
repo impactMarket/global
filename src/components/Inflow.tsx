@@ -10,10 +10,10 @@ import {
 } from 'recharts';
 import { colors } from '../contants';
 import { useStyles } from '../helpers/theme';
-// import { IGlobalFundraisingStatus } from '../types';
 
 import moment from 'moment';
 import { humanifyNumber } from '../helpers';
+import { IGlobalInflowStatus } from '../types';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -33,7 +33,7 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Inflow(props: { fundraising: any }) {
+export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
     const [chartLineWidth, setChartLineWidth] = useState(100);
@@ -42,7 +42,6 @@ export default function Inflow(props: { fundraising: any }) {
 
     useEffect(() => {
         const loadFundraising = () => {
-            // TODO: remove this preClaimedData after having more than 30 days of data
             const raisedData: any[] = [];
             const backersData: any[] = [];
             const fundingRateData: any[] = [];
@@ -51,37 +50,29 @@ export default function Inflow(props: { fundraising: any }) {
             let lastFundingRate = 0;
 
 
-            // const buildLast30Days = (data: any, callback: (date: number, daydata: any | undefined) => void) => {
-            //     const today = moment().utc().startOf('day').toDate().getTime();
-            //     for (let day = 30; day >= 0; day -= 1) {
-            //         callback(today - day * 86400000, data[today - day * 86400000]);
-            //     }
-            // }
+            const buildLast30Days = (data: any, callback: (date: number, daydata: any | undefined) => void) => {
+                const today = moment().utc().startOf('day').toDate().getTime();
+                for (let day = 30; day >= 0; day -= 1) {
+                    callback(today - day * 86400000, data[today - day * 86400000]);
+                }
+            }
 
-            // buildLast30Days(props.fundraising.claims, (date: number, daydata: any | undefined) => {
-            //     if (daydata === undefined) {
-            //         raisedData.push({ name: date, uv: 0 });
-            //         backersData.push({ name: date, uv: 0 });
-            //     } else {
-            //         let claimedThisDay = new BigNumber(0)
-            //         for (let x = 0; x < daydata.length; x += 1) {
-            //             claimedThisDay = claimedThisDay.plus(daydata[x].values._amount)
-            //         }
-            //         // console.log(day, humanifyNumber(claimedThisDay))
-            //         raisedData.push({ name: date, uv: parseFloat(humanifyNumber(claimedThisDay)) });
-            //         backersData.push({ name: date, uv: daydata.length });
-            //         totalRaised = totalRaised.plus(claimedThisDay)
-            //         totalBackers += daydata.length;
-            //     }
-            // });
-            // buildLast30Days(props.fundraising.beneficiaries, (date: number, daydata: any | undefined) => {
-            //     if (daydata === undefined) {
-            //         fundingRateData.push({ name: date, uv: 0 });
-            //     } else {
-            //         fundingRateData.push({ name: date, uv: parseInt(daydata[0].total) });
-            //         lastFundingRate += parseInt(daydata[0].total);
-            //     }
-            // });
+            buildLast30Days(props.fundraising.raises, (date: number, daydata: any | undefined) => {
+                if (daydata === undefined) {
+                    raisedData.push({ name: date, uv: 0 });
+                    backersData.push({ name: date, uv: 0 });
+                } else {
+                    let raisedThisDay = new BigNumber(0)
+                    for (let x = 0; x < daydata.length; x += 1) {
+                        raisedThisDay = raisedThisDay.plus(daydata[x].values.value)
+                    }
+                    raisedData.push({ name: date, uv: parseFloat(humanifyNumber(raisedThisDay)) });
+                    const backersThisDay = daydata.reduce((acc: any, o: any) => (acc[o.values.from] = (acc[o.values.from] || 0) + 1, acc), {});
+                    backersData.push({ name: date, uv: Object.keys(backersThisDay).length });
+                    totalRaised = totalRaised.plus(raisedThisDay)
+                    totalBackers += Object.keys(backersThisDay).length;
+                }
+            });
 
             const charts = [
                 {
@@ -109,6 +100,7 @@ export default function Inflow(props: { fundraising: any }) {
                     tooltip: '{{date}} had {{value}} funding rate',
                 },
             ]
+            console.log(charts)
             setFundraising(charts);
         }
         loadFundraising();

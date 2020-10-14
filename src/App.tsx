@@ -21,7 +21,6 @@ export default function App() {
     });
     const [globalInflowValues, setGlobalInflowValues] = useState<IGlobalInflowStatus>({
         raises: {},
-        backers: {},
         rate: {},
     });
 

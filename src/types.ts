@@ -20,7 +20,6 @@ export interface IGlobalOutflowStatus {
 
 export interface IGlobalInflowStatus {
     raises: any;
-    backers: any;
     rate: any;
 }
 
