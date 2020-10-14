@@ -4,10 +4,11 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
 import GlobalScanner from './components/GlobalScanner';
 import Distribution from './components/Distribution';
-import { IGlobalOutflowStatus, IGlobalValue } from './types';
+import { IGlobalInflowStatus, IGlobalOutflowStatus, IGlobalValue } from './types';
 import Communities from './components/Communities';
 import { muiTheme, useStyles } from './helpers/theme';
-import { humanifyNumber } from './helpers';
+import { currencyValue, humanifyNumber, numericalValue } from './helpers';
+import Inflow from './components/Inflow';
 
 
 export default function App() {
@@ -18,6 +19,11 @@ export default function App() {
         claims: {},
         beneficiaries: {}
     });
+    const [globalInflowValues, setGlobalInflowValues] = useState<IGlobalInflowStatus>({
+        raises: {},
+        backers: {},
+        rate: {},
+    });
 
     useEffect(() => {
         const loadGlobalValues = async () => {
@@ -27,27 +33,28 @@ export default function App() {
                 const totalValues = [
                     {
                         title: 'Total Raised',
-                        value: humanifyNumber(gValues.totalRaised),
+                        value: currencyValue(humanifyNumber(gValues.totalRaised)),
                         isMoney: true,
                     },
                     {
                         title: 'Total Distributed',
-                        value: humanifyNumber(gValues.totalDistributed),
+                        value: currencyValue(humanifyNumber(gValues.totalDistributed)),
                         isMoney: true,
                     },
                     {
                         title: 'Total Beneficiaries',
-                        value: gValues.totalBeneficiaries,
+                        value: numericalValue(gValues.totalBeneficiaries),
                         isMoney: false,
                     },
                     {
                         title: 'Total Claims',
-                        value: gValues.totalClaims,
+                        value: numericalValue(gValues.totalClaims),
                         isMoney: false,
                     },
                 ];
                 setGlobalValues(totalValues);
                 setGlobalOutflowValues(values.outflow);
+                setGlobalInflowValues(values.inflow);
             }
         }
         loadGlobalValues();
@@ -69,6 +76,7 @@ export default function App() {
             <Container maxWidth="lg">
                 <Distribution outflow={globalOutflowValues} />
                 <Communities />
+                <Inflow fundraising={globalInflowValues} />
             </Container>
         </ThemeProvider>
     );

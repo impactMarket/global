@@ -6,7 +6,7 @@ export default function GlobalScanner(props: { globalValues: IGlobalValue[] }) {
     const dataText = (data: { title: string, value: string, isMoney: boolean }) => {
         if (data.isMoney) {
             return (<>
-                <Typography variant="h3" display="inline">${data.value}</Typography>&nbsp;
+                <Typography variant="h3" display="inline">{data.value}</Typography>&nbsp;
                 <Typography variant="body1" display="inline">cUSD</Typography>
             </>);
         }

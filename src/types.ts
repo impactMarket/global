@@ -1,3 +1,11 @@
+export interface IClaimLocation {
+    communityPublicId: string;
+    gps: {
+        latitude: number,
+        longitude: number;
+    };
+}
+
 export interface IGlobalStatus {
     totalRaised: string,
     totalDistributed: string,
@@ -6,13 +14,20 @@ export interface IGlobalStatus {
 }
 
 export interface IGlobalOutflowStatus {
-    claims: any,
-    beneficiaries: any,
+    claims: any;
+    beneficiaries: any;
+}
+
+export interface IGlobalInflowStatus {
+    raises: any;
+    backers: any;
+    rate: any;
 }
 
 export interface IGlobalApiResult {
-    global: IGlobalStatus,
-    outflow: IGlobalOutflowStatus,
+    global: IGlobalStatus;
+    outflow: IGlobalOutflowStatus;
+    inflow: IGlobalInflowStatus;
 }
 
 export interface IGlobalValue {
