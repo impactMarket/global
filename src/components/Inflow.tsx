@@ -44,9 +44,9 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
         const loadFundraising = () => {
             const raisedData: any[] = [];
             const backersData: any[] = [];
+            let backersAddresses: any[] = [];
             const fundingRateData: any[] = [];
             let totalRaised = new BigNumber(0);
-            let totalBackers = 0;
             let lastFundingRate = 0;
 
 
@@ -68,9 +68,9 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                     }
                     raisedData.push({ name: date, uv: parseFloat(humanifyNumber(raisedThisDay)) });
                     const backersThisDay = daydata.reduce((acc: any, o: any) => (acc[o.values.from] = (acc[o.values.from] || 0) + 1, acc), {});
+                    backersAddresses = backersAddresses.concat(Object.keys(backersThisDay));
                     backersData.push({ name: date, uv: Object.keys(backersThisDay).length });
-                    totalRaised = totalRaised.plus(raisedThisDay)
-                    totalBackers += Object.keys(backersThisDay).length;
+                    totalRaised = totalRaised.plus(raisedThisDay);
                 }
             });
 
@@ -85,7 +85,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                 },
                 {
                     title: 'Backers',
-                    subtitle: numericalValue(totalBackers.toString()),
+                    subtitle: numericalValue(Array.from(new Set(backersAddresses)).length.toString()),
                     postsubtitle: '',
                     data: backersData,
                     line: true,
@@ -100,7 +100,6 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                     tooltip: '{{date}} had {{value}} funding rate',
                 },
             ]
-            console.log(charts)
             setFundraising(charts);
         }
         loadFundraising();
