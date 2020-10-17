@@ -35,6 +35,9 @@ export class Globe extends React.Component<{}, IGlobeState> {
             0.6: '#FAF3A5', 0.8: '#F5D98B', '1.0': '#DE9A96'
         };
 
+        // '//{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png',
+        // '//{s}.tile.openstreetmap.fr/openriverboatmap/{z}/{x}/{y}.png',
+
         return (
             <div>
                 <Map center={[0, 0]} zoom={13}>

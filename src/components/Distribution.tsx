@@ -13,7 +13,7 @@ import { useStyles } from '../helpers/theme';
 import { IGlobalOutflowStatus } from '../types';
 
 import moment from 'moment';
-import { humanifyNumber } from '../helpers';
+import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
 import { Globe } from './Globe';
 
 function CustomTooltip(props: {
@@ -87,7 +87,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
             const charts = [
                 {
                     title: 'Claimed',
-                    subtitle: '$' + humanifyNumber(totalClaimed),
+                    subtitle: currencyValue(humanifyNumber(totalClaimed)),
                     postsubtitle: 'cUSD',
                     data: claimedData,
                     line: false,
@@ -95,7 +95,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                 },
                 {
                     title: 'Claims',
-                    subtitle: totalClaims,
+                    subtitle: numericalValue(totalClaims.toString()),
                     postsubtitle: '',
                     data: claimsData,
                     line: true,
@@ -103,7 +103,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                 },
                 {
                     title: 'Beneficiaries',
-                    subtitle: totalBeneficiaries,
+                    subtitle: numericalValue(totalBeneficiaries.toString()),
                     postsubtitle: '',
                     data: beneficiariesData,
                     line: true,
@@ -157,7 +157,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
         <Globe />
         <Grid container justify="space-between" spacing={2}>
             {outflow.map((chart) => (
-                <Grid key={chart.title} item xs={(chart.line ? 3 : 6)}>
+                <Grid key={chart.title} item xs={12} sm={(chart.line ? 3 : 6)}>
                     <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
                         <Typography variant="h4">
                             {chart.title}

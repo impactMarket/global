@@ -15,11 +15,7 @@ export function humanifyNumber(inputNumber: BigNumber | string): string {
 }
 
 export function currencyValue(inputNumber: BigNumber | string) {
-    return Number(inputNumber).toLocaleString('en', {
-        maximumFractionDigits: 2,
-        style: 'currency',
-        currency: 'USD'
-    });
+    return '$' + numericalValue(inputNumber);
 }
 
 export function numericalValue(inputNumber: BigNumber | string) {

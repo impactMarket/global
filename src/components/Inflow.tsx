@@ -12,7 +12,7 @@ import { colors } from '../contants';
 import { useStyles } from '../helpers/theme';
 
 import moment from 'moment';
-import { humanifyNumber } from '../helpers';
+import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
 import { IGlobalInflowStatus } from '../types';
 
 function CustomTooltip(props: {
@@ -77,7 +77,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
             const charts = [
                 {
                     title: 'Raised',
-                    subtitle: '$' + humanifyNumber(totalRaised),
+                    subtitle: currencyValue(humanifyNumber(totalRaised)),
                     postsubtitle: 'cUSD',
                     data: raisedData,
                     line: false,
@@ -85,7 +85,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                 },
                 {
                     title: 'Backers',
-                    subtitle: totalBackers,
+                    subtitle: numericalValue(totalBackers.toString()),
                     postsubtitle: '',
                     data: backersData,
                     line: true,
@@ -93,7 +93,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                 },
                 {
                     title: 'Funding Rate',
-                    subtitle: lastFundingRate,
+                    subtitle: numericalValue(lastFundingRate.toString()),
                     postsubtitle: '',
                     data: fundingRateData,
                     line: true,
@@ -147,7 +147,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
         </div>
         <Grid container justify="space-between" spacing={2}>
             {fundraising.map((chart) => (
-                <Grid key={chart.title} item xs={(chart.line ? 3 : 6)}>
+                <Grid key={chart.title} item xs={12} sm={(chart.line ? 3 : 6)}>
                     <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
                         <Typography variant="h4">
                             {chart.title}

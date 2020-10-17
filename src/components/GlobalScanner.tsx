@@ -15,7 +15,7 @@ export default function GlobalScanner(props: { globalValues: IGlobalValue[] }) {
 
     return <Grid container justify="space-between" spacing={2}>
         {props.globalValues.map((total) => (
-            <Grid key={total.title} item xs={3}>
+            <Grid key={total.title} item xs={6} sm={3}>
                 <Paper elevation={3} style={{ padding: 10 }}>
                     <Typography variant="h4">
                         {total.title}
