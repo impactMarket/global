@@ -144,20 +144,22 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                 Anyone can back those communities by sending cUSD (Celo Dollar) directly to their contracts. This measures global monthly inflow, and its rate vs fundraising.
             </Typography>
         </div>
-        <Grid container justify="space-between" spacing={2}>
-            {fundraising.map((chart) => (
-                <Grid key={chart.title} item xs={12} sm={(chart.line ? 3 : 6)}>
-                    <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
-                        <Typography variant="h4">
-                            {chart.title}
-                        </Typography>
-                        <Typography variant="h3" display="inline">{chart.subtitle}</Typography>&nbsp;
+        <div style={{ margin: '16px 0px' }}>
+            <Grid container justify="space-between" spacing={2}>
+                {fundraising.map((chart) => (
+                    <Grid key={chart.title} item xs={12} sm={(chart.line ? 3 : 6)}>
+                        <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
+                            <Typography variant="h4">
+                                {chart.title}
+                            </Typography>
+                            <Typography variant="h3" display="inline">{chart.subtitle}</Typography>&nbsp;
                         <Typography variant="subtitle2" display="inline">{chart.postsubtitle}</Typography>
-                        {drawChart(chart)}
-                    </Paper>
-                </Grid>
-            ))}
-        </Grid>
+                            {drawChart(chart)}
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
+        </div>
     </>
 
 }

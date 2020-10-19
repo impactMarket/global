@@ -9,6 +9,8 @@ import Communities from './components/Communities';
 import { muiTheme, useStyles } from './helpers/theme';
 import { currencyValue, humanifyNumber, numericalValue } from './helpers';
 import Inflow from './components/Inflow';
+import { colors } from './contants';
+import Footer from './components/Footer';
 
 
 export default function App() {
@@ -65,7 +67,7 @@ export default function App() {
                 <Container maxWidth="lg">
                     <div style={{ textAlign: 'center' }}>
                         <img src="assets/impactmarket.svg" alt="impactmarket logo" />
-                        <Typography variant="h1" className={classes.header}>
+                        <Typography variant="h1" style={{ color: colors.almostBlack, margin: '35px 0px' }}>
                             Global Basic Income Distribution Scanner
                         </Typography>
                     </div>
@@ -77,6 +79,7 @@ export default function App() {
                 <Communities />
                 <Inflow fundraising={globalInflowValues} />
             </Container>
+            <Footer />
         </ThemeProvider>
     );
 }
