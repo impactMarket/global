@@ -16,4 +16,9 @@ export default {
      * cUSD decimals to use in ui format
      */
     cUSDDecimals: 18,
+
+    /**
+     * MapBox API Key
+     */
+    mapBoxApiKey: process.env.REACT_APP_MAPBOX_KEY!,
 };
