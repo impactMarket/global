@@ -1,110 +1,142 @@
 import React from 'react';
-import { Map, TileLayer } from 'react-leaflet';
-import HeatmapLayer from 'react-leaflet-heatmap-layer';
+import mapboxgl from 'mapbox-gl';
 import Api from '../services/api';
+import config from '../config';
 
+mapboxgl.accessToken = config.mapBoxApiKey;
 
 interface IGlobeState {
-    mapHidden: boolean;
-    layerHidden: boolean;
-    addressPoints: (string | number | null)[][];
-    radius: number;
-    blur: number;
-    max: number;
+    lng: number;
+    lat: number;
+    zoom: number;
 }
 export class Globe extends React.Component<{}, IGlobeState> {
+    private mapContainer: any = undefined;
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            lng: 0,
+            lat: 0,
+            zoom: 12,
+        };
+    }
 
-    state = {
-        mapHidden: false,
-        layerHidden: false,
-        addressPoints: [[]],
-        radius: 20,
-        blur: 1,
-        max: 0.1,
-    };
 
-    componentDidMount() {
-        Api.getAllClaimLocation().then((claims) => {
-            this.setState({ addressPoints: claims.map((c) => ([c.gps.latitude, c.gps.longitude, "1"])) });
+    async componentDidMount() {
+        const map = new mapboxgl.Map({
+            container: this.mapContainer,
+            style: config.mapBoxStyle,
+            center: [this.state.lng, this.state.lat],
+            zoom: this.state.zoom
         });
+
+        const claims = await Api.getAllClaimLocation();
+        const mapData = {
+            type: "FeatureCollection",
+            features: claims.map((c) => (
+                {
+                    type: "Feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: [c.gps.longitude, c.gps.latitude]
+                    }
+                }
+            ))
+        }
+        const bounds = new mapboxgl.LngLatBounds();
+        mapData.features.forEach((feature) => {
+            bounds.extend(feature.geometry.coordinates as any);
+        });
+        bounds.setNorthEast({ lng: bounds.getNorthEast().lng, lat: bounds.getNorthEast().lat + 2 })
+        bounds.setSouthWest({ lng: bounds.getSouthWest().lng, lat: bounds.getSouthWest().lat - 2 })
+        map.fitBounds(bounds);
+        map.setMaxZoom(12);
+
+        map.on('move', () => {
+            this.setState({
+                lng: map.getCenter().lng,
+                lat: map.getCenter().lat,
+                zoom: map.getZoom()
+            });
+        });
+
+        map.on('load', () => {
+            // Add a geojson point source.
+            // Heatmap layers also work with a vector tile source.
+            map.addSource('claims', {
+                'type': 'geojson',
+                'data': mapData as any
+            });
+
+            map.addLayer(
+                {
+                    'id': 'claims-heat',
+                    'type': 'heatmap',
+                    'source': 'claims',
+                    'maxzoom': 11,
+                    'paint': {
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        'heatmap-intensity': 1,
+                        'heatmap-weight': 1,
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        'heatmap-color': [
+                            "interpolate",
+                            ["linear"],
+                            ["heatmap-density"],
+                            0,
+                            "rgba(0, 0, 255, 0)",
+                            0.12,
+                            "hsl(111, 72%, 87%)",
+                            0.35,
+                            "hsl(82, 87%, 60%)",
+                            0.6,
+                            "hsl(65, 96%, 54%)",
+                            0.85,
+                            "hsl(49, 100%, 58%)",
+                            0.99,
+                            "hsl(10, 94%, 56%)"
+                        ],
+                        // Adjust the heatmap radius by zoom level
+                        'heatmap-radius': [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            0,
+                            1,
+                            12,
+                            20
+                        ],
+                        // Transition from heatmap to circle layer by zoom level
+                        'heatmap-opacity': [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            0,
+                            0.8,
+                            12,
+                            0.5
+                        ]
+                    }
+                },
+                'waterway-label'
+            );
+        });
+
+
     }
 
     render() {
-        const gradient = {
-            0.1: '#89BDE0', 0.2: '#96E3E6', 0.4: '#82CEB6',
-            0.6: '#FAF3A5', 0.8: '#F5D98B', '1.0': '#DE9A96'
-        };
-
-        // '//{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png',
-        // '//{s}.tile.openstreetmap.fr/openriverboatmap/{z}/{x}/{y}.png',
-
         return (
             <div>
-                <Map center={[0, 0]} zoom={13}>
-                    {!this.state.layerHidden &&
-                        <HeatmapLayer
-                            fitBoundsOnLoad
-                            fitBoundsOnUpdate
-                            points={this.state.addressPoints}
-                            longitudeExtractor={(m: any) => m[1]}
-                            latitudeExtractor={(m: any) => m[0]}
-                            gradient={gradient}
-                            intensityExtractor={(m: any) => parseFloat(m[2])}
-                            radius={this.state.radius}
-                            blur={this.state.blur}
-                            max={this.state.max}
-                        />
-                    }
-                    <TileLayer
-                        url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                </Map>
-                {/* <input
-                    type="button"
-                    value="Toggle Map"
-                    onClick={() => this.setState({ mapHidden: !this.state.mapHidden })}
-                />
-                <input
-                    type="button"
-                    value="Toggle Layer"
-                    onClick={() => this.setState({ layerHidden: !this.state.layerHidden })}
-                />
-                <div>
-                    Radius
-                    <input
-                        type="range"
-                        min={1}
-                        max={40}
-                        value={this.state.radius}
-                        onChange={(e) => this.setState({ radius: parseInt(e.currentTarget.value) })}
-                    /> {this.state.radius}
-                </div>
-
-                <div>
-                    Blur
-                    <input
-                        type="range"
-                        min={1}
-                        max={20}
-                        value={this.state.blur}
-                        onChange={(e) => this.setState({ blur: parseInt(e.currentTarget.value) })}
-                    /> {this.state.blur}
-                </div>
-
-                <div>
-                    Max
-                    <input
-                        type="range"
-                        min={0.1}
-                        max={3}
-                        step={0.1}
-                        value={this.state.max}
-                        onChange={(e) => this.setState({ max: parseFloat(e.currentTarget.value) })}
-                    /> {this.state.max}
-                </div> */}
+                <div ref={el => this.mapContainer = el} style={{
+                    borderRadius: '8px',
+                    height: 500,
+                }} />
             </div>
-        );
+        )
     }
 
 }

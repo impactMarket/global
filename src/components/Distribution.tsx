@@ -14,7 +14,7 @@ import { IGlobalOutflowStatus } from '../types';
 
 import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
-import { Globe2 } from './Globe2';
+import { Globe } from './Globe';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -154,7 +154,7 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
                 Beneficiaries from different communities have access to an unconditional basic income, by claiming $cUSD on a regular basis from their community contracts. Each contract UBI parameters take into consideration their beneficiaries' basic needs, and assessment by local social organizations and community leaders.
             </Typography>
         </div>
-        <Globe2 />
+        <Globe />
         <div style={{ margin: '16px 0px' }}>
             <Grid container justify="space-between" spacing={2}>
                 {outflow.map((chart) => (
