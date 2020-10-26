@@ -21,4 +21,9 @@ export default {
      * MapBox API Key
      */
     mapBoxApiKey: process.env.REACT_APP_MAPBOX_KEY!,
+
+    /**
+     * MapBox Style
+     */
+    mapBoxStyle: process.env.REACT_APP_MAPBOX_STYLE!,
 };
