@@ -14,7 +14,7 @@ import { IGlobalOutflowStatus } from '../types';
 
 import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
-import { Globe } from './Globe';
+import Globe from './Globe';
 
 function CustomTooltip(props: {
     tooltip: string,

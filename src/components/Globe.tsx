@@ -1,5 +1,6 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
+import { withCookies, Cookies } from 'react-cookie';
 import Api from '../services/api';
 import config from '../config';
 
@@ -10,19 +11,28 @@ interface IGlobeState {
     lat: number;
     zoom: number;
 }
-export class Globe extends React.Component<{}, IGlobeState> {
+class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
     private mapContainer: any = undefined;
     constructor(props: any) {
         super(props);
+        const { cookies } = this.props;
         this.state = {
-            lng: 0,
-            lat: 0,
-            zoom: 12,
+            lng: cookies.get('lng') || 0,
+            lat: cookies.get('lat') || 0,
+            zoom:  cookies.get('zoom') || 4,
         };
     }
 
 
     async componentDidMount() {
+        const { cookies } = this.props;
+        const claims = await Api.getAllClaimLocation();
+        const bounds = new mapboxgl.LngLatBounds();
+
+        claims.map((c) => bounds.extend([c.gps.longitude, c.gps.latitude]));
+        bounds.setNorthEast({ lng: bounds.getNorthEast().lng, lat: bounds.getNorthEast().lat + 2 })
+        bounds.setSouthWest({ lng: bounds.getSouthWest().lng, lat: bounds.getSouthWest().lat - 2 })
+
         const map = new mapboxgl.Map({
             container: this.mapContainer,
             style: config.mapBoxStyle,
@@ -30,7 +40,9 @@ export class Globe extends React.Component<{}, IGlobeState> {
             zoom: this.state.zoom
         });
 
-        const claims = await Api.getAllClaimLocation();
+        map.fitBounds(bounds);
+        map.setMaxZoom(12);
+
         const mapData = {
             type: "FeatureCollection",
             features: claims.map((c) => (
@@ -43,14 +55,6 @@ export class Globe extends React.Component<{}, IGlobeState> {
                 }
             ))
         }
-        const bounds = new mapboxgl.LngLatBounds();
-        mapData.features.forEach((feature) => {
-            bounds.extend(feature.geometry.coordinates as any);
-        });
-        bounds.setNorthEast({ lng: bounds.getNorthEast().lng, lat: bounds.getNorthEast().lat + 2 })
-        bounds.setSouthWest({ lng: bounds.getSouthWest().lng, lat: bounds.getSouthWest().lat - 2 })
-        map.fitBounds(bounds);
-        map.setMaxZoom(12);
 
         map.on('move', () => {
             this.setState({
@@ -61,6 +65,9 @@ export class Globe extends React.Component<{}, IGlobeState> {
         });
 
         map.on('load', () => {
+            cookies.set('lng', map.getCenter().lng, { path: '/' });
+            cookies.set('lat', map.getCenter().lat, { path: '/' });
+            cookies.set('zoom', map.getZoom(), { path: '/' });
             // Add a geojson point source.
             // Heatmap layers also work with a vector tile source.
             map.addSource('claims', {
@@ -73,7 +80,7 @@ export class Globe extends React.Component<{}, IGlobeState> {
                     'id': 'claims-heat',
                     'type': 'heatmap',
                     'source': 'claims',
-                    'maxzoom': 11,
+                    'maxzoom': 12.5,
                     'paint': {
                         // Increase the heatmap color weight weight by zoom level
                         // heatmap-intensity is a multiplier on top of heatmap-weight
@@ -138,5 +145,6 @@ export class Globe extends React.Component<{}, IGlobeState> {
             </div>
         )
     }
-
 }
+
+export default withCookies(Globe);
