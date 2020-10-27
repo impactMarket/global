@@ -26,4 +26,9 @@ export default {
      * MapBox Style
      */
     mapBoxStyle: process.env.REACT_APP_MAPBOX_STYLE!,
+
+    /**
+     * Google Analytics Tracking id
+     */
+    gaTrackingId: process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID!,
 };
