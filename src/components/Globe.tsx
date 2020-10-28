@@ -19,7 +19,7 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
         this.state = {
             lng: cookies.get('lng') || 0,
             lat: cookies.get('lat') || 0,
-            zoom:  cookies.get('zoom') || 4,
+            zoom: cookies.get('zoom') || 4,
         };
     }
 
@@ -42,6 +42,9 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
 
         map.fitBounds(bounds);
         map.setMaxZoom(12);
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
 
         const mapData = {
             type: "FeatureCollection",
