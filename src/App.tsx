@@ -11,11 +11,12 @@ import { currencyValue, humanifyNumber, numericalValue } from './helpers';
 import Inflow from './components/Inflow';
 import { colors } from './contants';
 import Footer from './components/Footer';
-import ReactGA from 'react-ga';
 import config from './config';
+import firebase from 'firebase';
 
-
-ReactGA.initialize(config.gaTrackingId);
+if (process.env.NODE_ENV !== 'development') {
+    firebase.initializeApp(config.firebaseConfig);
+}
 
 export default function App() {
     const classes = useStyles();
