@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 import config from './config';
 import firebase from 'firebase';
 
-if (process.env.NODE_ENV !== 'development') {
+if (config.useFirebase) {
     firebase.initializeApp(config.firebaseConfig);
 }
 
