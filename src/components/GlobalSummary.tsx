@@ -3,6 +3,7 @@ import { Container, Grid, Typography } from '@material-ui/core';
 import { IGlobalValue } from '../types';
 import Paper from './Paper';
 import { useStyles } from '../helpers/theme';
+import Box from './Box';
 
 export default function GlobalSummary(props: { globalValues: IGlobalValue[] }) {
     const classes = useStyles();
@@ -23,7 +24,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalValue[] }) {
                 <Typography variant="h2" className={classes.header}>
                     Global Summary
                 </Typography>
-                <Typography variant="subtitle1" className={classes.subtitle1}>
+                <Typography variant="subtitle1">
                     Explore the main indicators of impactMarket system both on inflow of funds and distribution of basic income to beneficiaries through their UBI community contracts.
                 </Typography>
             </div>
@@ -32,10 +33,15 @@ export default function GlobalSummary(props: { globalValues: IGlobalValue[] }) {
                     {props.globalValues.map((total) => (
                         <Grid key={total.title} item xs={6} sm={3}>
                             <Paper style={{ padding: 10 }}>
-                                <Typography variant="h4">
+                                {/* <Typography variant="h4">
                                     {total.title}
                                 </Typography>
-                                {dataText(total)}
+                                {dataText(total)} */}
+                                <Box
+                                    title={total.title}
+                                    subtitle={total.subtitle}
+                                    postsubtitle={total.postsubtitle}
+                                />
                             </Paper>
                         </Grid>
                     ))}

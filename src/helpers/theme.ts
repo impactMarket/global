@@ -18,10 +18,12 @@ const useStyles = makeStyles(() =>
             backgroundColor: 'white',
             padding: '3% 0px',
         },
-        subtitle1: {
-            opacity: '0.54',
-        },
-        subtitle2: {
+        // subtitle1: {
+        //     opacity: '0.54',
+        // },
+        tableRowHead: {
+            fontSize: '13px',
+            lineHeight: '17px',
             color: colors.softGray,
         },
     }),
@@ -35,11 +37,11 @@ const muiTheme = createMuiTheme({
     },
     typography: {
         fontFamily: 'Gelion',
-        h1: {
-            fontWeight: 500,
-            fontSize: '34px',
-            lineHeight: '42px'
-        },
+        // h1: {
+        //     fontWeight: 500,
+        //     fontSize: '34px',
+        //     lineHeight: '42px'
+        // },
         h2: {
             fontSize: '28px',
             lineHeight: '28px',
@@ -47,14 +49,18 @@ const muiTheme = createMuiTheme({
             marginBottom: '8px',
         },
         h3: {
-            fontWeight: 550,
             fontSize: '26px',
-            lineHeight: '52px'
+            lineHeight: '26px'
         },
         h4: {
             fontWeight: 400,
             fontSize: '18px',
             lineHeight: '17px'
+        },
+        h6: {
+            fontSize: '14px',
+            lineHeight: '14px',
+            color: colors.softGray,
         },
         subtitle1: {
             fontWeight: 400,
@@ -65,8 +71,7 @@ const muiTheme = createMuiTheme({
             // marginBottom: '8px',
         },
         subtitle2: {
-            fontWeight: 400,
-            fontSize: '18px',
+            fontSize: '14px',
             lineHeight: '17px'
         },
     },

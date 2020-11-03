@@ -14,7 +14,7 @@ export default function Footer() {
                 <img src="assets/telegram.svg" style={{ marginRight: 13 }} alt="telegram logo" />
                 <img src="assets/github.svg" style={{ marginRight: 13 }} alt="github logo" />
             </div>
-            <Typography variant="subtitle1" className={classes.subtitle1}>
+            <Typography variant="subtitle1">
                 impactMarket is an open, free, borderless, censorship-resistant and transparent infrastructure. It operates on top of Celo protocol, uses cUSD (Celo Dollar) as underlying digital asset, and runs autonomously through smart contracts.
         </Typography>
         </Container>

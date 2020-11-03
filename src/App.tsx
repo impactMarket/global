@@ -12,6 +12,7 @@ import Inflow from './components/Inflow';
 import { colors } from './contants';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
+import HealingTheWorld from './components/HealingTheWorld';
 
 
 export default function App() {
@@ -35,23 +36,21 @@ export default function App() {
                 const totalValues = [
                     {
                         title: 'Total Raised',
-                        value: currencyValue(humanifyNumber(gValues.totalRaised)),
-                        isMoney: true,
+                        subtitle: currencyValue(humanifyNumber(gValues.totalRaised)),
+                        postsubtitle: 'cUSD',
                     },
                     {
                         title: 'Total Distributed',
-                        value: currencyValue(humanifyNumber(gValues.totalDistributed)),
-                        isMoney: true,
+                        subtitle: currencyValue(humanifyNumber(gValues.totalDistributed)),
+                        postsubtitle: 'cUSD',
                     },
                     {
                         title: 'Total Beneficiaries',
-                        value: numericalValue(gValues.totalBeneficiaries),
-                        isMoney: false,
+                        subtitle: numericalValue(gValues.totalBeneficiaries),
                     },
                     {
                         title: 'Total Claims',
-                        value: numericalValue(gValues.totalClaims),
-                        isMoney: false,
+                        subtitle: numericalValue(gValues.totalClaims),
                     },
                 ];
                 setGlobalValues(totalValues);
@@ -67,8 +66,9 @@ export default function App() {
             <Banner />
             <GlobalSummary globalValues={globalValues} />
             <Container maxWidth="lg">
-                <Distribution outflow={globalOutflowValues} />
+                <HealingTheWorld />
                 <Communities />
+                <Distribution outflow={globalOutflowValues} />
                 <Inflow fundraising={globalInflowValues} />
             </Container>
             <Footer />

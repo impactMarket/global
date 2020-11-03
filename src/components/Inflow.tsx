@@ -15,6 +15,7 @@ import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
 import { IGlobalInflowStatus } from '../types';
 import Paper from './Paper';
+import Box from './Box';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -139,9 +140,9 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
-                Fundraising (Inflow)
+                Monthly Fundraising
             </Typography>
-            <Typography variant="subtitle1" className={classes.subtitle1}>
+            <Typography variant="subtitle1">
                 Anyone can back those communities by sending cUSD (Celo Dollar) directly to their contracts. This measures global monthly inflow, and its rate vs fundraising.
             </Typography>
         </div>
@@ -150,12 +151,13 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
                 {fundraising.map((chart) => (
                     <Grid key={chart.title} item xs={12} sm={4}>
                         <Paper style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
-                            <Typography variant="h4">
-                                {chart.title}
-                            </Typography>
-                            <Typography variant="h3" display="inline">{chart.subtitle}</Typography>&nbsp;
-                        <Typography variant="subtitle2" display="inline">{chart.postsubtitle}</Typography>
-                            {drawChart(chart)}
+                            <Box
+                                title={chart.title}
+                                subtitle={chart.subtitle}
+                                postsubtitle={chart.postsubtitle}
+                            >
+                                {drawChart(chart)}
+                            </Box>
                         </Paper>
                     </Grid>
                 ))}

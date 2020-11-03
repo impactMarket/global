@@ -31,8 +31,8 @@ export interface IGlobalApiResult {
 
 export interface IGlobalValue {
     title: string;
-    value: string;
-    isMoney: boolean;
+    subtitle: string;
+    postsubtitle?: string;
 }
 
 // API and app

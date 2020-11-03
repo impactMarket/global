@@ -40,7 +40,7 @@ export default function Communities() {
             <Typography variant="h2" className={classes.header}>
                 Communities
             </Typography>
-            <Typography variant="subtitle1" className={classes.subtitle1}>
+            <Typography variant="subtitle1">
                 UBI communities are usually managed and promoted by social, governamental or local organizations, who setup the initial UBI parameters, and add/remove which beneficiaries have access to it.
             </Typography>
         </div>
@@ -49,16 +49,16 @@ export default function Communities() {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell className={classes.subtitle2}>Community name</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>Allowance</TableCell>
-                            {/* <TableCell align="center" className={classes.subtitle2}>UBI rate</TableCell>
-                        <TableCell align="center" className={classes.subtitle2}>Duration</TableCell> */}
-                            <TableCell align="center" className={classes.subtitle2}>SSI</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>Beneficiaries</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>Backers</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>Claimed</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>Raised</TableCell>
-                            <TableCell align="center" className={classes.subtitle2}>UBI Contract</TableCell>
+                            <TableCell className={classes.tableRowHead}>Community name</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Allowance</TableCell>
+                            {/* <TableCell align="center" className={classes.tableRowHead}>UBI rate</TableCell>
+                        <TableCell align="center" className={classes.tableRowHead}>Duration</TableCell> */}
+                            <TableCell align="center" className={classes.tableRowHead}>SSI</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Beneficiaries</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Backers</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Claimed</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Raised</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>UBI Contract</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,7 +67,7 @@ export default function Communities() {
                                 <TableCell component="th" scope="row">
                                     {community.name}
                                     <br />
-                                    <span className={classes.subtitle2}>{community.city}, {community.country}</span>
+                                    <span className={classes.tableRowHead}>{community.city}, {community.country}</span>
                                 </TableCell>
                                 <TableCell align="center">{currencyValue(humanifyNumber(community.vars._claimAmount))}/{claimFrequencyToText(community.vars._baseInterval)}</TableCell>
                                 <TableCell align="center">{currentSSI(community.ssi)}</TableCell>
