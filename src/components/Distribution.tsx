@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 
@@ -15,6 +15,7 @@ import { IGlobalOutflowStatus } from '../types';
 import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
 import Globe from './Globe';
+import Paper from './Paper';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -26,7 +27,7 @@ function CustomTooltip(props: {
     const { active, payload, label, tooltip } = props;
     if (active && payload !== null && tooltip !== undefined) {
         return (
-            <Paper elevation={3} style={{ padding: 10, textAlign: "center" }}>
+            <Paper style={{ padding: 10, textAlign: "center" }}>
                 <p>{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</p>
             </Paper>
         );
@@ -158,8 +159,8 @@ export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
         <div style={{ margin: '16px 0px' }}>
             <Grid container justify="space-between" spacing={2}>
                 {outflow.map((chart) => (
-                    <Grid key={chart.title} item xs={12} sm={(chart.line ? 3 : 6)}>
-                        <Paper elevation={3} style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
+                    <Grid key={chart.title} item xs={12} sm={4}>
+                        <Paper style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
                             <Typography variant="h4">
                                 {chart.title}
                             </Typography>

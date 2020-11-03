@@ -1,5 +1,4 @@
 import {
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -15,6 +14,7 @@ import { ICommunityInfo } from '../types';
 import { claimFrequencyToText, currencyValue, humanifyNumber } from '../helpers';
 import { useStyles } from '../helpers/theme';
 import config from '../config';
+import Paper from './Paper';
 
 
 export default function Communities() {
