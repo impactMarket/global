@@ -19,18 +19,20 @@
         "react-cookie": "4.0.3",
         "react-dom": "16.13.1",
         "react-scripts": "3.4.3",
-        "recharts": "1.8.5"
+        "recharts": "1.8.5",
+        "styled-components": "5.2.1"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "5.11.4",
         "@testing-library/react": "11.0.4",
         "@testing-library/user-event": "12.1.5",
-        "@types/mapbox-gl": "1.12.5",
         "@types/jest": "26.0.14",
+        "@types/mapbox-gl": "1.12.5",
         "@types/node": "14.10.3",
         "@types/react": "16.9.49",
         "@types/react-dom": "16.9.8",
         "@types/recharts": "1.8.15",
+        "@types/styled-components": "5.1.4",
         "typescript": "4.0.2"
     },
     "eslintConfig": {
