@@ -11,12 +11,7 @@ import { currencyValue, humanifyNumber, numericalValue } from './helpers';
 import Inflow from './components/Inflow';
 import { colors } from './contants';
 import Footer from './components/Footer';
-import config from './config';
-import firebase from 'firebase';
 
-if (config.useFirebase) {
-    firebase.initializeApp(config.firebaseConfig);
-}
 
 export default function App() {
     const classes = useStyles();

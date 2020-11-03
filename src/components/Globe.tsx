@@ -25,6 +25,9 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
 
 
     async componentDidMount() {
+        if (config.mapBoxApiKey === undefined) {
+            return;
+        }
         const { cookies } = this.props;
         const claims = await Api.getAllClaimLocation();
         const bounds = new mapboxgl.LngLatBounds();
