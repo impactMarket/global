@@ -3,6 +3,14 @@ import { colors } from "../contants";
 
 const useStyles = makeStyles(() =>
     createStyles({
+        bannerText: {
+            fontSize: '18px',
+            lineHeight: '27px',
+            color: '#FFFFFF',
+            opacity: 0.79,
+            paddingTop: '33px',
+            paddingBottom: '33px',
+        },
         header: {
             color: colors.almostBlack,
         },
@@ -51,7 +59,10 @@ const muiTheme = createMuiTheme({
         subtitle1: {
             fontWeight: 400,
             fontSize: '18px',
-            lineHeight: '22px'
+            lineHeight: '22px',
+            opacity: 0.54,
+            // marginTop: '8px',
+            // marginBottom: '8px',
         },
         subtitle2: {
             fontWeight: 400,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
-import GlobalScanner from './components/GlobalScanner';
+import GlobalSummary from './components/GlobalSummary';
 import Distribution from './components/Distribution';
 import { IGlobalInflowStatus, IGlobalOutflowStatus, IGlobalValue } from './types';
 import Communities from './components/Communities';
@@ -11,6 +11,7 @@ import { currencyValue, humanifyNumber, numericalValue } from './helpers';
 import Inflow from './components/Inflow';
 import { colors } from './contants';
 import Footer from './components/Footer';
+import Banner from './components/Banner';
 
 
 export default function App() {
@@ -63,17 +64,8 @@ export default function App() {
 
     return (
         <ThemeProvider theme={muiTheme}>
-            <div className={classes.headerContainer}>
-                <Container maxWidth="lg">
-                    <div style={{ textAlign: 'center' }}>
-                        <img src="assets/impactmarket.svg" alt="impactmarket logo" />
-                        <Typography variant="h1" style={{ color: colors.almostBlack, margin: '35px 0px' }}>
-                            Global Basic Income Distribution Scanner
-                        </Typography>
-                    </div>
-                    <GlobalScanner globalValues={globalValues} />
-                </Container>
-            </div>
+            <Banner />
+            <GlobalSummary globalValues={globalValues} />
             <Container maxWidth="lg">
                 <Distribution outflow={globalOutflowValues} />
                 <Communities />
