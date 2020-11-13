@@ -6,27 +6,34 @@ export interface IClaimLocation {
     };
 }
 
-export interface IGlobalStatus {
-    totalRaised: string,
-    totalDistributed: string,
-    totalBeneficiaries: string,
-    totalClaims: string,
-}
-
-export interface IGlobalOutflowStatus {
-    claims: any;
-    beneficiaries: any;
-}
-
-export interface IGlobalInflowStatus {
-    raises: any;
-    rate: any;
+export interface IGlobalDailyState {
+    date: Date;
+    meanSSI: number;
+    claimed: string;
+    claims: number;
+    beneficiaries: number;
+    raised: string;
+    backers: number;
+    volume: string;
+    transactions: number;
+    reach: number;
+    totalRaised: string;
+    totalDistributed: string;
+    totalBackers: number;
+    totalBeneficiaries: number;
+    givingRate: number;
+    ubiRate: number;
+    fundingRate: number;
+    spendingRate: number;
+    avgComulativeUbi: string;
+    avgUbiDuration: number;
+    totalVolume: string;
+    totalTransactions: BigInt;
+    totalReach: BigInt;
 }
 
 export interface IGlobalApiResult {
-    global: IGlobalStatus;
-    outflow: IGlobalOutflowStatus;
-    inflow: IGlobalInflowStatus;
+    monthly: IGlobalDailyState[];
 }
 
 export interface IGlobalValue {
