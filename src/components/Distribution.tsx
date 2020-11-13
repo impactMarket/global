@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { colors } from '../contants';
 import { useStyles } from '../helpers/theme';
-import { IGlobalOutflowStatus } from '../types';
+import { IGlobalDailyState } from '../types';
 
 import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
@@ -35,86 +35,45 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Distribution(props: { outflow: IGlobalOutflowStatus }) {
+export default function Distribution(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [outflow, setOutflow] = useState<any[]>([]);
     const [chartLineWidth, setChartLineWidth] = useState(100);
     const [chartBarWidth, setChartBarWidth] = useState(100);
 
-
     useEffect(() => {
         const loadOutflow = () => {
-            // TODO: remove this preClaimedData after having more than 30 days of data
-            const claimedData: any[] = [];
-            const claimsData: any[] = [];
-            const beneficiariesData: any[] = [];
-            let totalClaimed = new BigNumber(0);
-            let totalClaims = 0;
-            let totalBeneficiaries = 0;
-
-
-            const buildLast30Days = (data: any, callback: (date: number, daydata: any | undefined) => void) => {
-                const today = moment().utc().startOf('day').toDate().getTime();
-                for (let day = 30; day >= 0; day -= 1) {
-                    callback(today - day * 86400000, data[today - day * 86400000]);
-                }
-            }
-
-            buildLast30Days(props.outflow.claims, (date: number, daydata: any | undefined) => {
-                if (daydata === undefined) {
-                    claimedData.push({ name: date, uv: 0 });
-                    claimsData.push({ name: date, uv: 0 });
-                } else {
-                    let claimedThisDay = new BigNumber(0)
-                    for (let x = 0; x < daydata.length; x += 1) {
-                        claimedThisDay = claimedThisDay.plus(daydata[x].values._amount)
-                    }
-                    // console.log(day, humanifyNumber(claimedThisDay))
-                    claimedData.push({ name: date, uv: parseFloat(humanifyNumber(claimedThisDay)) });
-                    claimsData.push({ name: date, uv: daydata.length });
-                    totalClaimed = totalClaimed.plus(claimedThisDay)
-                    totalClaims += daydata.length;
-                }
-            });
-            buildLast30Days(props.outflow.beneficiaries, (date: number, daydata: any | undefined) => {
-                if (daydata === undefined) {
-                    beneficiariesData.push({ name: date, uv: 0 });
-                } else {
-                    beneficiariesData.push({ name: date, uv: parseInt(daydata[0].total) });
-                    totalBeneficiaries += parseInt(daydata[0].total);
-                }
-            });
-
             const charts = [
                 {
                     title: 'Claimed',
-                    subtitle: currencyValue(humanifyNumber(totalClaimed)),
+                    subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.claimed), new BigNumber('0')).toString())),
                     postsubtitle: 'cUSD',
-                    data: claimedData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.claimed)) })).reverse(),
                     line: false,
                     tooltip: '{{date}} were claimed ${{value}}',
                 },
                 {
                     title: 'Claims',
-                    subtitle: numericalValue(totalClaims.toString()),
+                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.claims, 0).toString()),
                     postsubtitle: '',
-                    data: claimsData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.claims })).reverse(),
                     line: true,
                     tooltip: '{{date}} were realized {{value}} claims',
                 },
                 {
                     title: 'Beneficiaries',
-                    subtitle: numericalValue(totalBeneficiaries.toString()),
+                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.beneficiaries, 0).toString()),
                     postsubtitle: '',
-                    data: beneficiariesData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.beneficiaries })).reverse(),
                     line: true,
                     tooltip: '{{date}} were added {{value}} new beneficiaries',
                 },
             ]
+            console.log(props.globalValues[0].date, new Date(props.globalValues[0].date))
             setOutflow(charts);
         }
         loadOutflow();
-    }, [props.outflow]);
+    }, [props.globalValues]);
 
     const paperSize = (instance: unknown, isLine: boolean) => {
         if (instance === null) {

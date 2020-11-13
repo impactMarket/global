@@ -13,7 +13,7 @@ import { useStyles } from '../helpers/theme';
 
 import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
-import { IGlobalInflowStatus } from '../types';
+import { IGlobalDailyState } from '../types';
 import Paper from './Paper';
 import Box from './Box';
 
@@ -35,7 +35,7 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
+export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
     const [chartLineWidth, setChartLineWidth] = useState(100);
@@ -44,60 +44,28 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
 
     useEffect(() => {
         const loadFundraising = () => {
-            const raisedData: any[] = [];
-            const backersData: any[] = [];
-            let backersAddresses: any[] = [];
-            const fundingRateData: any[] = [];
-            let totalRaised = new BigNumber(0);
-            let lastFundingRate = 0;
-
-
-            const buildLast30Days = (data: any, callback: (date: number, daydata: any | undefined) => void) => {
-                const today = moment().utc().startOf('day').toDate().getTime();
-                for (let day = 30; day >= 0; day -= 1) {
-                    callback(today - day * 86400000, data[today - day * 86400000]);
-                }
-            }
-
-            buildLast30Days(props.fundraising.raises, (date: number, daydata: any | undefined) => {
-                if (daydata === undefined) {
-                    raisedData.push({ name: date, uv: 0 });
-                    backersData.push({ name: date, uv: 0 });
-                } else {
-                    let raisedThisDay = new BigNumber(0)
-                    for (let x = 0; x < daydata.length; x += 1) {
-                        raisedThisDay = raisedThisDay.plus(daydata[x].values.value)
-                    }
-                    raisedData.push({ name: date, uv: parseFloat(humanifyNumber(raisedThisDay)) });
-                    const backersThisDay = daydata.reduce((acc: any, o: any) => (acc[o.values.from] = (acc[o.values.from] || 0) + 1, acc), {});
-                    backersAddresses = backersAddresses.concat(Object.keys(backersThisDay));
-                    backersData.push({ name: date, uv: Object.keys(backersThisDay).length });
-                    totalRaised = totalRaised.plus(raisedThisDay);
-                }
-            });
-
             const charts = [
                 {
                     title: 'Raised',
-                    subtitle: currencyValue(humanifyNumber(totalRaised)),
+                    subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.raised), new BigNumber('0')).toString())),
                     postsubtitle: 'cUSD',
-                    data: raisedData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.raised)) })).reverse(),
                     line: false,
                     tooltip: '{{date}} were raised ${{value}}',
                 },
                 {
                     title: 'Backers',
-                    subtitle: numericalValue(Array.from(new Set(backersAddresses)).length.toString()),
+                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.backers, 0).toString()),
                     postsubtitle: '',
-                    data: backersData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
                     line: true,
                     tooltip: '{{date}} were {{value}} new backers',
                 },
                 {
                     title: 'Funding Rate',
-                    subtitle: numericalValue(lastFundingRate.toString()),
+                    subtitle: props.globalValues[0].fundingRate,
                     postsubtitle: '',
-                    data: fundingRateData,
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.fundingRate })).reverse(),
                     line: true,
                     tooltip: '{{date}} had {{value}} funding rate',
                 },
@@ -105,7 +73,7 @@ export default function Inflow(props: { fundraising: IGlobalInflowStatus }) {
             setFundraising(charts);
         }
         loadFundraising();
-    }, [props.fundraising]);
+    }, [props.globalValues]);
 
     const paperSize = (instance: unknown, isLine: boolean) => {
         if (instance === null) {

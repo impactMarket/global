@@ -57,6 +57,12 @@ const muiTheme = createMuiTheme({
             fontSize: '18px',
             lineHeight: '17px'
         },
+        h5: {
+            fontSize: '16px',
+            lineHeight: '16px',
+            marginTop: '17px',
+            marginBottom: '8px',
+        },
         h6: {
             fontSize: '14px',
             lineHeight: '14px',
