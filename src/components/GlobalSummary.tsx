@@ -43,7 +43,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState }
         },
         {
             title: 'Avg Cumulative UBI',
-            subtitle: currencyValue(numericalValue(props.globalValues.avgComulativeUbi)),
+            subtitle: currencyValue(humanifyNumber(props.globalValues.avgComulativeUbi)),
             postsubtitle: '/Beneficiary',
         },
         {

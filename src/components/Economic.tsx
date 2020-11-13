@@ -35,7 +35,7 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
+export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
     const [chartLineWidth, setChartLineWidth] = useState(100);
@@ -46,28 +46,28 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
         const loadFundraising = () => {
             const charts = [
                 {
-                    title: 'Raised',
-                    subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.raised), new BigNumber('0')).toString())),
+                    title: 'Volume',
+                    subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.volume), new BigNumber('0')).toString())),
                     postsubtitle: 'cUSD',
-                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.raised)) })).reverse(),
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.volume)) })).reverse(),
                     line: false,
-                    tooltip: '{{date}} were raised ${{value}}',
+                    tooltip: '{{date}} were transacted ${{value}}',
                 },
                 {
-                    title: 'Backers',
-                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.backers, 0).toString()),
+                    title: '# Transactions',
+                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.transactions, 0).toString()),
                     postsubtitle: '',
-                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.transactions })).reverse(),
                     line: true,
-                    tooltip: '{{date}} were {{value}} new backers',
+                    tooltip: '{{date}} happened {{value}} transactions',
                 },
                 {
-                    title: 'Funding Rate',
-                    subtitle: props.globalValues[0].fundingRate,
-                    postsubtitle: '%',
-                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.fundingRate })).reverse(),
+                    title: 'Reach',
+                    subtitle: props.globalValues[0].reach,
+                    postsubtitle: '',
+                    data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
-                    tooltip: '{{date}} had {{value}} funding rate',
+                    tooltip: '{{date}} new {{value}} addresses were reach',
                 },
             ]
             setFundraising(charts);
@@ -108,10 +108,10 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
-                Monthly Fundraising
+                Monthly Economic Development
             </Typography>
             <Typography variant="subtitle1">
-                Anyone can back those communities by sending cUSD (Celo Dollar) directly to their contracts. This measures global monthly inflow, and its rate vs fundraising.
+                Main indicators on beneficiaries' direct financial activity including volume transacted last month, number of transactions, and how many people they have reached/transacted with.
             </Typography>
         </div>
         <div style={{ margin: '16px 0px' }}>

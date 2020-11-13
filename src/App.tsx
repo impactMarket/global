@@ -11,6 +11,7 @@ import Inflow from './components/Inflow';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
 import HealingTheWorld from './components/HealingTheWorld';
+import Economic from './components/Economic';
 
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
                 <Communities />
                 <Distribution globalValues={globalValues} />
                 <Inflow globalValues={globalValues} />
+                <Economic globalValues={globalValues} />
             </Container>
             <Footer />
         </ThemeProvider>
