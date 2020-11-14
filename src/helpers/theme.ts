@@ -8,8 +8,7 @@ const useStyles = makeStyles(() =>
             lineHeight: '27px',
             color: '#FFFFFF',
             opacity: 0.79,
-            paddingTop: '33px',
-            paddingBottom: '33px',
+            paddingBottom: '27px',
         },
         header: {
             color: colors.almostBlack,
