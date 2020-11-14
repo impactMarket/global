@@ -35,6 +35,27 @@ export default function Communities() {
         return ssi.values[total - 1];
     }
 
+    function getCountryFlag(countryName: string) {
+        switch (countryName) {
+            case 'portugal':
+                return '🇵🇹';
+            case 'brasil':
+                return '🇧🇷';
+            case 'ghana':
+                return '🇬🇭';
+            case 'cabo verde':
+                return '🇨🇻';
+            case 'nigeria':
+                return '🇳🇬';
+            case 'venezuela':
+                return '🇻🇪';
+            case 'argentina':
+                return '🇦🇷';
+            default:
+                return '';
+        }
+    }
+
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
@@ -51,8 +72,8 @@ export default function Communities() {
                         <TableRow>
                             <TableCell className={classes.tableRowHead}>Community name</TableCell>
                             <TableCell align="center" className={classes.tableRowHead}>Allowance</TableCell>
-                            {/* <TableCell align="center" className={classes.tableRowHead}>UBI rate</TableCell>
-                        <TableCell align="center" className={classes.tableRowHead}>Duration</TableCell> */}
+                            <TableCell align="center" className={classes.tableRowHead}>UBI rate</TableCell>
+                            <TableCell align="center" className={classes.tableRowHead}>Duration</TableCell>
                             <TableCell align="center" className={classes.tableRowHead}>SSI</TableCell>
                             <TableCell align="center" className={classes.tableRowHead}>Beneficiaries</TableCell>
                             <TableCell align="center" className={classes.tableRowHead}>Backers</TableCell>
@@ -67,14 +88,16 @@ export default function Communities() {
                                 <TableCell component="th" scope="row">
                                     {community.name}
                                     <br />
-                                    <span className={classes.tableRowHead}>{community.city}, {community.country}</span>
+                                    <span className={classes.tableRowHead}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.vars._claimAmount))}/{claimFrequencyToText(community.vars._baseInterval)}</TableCell>
-                                <TableCell align="center">{currentSSI(community.ssi)}</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.vars._claimAmount))} / {claimFrequencyToText(community.vars._baseInterval)}</TableCell>
+                                <TableCell align="center">~${community.metrics.ubiRate} / {claimFrequencyToText(community.vars._baseInterval)}</TableCell>
+                                <TableCell align="center">~{Math.floor(community.metrics.estimatedDuration)} months</TableCell>
+                                <TableCell align="center">{community.metrics.ssi}</TableCell>
                                 <TableCell align="center">{community.beneficiaries.added.length}</TableCell>
                                 <TableCell align="center">{community.backers.length}</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.totalClaimed))} ({new BigNumber(community.totalClaimed).dividedBy(community.totalRaised).multipliedBy(100).decimalPlaces(2, 1).toString()}%)</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.totalRaised))} / {currencyValue(humanifyNumber(new BigNumber(community.vars._maxClaim).multipliedBy(community.beneficiaries.added.length)))}</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.vars._maxClaim).multipliedBy(community.beneficiaries.added.length)))}</TableCell>
                                 <TableCell align="center"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}

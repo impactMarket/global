@@ -77,8 +77,20 @@ export interface ICommunity {
     coverImage: string;
     status: string;
     txCreationObj: ICommunityVars;
-    createdAt: string;
-    updatedAt: string;
+}
+
+export interface ICommunityState {
+    claimed: string;
+    raised: string;
+    beneficiaries: number;
+    backers: number;
+}
+
+export interface ICommunityMetrics {
+    ssiDayAlone: number;
+    ssi: number;
+    ubiRate: number;
+    estimatedDuration: number;
 }
 
 export interface ICommunityInfo extends ICommunity {
@@ -89,10 +101,12 @@ export interface ICommunityInfo extends ICommunity {
     };
     managers: string[];
     ssi: {
-        dates: Date[];
-        values: number[];
+        dates: Date[],
+        values: number[],
     };
     totalClaimed: string;
     totalRaised: string;
     vars: ICommunityVars;
+    state: ICommunityState;
+    metrics: ICommunityMetrics;
 }
