@@ -37,7 +37,7 @@ export default function App() {
             <GlobalSummary globalValues={globalValues[0]} />
             <Container maxWidth="lg">
                 <HealingTheWorld />
-                <Communities />
+                <Communities globalValues={globalValues} />
                 <Distribution globalValues={globalValues} />
                 <Inflow globalValues={globalValues} />
                 <Economic globalValues={globalValues} />

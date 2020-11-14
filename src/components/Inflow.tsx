@@ -38,8 +38,7 @@ function CustomTooltip(props: {
 export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
-    const [chartLineWidth, setChartLineWidth] = useState(100);
-    const [chartBarWidth, setChartBarWidth] = useState(100);
+    const [chartWidth, setChartWidth] = useState(100);
 
 
     useEffect(() => {
@@ -75,27 +74,23 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
         loadFundraising();
     }, [props.globalValues]);
 
-    const paperSize = (instance: unknown, isLine: boolean) => {
+    const paperSize = (instance: unknown) => {
         if (instance === null) {
             return;
         }
-        if (isLine) {
-            setChartLineWidth((instance as any).getBoundingClientRect().width - 20);
-        } else {
-            setChartBarWidth((instance as any).getBoundingClientRect().width - 20);
-        }
+        setChartWidth((instance as any).getBoundingClientRect().width - 20);
     }
 
     const drawChart = (chart: any) => {
         if (chart.line) {
-            return <LineChart width={chartLineWidth} height={200} data={chart.data}>
+            return <LineChart width={chartWidth} height={200} data={chart.data}>
                 <XAxis dataKey="name" hide />
                 <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
                 <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
             </LineChart>
         }
         return <BarChart
-            width={chartBarWidth}
+            width={chartWidth}
             height={200}
             data={chart.data}
         >
@@ -118,7 +113,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
             <Grid container justify="space-between" spacing={2}>
                 {fundraising.map((chart) => (
                     <Grid key={chart.title} item xs={12} sm={4}>
-                        <Paper style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
+                        <Paper style={{ padding: 10 }} ref={(r) => paperSize(r)}>
                             <Box
                                 title={chart.title}
                                 subtitle={chart.subtitle}

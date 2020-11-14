@@ -1,4 +1,5 @@
 import {
+    Grid,
     Table,
     TableBody,
     TableCell,
@@ -10,30 +11,47 @@ import {
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import Api from '../services/api';
-import { ICommunityInfo } from '../types';
+import { ICommunityInfo, IGlobalDailyState } from '../types';
 import { claimFrequencyToText, currencyValue, humanifyNumber } from '../helpers';
 import { useStyles } from '../helpers/theme';
 import config from '../config';
 import Paper from './Paper';
+import { colors } from '../contants';
+import moment from 'moment';
+import { LineChart, XAxis, Line, Tooltip } from 'recharts';
 
 
-export default function Communities() {
+function CustomTooltip(props: {
+    tooltip: string,
+    type?: string,
+    payload?: any[],
+    label?: string,
+    active?: boolean,
+}) {
+    const { active, payload, label, tooltip } = props;
+    if (active && payload !== null && tooltip !== undefined) {
+        return (
+            <Paper style={{ padding: 10, textAlign: "center" }}>
+                <p>{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</p>
+            </Paper>
+        );
+    }
+    return null;
+}
+
+export default function Communities(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [communities, setCommunities] = useState<ICommunityInfo[]>([]);
+    const [chartWidth, setChartWidth] = useState(100);
+    const [chartAverageSSIData, setChartAverageSSIData] = useState<{ name: number, uv: any }[]>([]);
 
     useEffect(() => {
         const loadCommunities = () => Api.getAllValidCommunities().then(setCommunities);
         loadCommunities();
-    }, []);
+        setChartAverageSSIData(props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.meanSSI })).reverse());
+    }, [props.globalValues]);
 
     const shortenAddress = (address: string) => `${address.slice(0, 8)}..${address.slice(36, 42)}`;
-    const currentSSI = (ssi: { dates: Date[], values: number[] }) => {
-        const total = ssi.dates.length;
-        if (total === 0) {
-            return 'N/A';
-        }
-        return ssi.values[total - 1];
-    }
 
     function getCountryFlag(countryName: string) {
         switch (countryName) {
@@ -54,6 +72,13 @@ export default function Communities() {
             default:
                 return '';
         }
+    }
+
+    const paperSize = (instance: unknown) => {
+        if (instance === null) {
+            return;
+        }
+        setChartWidth((instance as any).getBoundingClientRect().width - 20);
     }
 
     return <>
@@ -104,6 +129,28 @@ export default function Communities() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Grid item xs={12} sm={12} style={{ marginTop: '32px' }}>
+                <Paper style={{ padding: 10 }}>
+                    <Grid container justify="space-between" spacing={2}>
+                        <Grid item xs={12} sm={6} style={{ paddingTop: '30px', paddingLeft: '27px', paddingRight: '43.8px' }}>
+                            <Typography variant="h1" display="inline">{props.globalValues[0].meanSSI}</Typography><Typography variant="h1" display="inline">%</Typography>
+                            <Typography variant="subtitle1" style={{ opacity: 1, marginTop: '8px', marginBottom: '13.18px' }}>
+                                Global Self-Sustainability Index (SSI)
+                            </Typography>
+                            <Typography variant="subtitle2" style={{ color: colors.softGray, letterSpacing: '0.229091px', lineHeight: '18px' }}>
+                                *SSI measures communities' collective financial self-sustainability, and average progress. It is inversely correlated with their beneficiaries UBI dependency/need and urgency.
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} ref={(r) => paperSize(r)}>
+                            <LineChart width={chartWidth} height={200} data={chartAverageSSIData}>
+                                <XAxis dataKey="name" hide />
+                                <Tooltip content={<CustomTooltip tooltip={'{{date}} average SSI was {{value}}'} />} />
+                                <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
+                            </LineChart>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Grid>
         </div>
     </>
 

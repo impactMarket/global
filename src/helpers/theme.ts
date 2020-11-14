@@ -37,11 +37,11 @@ const muiTheme = createMuiTheme({
     },
     typography: {
         fontFamily: 'Gelion',
-        // h1: {
-        //     fontWeight: 500,
-        //     fontSize: '34px',
-        //     lineHeight: '42px'
-        // },
+        h1: {
+            fontWeight: 'bold',
+            fontSize: '36px',
+            lineHeight: '32px'
+        },
         h2: {
             fontSize: '28px',
             lineHeight: '28px',
