@@ -14,10 +14,10 @@ export function humanifyNumber(inputNumber: BigNumber | string): string {
     return new BigNumber(inputNumber).div(decimals).decimalPlaces(2, 1).toString();
 }
 
-export function currencyValue(inputNumber: BigNumber | string) {
-    return '$' + numericalValue(inputNumber);
+export function currencyValue(inputNumber: BigNumber | string, decimals: boolean = true) {
+    return '$' + numericalValue(inputNumber, decimals);
 }
 
-export function numericalValue(inputNumber: BigNumber | string) {
-    return Number(inputNumber).toLocaleString('en');
+export function numericalValue(inputNumber: BigNumber | string, decimals: boolean = true) {
+    return Number(inputNumber).toLocaleString('en', { maximumFractionDigits: decimals ? 2 : 0 });
 }

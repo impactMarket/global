@@ -33,7 +33,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState }
     const ubiPulseValues = [
         {
             title: 'Giving Rate per Backer',
-            subtitle: currencyValue(props.globalValues.givingRate.toString()),
+            subtitle: '~' + currencyValue(props.globalValues.givingRate.toString()),
             postsubtitle: '/Day',
         },
         {
@@ -43,12 +43,12 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState }
         },
         {
             title: 'Avg Cumulative UBI',
-            subtitle: currencyValue(humanifyNumber(props.globalValues.avgComulativeUbi)),
+            subtitle: '~' + currencyValue(humanifyNumber(props.globalValues.avgComulativeUbi), false),
             postsubtitle: '/Beneficiary',
         },
         {
             title: 'Avg. UBI duration',
-            subtitle: numericalValue(props.globalValues.avgUbiDuration.toString()),
+            subtitle: '~' + numericalValue(props.globalValues.avgUbiDuration.toString(), false),
             postsubtitle: 'Months/Beneficiary',
         },
     ];
