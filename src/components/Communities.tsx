@@ -115,14 +115,14 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
                                     <br />
                                     <span className={classes.tableRowHead}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.vars._claimAmount))} / {claimFrequencyToText(community.vars._baseInterval)}</TableCell>
-                                <TableCell align="center">~${community.metrics.ubiRate} / {claimFrequencyToText(community.vars._baseInterval)}</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center">~${community.metrics.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
                                 <TableCell align="center">~{Math.floor(community.metrics.estimatedDuration)} months</TableCell>
                                 <TableCell align="center">{community.metrics.ssi}</TableCell>
                                 <TableCell align="center">{community.beneficiaries.added.length}</TableCell>
                                 <TableCell align="center">{community.backers.length}</TableCell>
                                 <TableCell align="center">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.vars._maxClaim).multipliedBy(community.beneficiaries.added.length)))}</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.beneficiaries.added.length)))}</TableCell>
                                 <TableCell align="center"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}
