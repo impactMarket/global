@@ -48,7 +48,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
     useEffect(() => {
         const loadCommunities = () => Api.getAllValidCommunities().then(setCommunities);
         loadCommunities();
-        setChartAverageSSIData(props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.meanSSI })).reverse());
+        setChartAverageSSIData(props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.avgMedianSSI })).reverse());
     }, [props.globalValues]);
 
     const shortenAddress = (address: string) => `${address.slice(0, 8)}..${address.slice(36, 42)}`;
@@ -116,13 +116,13 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
                                     <span className={classes.tableRowHead}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
                                 <TableCell align="center">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center">~${community.metrics.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center">~{Math.floor(community.metrics.estimatedDuration)} months</TableCell>
-                                <TableCell align="center">{community.metrics.ssi}</TableCell>
-                                <TableCell align="center">{community.beneficiaries.added.length}</TableCell>
-                                <TableCell align="center">{community.backers.length}</TableCell>
+                                <TableCell align="center">~${community.metrics!.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center">~{Math.floor(community.metrics!.estimatedDuration)} months</TableCell>
+                                <TableCell align="center">{community.metrics!.ssi}</TableCell>
+                                <TableCell align="center">{community.state.beneficiaries}</TableCell>
+                                <TableCell align="center">{community.state.backers}</TableCell>
                                 <TableCell align="center">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.beneficiaries.added.length)))}</TableCell>
+                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
                                 <TableCell align="center"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}
@@ -133,7 +133,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
                 <Paper style={{ padding: 10 }}>
                     <Grid container justify="space-between" spacing={2}>
                         <Grid item xs={12} sm={6} style={{ paddingTop: '30px', paddingLeft: '27px', paddingRight: '43.8px' }}>
-                            <Typography variant="h1" display="inline">{props.globalValues[0].meanSSI}</Typography><Typography variant="h1" display="inline">%</Typography>
+                            <Typography variant="h1" display="inline">{props.globalValues[0].avgMedianSSI}</Typography><Typography variant="h1" display="inline">%</Typography>
                             <Typography variant="subtitle1" style={{ opacity: 1, marginTop: '8px', marginBottom: '13.18px' }}>
                                 Global Self-Sustainability Index (SSI)
                             </Typography>

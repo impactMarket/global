@@ -8,7 +8,7 @@ export interface IClaimLocation {
 
 export interface IGlobalDailyState {
     date: Date;
-    meanSSI: number;
+    avgMedianSSI: number;
     claimed: string;
     claims: number;
     beneficiaries: number;
@@ -114,7 +114,7 @@ export interface ICommunityInfo extends ICommunity {
      */
     vars: ICommunityVars; // TODO: remove
     state: ICommunityState;
-    metrics: ICommunityMetrics;
+    metrics?: ICommunityMetrics;
     contractParams: ICommunityContractParams;
 }
 
