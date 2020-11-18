@@ -42,9 +42,6 @@ const muiTheme = createMuiTheme({
     },
     overrides: {
         MuiTableCell: {
-            root: {
-                padding: '16px 8px',
-            },
             head: {
                 fontSize: '13px',
                 lineHeight: '17px',

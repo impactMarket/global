@@ -95,7 +95,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 <Table >
                     <TableHead>
                         <TableRow>
-                            <TableCell variant="head" style={{ paddingLeft: '16px' }}>Community name & location</TableCell>
+                            <TableCell variant="head">Community name & location</TableCell>
                             <TableCell align="center" variant="head" >Allowance / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Rate / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Duration</TableCell>
@@ -104,13 +104,13 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                             <TableCell align="center" variant="head">Claimed</TableCell>
                             <TableCell align="center" variant="head">Backers</TableCell>
                             <TableCell align="center" variant="head">Raised</TableCell>
-                            <TableCell align="center" variant="head" style={{ paddingRight: '16px' }}>UBI Contract</TableCell>
+                            <TableCell align="center" variant="head">UBI Contract</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {communities.map(community => (
                             <TableRow key={community.publicId}>
-                                <TableCell variant="body" style={{ paddingLeft: '16px' }}>
+                                <TableCell variant="body">
                                     <span style={{ fontFamily: 'Gelion-Bold', lineHeight: '17px' }}>{community.name}</span>
                                     <br />
                                     <span style={{ color: colors.softGray }}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
@@ -123,7 +123,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
                                 <TableCell align="center" variant="body">{community.state.backers}</TableCell>
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
-                                <TableCell align="center" variant="body" style={{ paddingRight: '16px' }}><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
+                                <TableCell align="center" variant="body"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

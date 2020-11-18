@@ -56,7 +56,7 @@ export default function Banner() {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} sm={5} className={bannerClasses.parentPhonesBox}>
                     <div className={bannerClasses.phonesBox}>
                         <img
                             className={bannerClasses.phoneBack}
@@ -101,7 +101,9 @@ const bannerStyles = makeStyles((theme) =>
             [theme.breakpoints.down('sm')]: {
                 paddingLeft: '11px',
             },
-            [theme.breakpoints.down('md')]: {
+        },
+        parentPhonesBox: {
+            [theme.breakpoints.up('md')]: {
                 maxWidth: '395px',
             },
         },
