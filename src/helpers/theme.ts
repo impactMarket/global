@@ -1,7 +1,7 @@
 import { makeStyles, createStyles, createMuiTheme } from "@material-ui/core";
 import { colors } from "../contants";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         bannerText: {
             fontSize: '18px',
@@ -15,16 +15,22 @@ const useStyles = makeStyles(() =>
         },
         headerContainer: {
             backgroundColor: 'white',
-            padding: '3% 0px',
+            [theme.breakpoints.down('sm')]: {
+                paddingTop: '160px',
+                paddingBottom: '3%',
+            },
+            [theme.breakpoints.up('md')]: {
+                padding: '3% 0px',
+            },
         },
-        // subtitle1: {
-        //     opacity: '0.54',
-        // },
-        tableRowHead: {
-            fontSize: '13px',
-            lineHeight: '17px',
-            color: colors.softGray,
-        },
+        footer: {
+            paddingTop: 50,
+            paddingBottom: 50,
+            marginTop: 57,
+            backgroundColor: 'white',
+            display: 'flex',
+            alignItems: 'center',
+        }
     }),
 );
 
@@ -34,8 +40,25 @@ const muiTheme = createMuiTheme({
             primary: colors.almostBlack,
         },
     },
+    overrides: {
+        MuiTableCell: {
+            root: {
+                padding: '16px 8px',
+            },
+            head: {
+                fontSize: '13px',
+                lineHeight: '17px',
+                color: colors.softGray,
+            },
+            body: {
+                fontSize: '13px',
+                lineHeight: '15px',
+                color: colors.almostBlack,
+            }
+        }
+    },
     typography: {
-        fontFamily: 'Gelion',
+        fontFamily: 'Gelion-Regular',
         h1: {
             fontWeight: 'bold',
             fontSize: '36px',
@@ -44,7 +67,7 @@ const muiTheme = createMuiTheme({
         h2: {
             fontSize: '28px',
             lineHeight: '28px',
-            marginTop: '8px',
+            marginTop: '32px',
             marginBottom: '8px',
         },
         h3: {
@@ -72,8 +95,6 @@ const muiTheme = createMuiTheme({
             fontSize: '18px',
             lineHeight: '22px',
             opacity: 0.54,
-            // marginTop: '8px',
-            // marginBottom: '8px',
         },
         subtitle2: {
             fontSize: '14px',
