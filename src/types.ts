@@ -34,6 +34,9 @@ export interface IGlobalDailyState {
 
 export interface IGlobalApiResult {
     monthly: IGlobalDailyState[];
+    lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[];
+    today: { totalClaimed: string, totalBeneficiaries: number, totalRaised: string };
+    totalBackers: number;
 }
 
 export interface IGlobalValue {
