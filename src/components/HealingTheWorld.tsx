@@ -10,7 +10,7 @@ export default function HealingTheWorld() {
     return <>
         <div>
             <Typography variant="h2" className={classes.header}>
-                Healing the world, ending poverty
+                Healing the world, fighting poverty.
             </Typography>
             <Typography variant="subtitle1">
                 Discover communities and their beneficiaries’ activity on accessing/claiming a basic income that is empowering them out of poverty.

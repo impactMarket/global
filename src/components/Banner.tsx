@@ -7,7 +7,7 @@ export default function Banner() {
     const bannerClasses = bannerStyles();
 
     return <div className={bannerClasses.blueBackground}>
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <Grid container justify="space-between" spacing={2}>
                 <Grid item xs={12} sm={7}>
                     <img
@@ -24,11 +24,8 @@ export default function Banner() {
                         }}
                     >
                         <Typography variant="subtitle1" className={classes.bannerText}>
-                            impactMarket enables any vulnerable community to have its own unconditional basic income system for their beneficiaries, where each member can claim a fixed amount on a regular basis, and make/receive payments, with just a mobile phone.
+                            impactMarket enables any community to have its own Unconditional Basic Income for their beneficiaries. Anyone can back those communities by sending/donating $cUSD directly to their UBI contracts.
                         </Typography>
-                        {/* <Typography variant="subtitle1" className={classes.bannerText}>
-                            Anyone can back those beneficiaries by donating directly to their UBI community contracts.
-                        </Typography> */}
                         <div className={bannerClasses.buttonBox}>
                             <img
                                 style={{
@@ -94,7 +91,7 @@ const bannerStyles = makeStyles((theme) =>
             backgroundColor: '#2362FB',
             position: 'relative',
             [theme.breakpoints.down('sm')]: {
-                height: '946px',
+                height: '845px',
             },
             [theme.breakpoints.up('md')]: {
                 height: '507px',
@@ -103,6 +100,9 @@ const bannerStyles = makeStyles((theme) =>
         phonesBox: {
             [theme.breakpoints.down('sm')]: {
                 paddingLeft: '11px',
+            },
+            [theme.breakpoints.down('md')]: {
+                maxWidth: '395px',
             },
         },
         phoneBack: {

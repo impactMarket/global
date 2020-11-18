@@ -6,7 +6,7 @@ export default function Footer() {
     const classes = useStyles();
 
     return <div className={classes.footer}>
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <div style={{ marginBottom: 13 }} >
                 <a href="https://twitter.com/IPCTmarket">
                     <img src="assets/twitter.svg" style={{ marginRight: 13 }} alt="twitter logo" />
@@ -25,7 +25,7 @@ export default function Footer() {
                 </a>
             </div>
             <Typography variant="subtitle1">
-                impactMarket is an open, free, borderless, censorship-resistant and transparent infrastructure. It operates on top of Celo protocol, uses cUSD (Celo Dollar) as underlying digital asset, and runs autonomously through smart contracts.
+                impactMarket is an open, free, borderless, censorship-resistant and transparent crowdfinance infrastructure. It operates on top of Celo protocol, uses cUSD (Celo Dollar) as main underlying digital asset, and runs autonomously through smart contracts.
             </Typography>
         </Container>
     </div>

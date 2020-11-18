@@ -22,12 +22,12 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
             postsubtitle: 'cUSD',
         },
         {
-            title: 'Total Beneficiaries',
-            subtitle: numericalValue((props.globalValues.totalBeneficiaries + props.todayData.totalBeneficiaries).toString()),
+            title: '# Backers',
+            subtitle: numericalValue(props.totalBackers.toString()),
         },
         {
-            title: 'Total Backers',
-            subtitle: numericalValue(props.totalBackers.toString()),
+            title: '# Beneficiaries',
+            subtitle: numericalValue((props.globalValues.totalBeneficiaries + props.todayData.totalBeneficiaries).toString()),
         },
     ];
 
@@ -35,22 +35,22 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
         {
             title: 'Giving Rate per Backer',
             subtitle: '~' + currencyValue(props.globalValues.givingRate.toString()),
-            postsubtitle: '/Day',
+            postsubtitle: ' / day',
         },
         {
             title: 'UBI Rate per Beneficiary',
             subtitle: currencyValue(props.globalValues.ubiRate.toString()),
-            postsubtitle: '/Day',
+            postsubtitle: ' / day',
         },
         {
             title: 'Avg Cumulative UBI',
             subtitle: '~' + currencyValue(humanifyNumber(props.globalValues.avgComulativeUbi), false),
-            postsubtitle: '/Beneficiary',
+            postsubtitle: ' / beneficiary',
         },
         {
-            title: 'Avg. UBI duration',
+            title: 'Avg UBI duration',
             subtitle: '~' + numericalValue(props.globalValues.avgUbiDuration.toString(), false),
-            postsubtitle: 'Months/Beneficiary',
+            postsubtitle: ' months / beneficiary',
         },
     ];
 
@@ -61,7 +61,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
             postsubtitle: 'cUSD',
         },
         {
-            title: '#Transactions',
+            title: '# Transactions',
             subtitle: numericalValue(props.globalValues.totalTransactions.toString()),
         },
         {
@@ -85,7 +85,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
     }
 
     return <div className={classes.headerContainer}>
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <div>
                 <Typography variant="h2" className={classes.header}>
                     Global Summary

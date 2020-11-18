@@ -41,7 +41,7 @@ export default function App() {
         <ThemeProvider theme={muiTheme}>
             <Banner />
             <GlobalSummary globalValues={globalValues[0]} todayData={todayData} totalBackers={totalBackers} />
-            <Container maxWidth="md">
+            <Container maxWidth="lg">
                 <HealingTheWorld />
                 <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
                 <Distribution globalValues={globalValues} />

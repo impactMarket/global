@@ -95,10 +95,10 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 <Table >
                     <TableHead>
                         <TableRow>
-                            <TableCell variant="head" style={{ paddingLeft: '16px' }}>Community name</TableCell>
-                            <TableCell align="center" variant="head" >Allowance per Beneficiary</TableCell>
-                            <TableCell align="center" variant="head">UBI rate per Beneficiary</TableCell>
-                            <TableCell align="center" variant="head">Estimated UBI Duration</TableCell>
+                            <TableCell variant="head" style={{ paddingLeft: '16px' }}>Community name & location</TableCell>
+                            <TableCell align="center" variant="head" >Allowance / Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">UBI Rate / Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">UBI Duration</TableCell>
                             <TableCell align="center" variant="head">SSI*</TableCell>
                             <TableCell align="center" variant="head">Beneficiaries</TableCell>
                             <TableCell align="center" variant="head">Claimed</TableCell>

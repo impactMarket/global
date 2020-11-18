@@ -53,7 +53,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     tooltip: '{{date}} were claimed ${{value}}',
                 },
                 {
-                    title: 'Claims',
+                    title: '# Claims',
                     subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.claims, 0).toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.claims })).reverse(),
@@ -61,7 +61,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     tooltip: '{{date}} were realized {{value}} claims',
                 },
                 {
-                    title: 'Beneficiaries',
+                    title: 'New Beneficiaries',
                     subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.beneficiaries, 0).toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.beneficiaries })).reverse(),

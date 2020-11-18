@@ -53,7 +53,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     tooltip: '{{date}} were raised ${{value}}',
                 },
                 {
-                    title: 'Backers',
+                    title: '# Backers',
                     subtitle: numericalValue(props.globalValues[0].backers.toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
