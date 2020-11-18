@@ -5,18 +5,28 @@ import { useStyles } from '../helpers/theme';
 export default function Footer() {
     const classes = useStyles();
 
-    return <div style={{ paddingTop: 50, paddingBottom: 50, marginTop: 57, backgroundColor: 'white', display: 'flex', alignItems: 'center' }}>
-        <Container maxWidth="lg">
+    return <div className={classes.footer}>
+        <Container maxWidth="md">
             <div style={{ marginBottom: 13 }} >
-                <img src="assets/twitter.svg" style={{ marginRight: 13 }} alt="twitter logo" />
-                <img src="assets/facebook.svg" style={{ marginRight: 13 }} alt="facebook logo" />
-                <img src="assets/linkedin.svg" style={{ marginRight: 13 }} alt="linkedin logo" />
-                <img src="assets/telegram.svg" style={{ marginRight: 13 }} alt="telegram logo" />
-                <img src="assets/github.svg" style={{ marginRight: 13 }} alt="github logo" />
+                <a href="https://twitter.com/IPCTmarket">
+                    <img src="assets/twitter.svg" style={{ marginRight: 13 }} alt="twitter logo" />
+                </a>
+                <a href="https://www.facebook.com/IPCTmarket">
+                    <img src="assets/facebook.svg" style={{ marginRight: 13 }} alt="facebook logo" />
+                </a>
+                <a href="https://www.linkedin.com/company/impactmarket/">
+                    <img src="assets/linkedin.svg" style={{ marginRight: 13 }} alt="linkedin logo" />
+                </a>
+                <a href="https://t.me/impactMarket">
+                    <img src="assets/telegram.svg" style={{ marginRight: 13 }} alt="telegram logo" />
+                </a>
+                <a href="https://github.com/impactMarket">
+                    <img src="assets/github.svg" style={{ marginRight: 13 }} alt="github logo" />
+                </a>
             </div>
             <Typography variant="subtitle1">
                 impactMarket is an open, free, borderless, censorship-resistant and transparent infrastructure. It operates on top of Celo protocol, uses cUSD (Celo Dollar) as underlying digital asset, and runs autonomously through smart contracts.
-        </Typography>
+            </Typography>
         </Container>
     </div>
 

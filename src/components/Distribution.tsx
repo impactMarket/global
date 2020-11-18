@@ -111,7 +111,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                 Monthly Distribution
             </Typography>
             <Typography variant="subtitle1">
-                Beneficiaries from different communities have access to an unconditional basic income, by claiming $cUSD on a regular basis from their community contracts. Each contract UBI parameters take into consideration their beneficiaries' basic needs, and assessment by local social organizations and community leaders.
+                Beneficiaries from different communities can claim $cUSD on a regular basis from their community contracts. UBI parameters take into consideration their beneficiaries' basic needs, reality on the ground, and assessment by local social organizations and community leaders.
             </Typography>
         </div>
         <div style={{ margin: '16px 0px' }}>

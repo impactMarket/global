@@ -13,7 +13,7 @@ export default function HealingTheWorld() {
                 Healing the world, ending poverty
             </Typography>
             <Typography variant="subtitle1">
-                Discover active communities and their beneficiaries’ activity on accessing/claiming a basic income that is empowering them out of poverty.
+                Discover communities and their beneficiaries’ activity on accessing/claiming a basic income that is empowering them out of poverty.
             </Typography>
         </div>
         <Globe />

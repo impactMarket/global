@@ -54,7 +54,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                 },
                 {
                     title: 'Backers',
-                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.backers, 0).toString()),
+                    subtitle: numericalValue(props.globalValues[0].backers.toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
                     line: true,
@@ -106,7 +106,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                 Monthly Fundraising
             </Typography>
             <Typography variant="subtitle1">
-                Anyone can back those communities by sending cUSD (Celo Dollar) directly to their contracts. This measures global monthly inflow, and its rate vs fundraising.
+                Anyone can back those communities by sending $cUSD (Celo Dollar) directly to their contracts. This measures global monthly inflow, and its rate vs distribution.
             </Typography>
         </div>
         <div style={{ margin: '16px 0px' }}>

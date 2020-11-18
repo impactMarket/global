@@ -1,18 +1,15 @@
 import React from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Container, createStyles, Grid, makeStyles, Typography } from '@material-ui/core';
 import { useStyles } from '../helpers/theme';
 
 export default function Banner() {
     const classes = useStyles();
+    const bannerClasses = bannerStyles();
 
-    return <div style={{
-        backgroundColor: '#2362FB',
-        position: 'relative',
-        height: '507px',
-    }}>
-        <Container maxWidth="lg">
+    return <div className={bannerClasses.blueBackground}>
+        <Container maxWidth="md">
             <Grid container justify="space-between" spacing={2}>
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12} sm={7}>
                     <img
                         style={{
                             height: '88px',
@@ -29,15 +26,10 @@ export default function Banner() {
                         <Typography variant="subtitle1" className={classes.bannerText}>
                             impactMarket enables any vulnerable community to have its own unconditional basic income system for their beneficiaries, where each member can claim a fixed amount on a regular basis, and make/receive payments, with just a mobile phone.
                         </Typography>
-                        <Typography variant="subtitle1" className={classes.bannerText}>
+                        {/* <Typography variant="subtitle1" className={classes.bannerText}>
                             Anyone can back those beneficiaries by donating directly to their UBI community contracts.
-                        </Typography>
-                        <div
-                            style={{
-                                bottom: '60.83px',
-                                position: 'absolute',
-                            }}
-                        >
+                        </Typography> */}
+                        <div className={bannerClasses.buttonBox}>
                             <img
                                 style={{
                                     marginBottom: '4.37px',
@@ -67,22 +59,15 @@ export default function Banner() {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                    <div style={{ height: '455px', width: '300px' }}>
+                <Grid item xs={12} sm={5}>
+                    <div className={bannerClasses.phonesBox}>
                         <img
-                            style={{
-                                position: 'absolute',
-                                paddingTop: '75.17px',
-                            }}
+                            className={bannerClasses.phoneBack}
                             src="assets/banner/back_smartphone.png"
                             alt="back smartphone impactmarket"
                         />
                         <img
-                            style={{
-                                position: 'absolute',
-                                paddingLeft: '94.81px',
-                                paddingTop: '55px',
-                            }}
+                            className={bannerClasses.phoneFront}
                             src="assets/banner/front_smartphone.png"
                             alt="front smartphone impactmarket"
                         />
@@ -93,3 +78,56 @@ export default function Banner() {
     </div>
 
 }
+
+const bannerStyles = makeStyles((theme) =>
+    createStyles({
+        buttonBox: {
+            [theme.breakpoints.down('sm')]: {
+                textAlign: 'center',
+            },
+            [theme.breakpoints.up('md')]: {
+                bottom: '60.83px',
+                position: 'absolute',
+            },
+        },
+        blueBackground: {
+            backgroundColor: '#2362FB',
+            position: 'relative',
+            [theme.breakpoints.down('sm')]: {
+                height: '946px',
+            },
+            [theme.breakpoints.up('md')]: {
+                height: '507px',
+            },
+        },
+        phonesBox: {
+            [theme.breakpoints.down('sm')]: {
+                paddingLeft: '11px',
+            },
+        },
+        phoneBack: {
+            position: 'absolute',
+            [theme.breakpoints.down('sm')]: {
+                maxWidth: '247.29px',
+                paddingTop: '42.37px',
+            },
+            [theme.breakpoints.up('md')]: {
+                maxWidth: '284.38px',
+                paddingTop: '75.17px',
+            },
+        },
+        phoneFront: {
+            position: 'absolute',
+            [theme.breakpoints.down('sm')]: {
+                maxWidth: '281.56px',
+                paddingLeft: '82.44px',
+                paddingTop: '23.2px',
+            },
+            [theme.breakpoints.up('md')]: {
+                maxWidth: '323.79px',
+                paddingLeft: '94.81px',
+                paddingTop: '55px',
+            },
+        },
+    }),
+);

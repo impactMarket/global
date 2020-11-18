@@ -39,7 +39,7 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Communities(props: { globalValues: IGlobalDailyState[] }) {
+export default function Communities(props: { globalValues: IGlobalDailyState[], lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[] }) {
     const classes = useStyles();
     const [communities, setCommunities] = useState<ICommunityInfo[]>([]);
     const [chartWidth, setChartWidth] = useState(100);
@@ -48,10 +48,10 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
     useEffect(() => {
         const loadCommunities = () => Api.getAllValidCommunities().then(setCommunities);
         loadCommunities();
-        setChartAverageSSIData(props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.avgMedianSSI })).reverse());
-    }, [props.globalValues]);
+        setChartAverageSSIData(props.lastQuarterAvgSSI.map((g) => ({ name: new Date(g.date).getTime(), uv: g.avgMedianSSI })).reverse());
+    }, [props.globalValues, props.lastQuarterAvgSSI]);
 
-    const shortenAddress = (address: string) => `${address.slice(0, 8)}..${address.slice(36, 42)}`;
+    const shortenAddress = (address: string) => `${address.slice(0, 6)}..${address.slice(38, 42)}`;
 
     function getCountryFlag(countryName: string) {
         switch (countryName) {
@@ -87,43 +87,43 @@ export default function Communities(props: { globalValues: IGlobalDailyState[] }
                 Communities
             </Typography>
             <Typography variant="subtitle1">
-                UBI communities are usually managed and promoted by social, governamental or local organizations, who setup the initial UBI parameters, and add/remove which beneficiaries have access to it.
+                UBI communities are usually managed and promoted by community leaders and social, governamental, or local organizations, who set up the initial UBI parameters, and add/remove which beneficiaries they believe would most benefit from it.
             </Typography>
         </div>
         <div style={{ margin: '16px 0px' }}>
             <TableContainer component={Paper}>
-                <Table aria-label="simple table">
+                <Table >
                     <TableHead>
                         <TableRow>
-                            <TableCell className={classes.tableRowHead}>Community name</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Allowance</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>UBI rate</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Duration</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>SSI</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Beneficiaries</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Backers</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Claimed</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>Raised</TableCell>
-                            <TableCell align="center" className={classes.tableRowHead}>UBI Contract</TableCell>
+                            <TableCell variant="head" style={{ paddingLeft: '16px' }}>Community name</TableCell>
+                            <TableCell align="center" variant="head" >Allowance per Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">UBI rate per Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">Estimated UBI Duration</TableCell>
+                            <TableCell align="center" variant="head">SSI*</TableCell>
+                            <TableCell align="center" variant="head">Beneficiaries</TableCell>
+                            <TableCell align="center" variant="head">Claimed</TableCell>
+                            <TableCell align="center" variant="head">Backers</TableCell>
+                            <TableCell align="center" variant="head">Raised</TableCell>
+                            <TableCell align="center" variant="head" style={{ paddingRight: '16px' }}>UBI Contract</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {communities.map(community => (
                             <TableRow key={community.publicId}>
-                                <TableCell component="th" scope="row">
-                                    {community.name}
+                                <TableCell variant="body" style={{ paddingLeft: '16px' }}>
+                                    <span style={{ fontFamily: 'Gelion-Bold', lineHeight: '17px' }}>{community.name}</span>
                                     <br />
-                                    <span className={classes.tableRowHead}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
+                                    <span style={{ color: colors.softGray }}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center">~${community.metrics!.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center">~{Math.floor(community.metrics!.estimatedDuration)} months</TableCell>
-                                <TableCell align="center">{community.metrics!.ssi}</TableCell>
-                                <TableCell align="center">{community.state.beneficiaries}</TableCell>
-                                <TableCell align="center">{community.state.backers}</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
-                                <TableCell align="center">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
-                                <TableCell align="center"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
+                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center" variant="body">~${community.metrics!.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center" variant="body">~{Math.floor(community.metrics!.estimatedDuration)} months</TableCell>
+                                <TableCell align="center" variant="body">{community.metrics!.ssi}</TableCell>
+                                <TableCell align="center" variant="body">{community.state.beneficiaries}</TableCell>
+                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
+                                <TableCell align="center" variant="body">{community.state.backers}</TableCell>
+                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
+                                <TableCell align="center" variant="body" style={{ paddingRight: '16px' }}><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
