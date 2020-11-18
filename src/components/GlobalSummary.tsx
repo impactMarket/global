@@ -5,28 +5,29 @@ import Paper from './Paper';
 import { useStyles } from '../helpers/theme';
 import Box from './Box';
 import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
+import BigNumber from 'bignumber.js';
 
-export default function GlobalSummary(props: { globalValues: IGlobalDailyState }) {
+export default function GlobalSummary(props: { globalValues: IGlobalDailyState; todayData: { totalClaimed: string, totalBeneficiaries: number, totalRaised: string }; totalBackers: number }) {
     const classes = useStyles();
 
     const inflowOutflowValues = [
         {
             title: 'Total Raised',
-            subtitle: currencyValue(humanifyNumber(props.globalValues.totalRaised)),
+            subtitle: currencyValue(humanifyNumber(new BigNumber(props.globalValues.totalRaised).plus(props.todayData.totalRaised).toString())),
             postsubtitle: 'cUSD',
         },
         {
             title: 'Total Distributed',
-            subtitle: currencyValue(humanifyNumber(props.globalValues.totalDistributed)),
+            subtitle: currencyValue(humanifyNumber(new BigNumber(props.globalValues.totalDistributed).plus(props.todayData.totalClaimed).toString())),
             postsubtitle: 'cUSD',
         },
         {
             title: 'Total Beneficiaries',
-            subtitle: numericalValue(props.globalValues.totalBeneficiaries.toString()),
+            subtitle: numericalValue((props.globalValues.totalBeneficiaries + props.todayData.totalBeneficiaries).toString()),
         },
         {
             title: 'Total Backers',
-            subtitle: numericalValue(props.globalValues.totalBackers.toString()),
+            subtitle: numericalValue(props.totalBackers.toString()),
         },
     ];
 
@@ -84,13 +85,13 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState }
     }
 
     return <div className={classes.headerContainer}>
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
             <div>
                 <Typography variant="h2" className={classes.header}>
                     Global Summary
                 </Typography>
                 <Typography variant="subtitle1">
-                    Explore the main indicators of impactMarket system both on inflow of funds and distribution of basic income to beneficiaries through their UBI community contracts.
+                    Explore the main indicators of impactMarket system, including inflow of funds, distribution of basic income to beneficiaries through their UBI community contracts, and usage of those funds.
                 </Typography>
             </div>
             <div style={{ margin: '16px 0px' }}>
