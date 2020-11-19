@@ -39,7 +39,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
         },
         {
             title: 'UBI Rate per Beneficiary',
-            subtitle: currencyValue(props.globalValues.ubiRate.toString()),
+            subtitle: '~' + currencyValue(props.globalValues.ubiRate.toString()),
             postsubtitle: ' / day',
         },
         {
@@ -136,7 +136,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
                     ))}
                 </Grid>
                 <Typography variant="h5" className={classes.header}>
-                    Economic activity
+                    Economic beneficiaries' activity
                 </Typography>
                 <Grid container justify="space-between" spacing={2}>
                     {economicActivityValues.map((total) => (

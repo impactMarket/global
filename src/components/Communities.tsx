@@ -32,7 +32,7 @@ function CustomTooltip(props: {
     if (active && payload !== null && tooltip !== undefined) {
         return (
             <Paper style={{ padding: 10, textAlign: "center" }}>
-                <p>{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</p>
+                <Typography variant="body1" >{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</Typography>
             </Paper>
         );
     }
@@ -95,9 +95,9 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 <Table >
                     <TableHead>
                         <TableRow>
-                            <TableCell variant="head">Community name & location</TableCell>
-                            <TableCell align="center" variant="head" >Allowance / Beneficiary</TableCell>
-                            <TableCell align="center" variant="head">UBI Rate / Beneficiary</TableCell>
+                            <TableCell variant="head">Community name<br /> & location</TableCell>
+                            <TableCell align="center" variant="head" >Allowance<br /> / Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">UBI Rate<br /> / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Duration</TableCell>
                             <TableCell align="center" variant="head">SSI*</TableCell>
                             <TableCell align="center" variant="head">Beneficiaries</TableCell>

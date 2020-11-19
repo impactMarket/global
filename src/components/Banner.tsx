@@ -84,20 +84,24 @@ const bannerStyles = makeStyles((theme) =>
             backgroundColor: '#2362FB',
             position: 'relative',
             [theme.breakpoints.down('sm')]: {
-                height: '845px',
+                height: '825px',
             },
             [theme.breakpoints.up('md')]: {
                 height: '507px',
             },
         },
         mobileAppBox: {
+            [theme.breakpoints.down('sm')]: {
+                textAlign: 'center',
+            },
             [theme.breakpoints.up('md')]: {
                 maxWidth: '425px',
             },
         },
         mobileApp: {
             [theme.breakpoints.down('sm')]: {
-                maxHeight: '438.2px',
+                width: '345px',
+                maxWidth: '100%',
                 paddingTop: '42.37px',
             },
             [theme.breakpoints.up('md')]: {

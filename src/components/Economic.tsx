@@ -28,7 +28,7 @@ function CustomTooltip(props: {
     if (active && payload !== null && tooltip !== undefined) {
         return (
             <Paper style={{ padding: 10, textAlign: "center" }}>
-                <p>{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</p>
+                <Typography variant="body1" >{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</Typography>
             </Paper>
         );
     }
