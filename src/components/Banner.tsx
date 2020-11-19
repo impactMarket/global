@@ -56,19 +56,12 @@ export default function Banner() {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={5} className={bannerClasses.parentPhonesBox}>
-                    <div className={bannerClasses.phonesBox}>
-                        <img
-                            className={bannerClasses.phoneBack}
-                            src="assets/banner/back_smartphone.png"
-                            alt="back smartphone impactmarket"
-                        />
-                        <img
-                            className={bannerClasses.phoneFront}
-                            src="assets/banner/front_smartphone.png"
-                            alt="front smartphone impactmarket"
-                        />
-                    </div>
+                <Grid item xs={12} sm={5} className={bannerClasses.mobileAppBox}>
+                    <img
+                        className={bannerClasses.mobileApp}
+                        src="assets/banner/mobileapp.png"
+                        alt="mobile app impactmarket"
+                    />
                 </Grid>
             </Grid>
         </Container>
@@ -97,38 +90,19 @@ const bannerStyles = makeStyles((theme) =>
                 height: '507px',
             },
         },
-        phonesBox: {
-            [theme.breakpoints.down('sm')]: {
-                paddingLeft: '11px',
-            },
-        },
-        parentPhonesBox: {
+        mobileAppBox: {
             [theme.breakpoints.up('md')]: {
-                maxWidth: '395px',
+                maxWidth: '425px',
             },
         },
-        phoneBack: {
-            position: 'absolute',
+        mobileApp: {
             [theme.breakpoints.down('sm')]: {
-                maxWidth: '247.29px',
+                maxHeight: '438.2px',
                 paddingTop: '42.37px',
             },
             [theme.breakpoints.up('md')]: {
-                maxWidth: '284.38px',
-                paddingTop: '75.17px',
-            },
-        },
-        phoneFront: {
-            position: 'absolute',
-            [theme.breakpoints.down('sm')]: {
-                maxWidth: '281.56px',
-                paddingLeft: '82.44px',
-                paddingTop: '23.2px',
-            },
-            [theme.breakpoints.up('md')]: {
-                maxWidth: '323.79px',
-                paddingLeft: '94.81px',
-                paddingTop: '55px',
+                maxHeight: '520px',
+                paddingTop: '50px',
             },
         },
     }),

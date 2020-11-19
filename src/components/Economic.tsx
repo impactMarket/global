@@ -63,7 +63,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
                 },
                 {
                     title: 'Reach',
-                    subtitle: props.globalValues[0].reach,
+                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.reach, 0).toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
