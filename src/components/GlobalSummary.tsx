@@ -87,7 +87,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
     return <div className={classes.headerContainer}>
         <Container maxWidth="lg">
             <div>
-                <Typography variant="h2" className={classes.header}>
+                <Typography variant="h2" className={classes.headerSection}>
                     Global Summary
                 </Typography>
                 <Typography variant="subtitle1">
@@ -101,7 +101,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
                 <Grid container justify="space-between" spacing={2}>
                     {inflowOutflowValues.map((total) => (
                         <Grid key={total.title} item xs={6} sm={3}>
-                            <Paper style={{ padding: 10 }}>
+                            <Paper style={{ padding: 16 }}>
                                 {/* <Typography variant="h4">
                                     {total.title}
                                 </Typography>
@@ -120,8 +120,8 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
                 </Typography>
                 <Grid container justify="space-between" spacing={2}>
                     {ubiPulseValues.map((total) => (
-                        <Grid key={total.title} item xs={12} sm={3}>
-                            <Paper style={{ padding: 10 }}>
+                        <Grid key={total.title} item xs={12} sm={6} md={3}>
+                            <Paper style={{ padding: 16 }}>
                                 {/* <Typography variant="h4">
                                     {total.title}
                                 </Typography>
@@ -141,7 +141,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
                 <Grid container justify="space-between" spacing={2}>
                     {economicActivityValues.map((total) => (
                         <Grid key={total.title} item xs={6} sm={3}>
-                            <Paper style={{ padding: 10 }}>
+                            <Paper style={{ padding: 16 }}>
                                 {/* <Typography variant="h4">
                                     {total.title}
                                 </Typography>

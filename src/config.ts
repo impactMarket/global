@@ -44,5 +44,7 @@ export default {
     /**
      * Boolean to use firebase or not
      */
-    useFirebase: process.env.REACT_APP_USE_FIREBASE === 'true'
+    useFirebase: process.env.REACT_APP_USE_FIREBASE === 'true',
+
+    chartsHeight: 148,
 };

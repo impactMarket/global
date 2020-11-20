@@ -6,7 +6,7 @@ import {
     LineChart,
     Line,
     BarChart,
-    Bar, Tooltip, XAxis
+    Bar, Tooltip, XAxis, ResponsiveContainer
 } from 'recharts';
 import { colors } from '../contants';
 import { useStyles } from '../helpers/theme';
@@ -16,6 +16,7 @@ import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
 import { IGlobalDailyState } from '../types';
 import Paper from './Paper';
 import Box from './Box';
+import config from '../config';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -38,9 +39,6 @@ function CustomTooltip(props: {
 export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
-    const [chartLineWidth, setChartLineWidth] = useState(100);
-    const [chartBarWidth, setChartBarWidth] = useState(100);
-
 
     useEffect(() => {
         const loadFundraising = () => {
@@ -75,39 +73,26 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
         loadFundraising();
     }, [props.globalValues]);
 
-    const paperSize = (instance: unknown, isLine: boolean) => {
-        if (instance === null) {
-            return;
-        }
-        if (isLine) {
-            setChartLineWidth((instance as any).getBoundingClientRect().width - 20);
-        } else {
-            setChartBarWidth((instance as any).getBoundingClientRect().width - 20);
-        }
-    }
-
     const drawChart = (chart: any) => {
         if (chart.line) {
-            return <LineChart width={chartLineWidth} height={200} data={chart.data}>
+            return <LineChart data={chart.data}>
                 <XAxis dataKey="name" hide />
                 <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
                 <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
             </LineChart>
         }
         return <BarChart
-            width={chartBarWidth}
-            height={200}
             data={chart.data}
         >
             <XAxis dataKey="name" hide />
             <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
-            <Bar dataKey="uv" fill={colors.aquaBlue} barSize={4} />
+            <Bar dataKey="uv" radius={[4, 4, 4, 4]} fill={colors.aquaBlue} barSize={4} />
         </BarChart>
     }
 
     return <>
         <div>
-            <Typography variant="h2" className={classes.header}>
+            <Typography variant="h2" className={classes.headerSection}>
                 Monthly Economic Development
             </Typography>
             <Typography variant="subtitle1">
@@ -118,13 +103,16 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
             <Grid container justify="space-between" spacing={2}>
                 {fundraising.map((chart) => (
                     <Grid key={chart.title} item xs={12} sm={4}>
-                        <Paper style={{ padding: 10 }} ref={(r) => paperSize(r, chart.line)}>
+                        <Paper style={{ padding: 16 }}>
                             <Box
                                 title={chart.title}
                                 subtitle={chart.subtitle}
                                 postsubtitle={chart.postsubtitle}
+                                hasChart={true}
                             >
-                                {drawChart(chart)}
+                                <ResponsiveContainer width="100%" height={config.chartsHeight}>
+                                    {drawChart(chart)}
+                                </ResponsiveContainer>
                             </Box>
                         </Paper>
                     </Grid>

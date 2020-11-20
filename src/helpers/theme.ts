@@ -4,14 +4,18 @@ import { colors } from "../contants";
 const useStyles = makeStyles((theme) =>
     createStyles({
         bannerText: {
-            fontSize: '18px',
-            lineHeight: '27px',
+            fontSize: '22px',
+            lineHeight: '29px',
             color: '#FFFFFF',
             opacity: 0.79,
             paddingBottom: '27px',
         },
         header: {
             color: colors.almostBlack,
+        },
+        headerSection: {
+            color: colors.almostBlack,
+            fontFamily: 'Gelion-SemiBold',
         },
         headerContainer: {
             backgroundColor: 'white',
@@ -59,28 +63,33 @@ const muiTheme = createMuiTheme({
         h1: {
             fontWeight: 'bold',
             fontSize: '36px',
-            lineHeight: '32px'
+            lineHeight: '32px',
+            color: colors.almostBlack,
         },
         h2: {
             fontSize: '28px',
             lineHeight: '28px',
             marginTop: '32px',
             marginBottom: '8px',
+            color: colors.almostBlack,
         },
         h3: {
             fontSize: '26px',
-            lineHeight: '26px'
+            lineHeight: '26px',
+            color: colors.almostBlack,
         },
         h4: {
             fontWeight: 400,
             fontSize: '18px',
-            lineHeight: '17px'
+            lineHeight: '17px',
+            color: colors.almostBlack,
         },
         h5: {
             fontSize: '16px',
             lineHeight: '16px',
             marginTop: '17px',
             marginBottom: '8px',
+            color: colors.almostBlack,
         },
         h6: {
             fontSize: '14px',
@@ -92,10 +101,12 @@ const muiTheme = createMuiTheme({
             fontSize: '18px',
             lineHeight: '22px',
             opacity: 0.54,
+            color: colors.almostBlack,
         },
         subtitle2: {
             fontSize: '14px',
-            lineHeight: '17px'
+            lineHeight: '17px',
+            color: colors.almostBlack,
         },
     },
     shape: {

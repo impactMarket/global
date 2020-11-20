@@ -18,7 +18,7 @@ import config from '../config';
 import Paper from './Paper';
 import { colors } from '../contants';
 import moment from 'moment';
-import { LineChart, XAxis, Line, Tooltip } from 'recharts';
+import { LineChart, XAxis, Line, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 function CustomTooltip(props: {
@@ -42,7 +42,6 @@ function CustomTooltip(props: {
 export default function Communities(props: { globalValues: IGlobalDailyState[], lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[] }) {
     const classes = useStyles();
     const [communities, setCommunities] = useState<ICommunityInfo[]>([]);
-    const [chartWidth, setChartWidth] = useState(100);
     const [chartAverageSSIData, setChartAverageSSIData] = useState<{ name: number, uv: any }[]>([]);
 
     useEffect(() => {
@@ -74,16 +73,9 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
         }
     }
 
-    const paperSize = (instance: unknown) => {
-        if (instance === null) {
-            return;
-        }
-        setChartWidth((instance as any).getBoundingClientRect().width - 20);
-    }
-
     return <>
         <div>
-            <Typography variant="h2" className={classes.header}>
+            <Typography variant="h2" className={classes.headerSection}>
                 Communities
             </Typography>
             <Typography variant="subtitle1">
@@ -130,9 +122,9 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 </Table>
             </TableContainer>
             <Grid item xs={12} sm={12} style={{ marginTop: '32px' }}>
-                <Paper style={{ padding: 10 }}>
+                <Paper style={{ padding: 16 }}>
                     <Grid container justify="space-between" spacing={2}>
-                        <Grid item xs={12} sm={6} style={{ paddingTop: '30px', paddingLeft: '27px', paddingRight: '43.8px' }}>
+                        <Grid item xs={12} sm={6} style={{ paddingTop: '30px', paddingLeft: '27px', paddingRight: '43.8px', paddingBottom: '25px' }}>
                             <Typography variant="h1" display="inline">{props.globalValues[0].avgMedianSSI}</Typography><Typography variant="h1" display="inline">%</Typography>
                             <Typography variant="subtitle1" style={{ opacity: 1, marginTop: '8px', marginBottom: '13.18px' }}>
                                 Global Self-Sustainability Index (SSI)
@@ -141,12 +133,14 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 *SSI measures communities' collective financial self-sustainability, and average progress. It is inversely correlated with their beneficiaries UBI dependency/need and urgency.
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={6} ref={(r) => paperSize(r)}>
-                            <LineChart width={chartWidth} height={200} data={chartAverageSSIData}>
-                                <XAxis dataKey="name" hide />
-                                <Tooltip content={<CustomTooltip tooltip={'{{date}} average SSI was {{value}}'} />} />
-                                <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
-                            </LineChart>
+                        <Grid item xs={12} sm={6}>
+                            <ResponsiveContainer width="100%" height={131}>
+                                <LineChart data={chartAverageSSIData}>
+                                    <XAxis dataKey="name" hide />
+                                    <Tooltip content={<CustomTooltip tooltip={'{{date}} average SSI was {{value}}'} />} />
+                                    <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </Grid>
                     </Grid>
                 </Paper>
