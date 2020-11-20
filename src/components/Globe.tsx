@@ -13,6 +13,7 @@ interface IGlobeState {
 }
 class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
     private mapContainer: any = undefined;
+    private map: mapboxgl.Map = undefined as any;
     constructor(props: any) {
         super(props);
         const { cookies } = this.props;
@@ -36,18 +37,22 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
         bounds.setNorthEast({ lng: bounds.getNorthEast().lng, lat: bounds.getNorthEast().lat + 2 })
         bounds.setSouthWest({ lng: bounds.getSouthWest().lng, lat: bounds.getSouthWest().lat - 2 })
 
-        const map = new mapboxgl.Map({
+        this.map = new mapboxgl.Map({
             container: this.mapContainer,
             style: config.mapBoxStyle,
             center: [this.state.lng, this.state.lat],
             zoom: this.state.zoom
         });
 
-        map.fitBounds(bounds);
-        map.setMaxZoom(12);
+        this.map.fitBounds(bounds);
+        this.map.setMaxZoom(12);
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // true for mobile device
+            this.map.dragPan.disable();
+        }
 
         // Add zoom and rotation controls to the map.
-        map.addControl(new mapboxgl.NavigationControl());
+        this.map.addControl(new mapboxgl.NavigationControl());
 
         const mapData = {
             type: "FeatureCollection",
@@ -62,26 +67,26 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
             ))
         }
 
-        map.on('move', () => {
+        this.map.on('move', () => {
             this.setState({
-                lng: map.getCenter().lng,
-                lat: map.getCenter().lat,
-                zoom: map.getZoom()
+                lng: this.map.getCenter().lng,
+                lat: this.map.getCenter().lat,
+                zoom: this.map.getZoom()
             });
         });
 
-        map.on('load', () => {
-            cookies.set('lng', map.getCenter().lng, { path: '/' });
-            cookies.set('lat', map.getCenter().lat, { path: '/' });
-            cookies.set('zoom', map.getZoom(), { path: '/' });
+        this.map.on('load', () => {
+            cookies.set('lng', this.map.getCenter().lng, { path: '/' });
+            cookies.set('lat', this.map.getCenter().lat, { path: '/' });
+            cookies.set('zoom', this.map.getZoom(), { path: '/' });
             // Add a geojson point source.
             // Heatmap layers also work with a vector tile source.
-            map.addSource('claims', {
+            this.map.addSource('claims', {
                 'type': 'geojson',
                 'data': mapData as any
             });
 
-            map.addLayer(
+            this.map.addLayer(
                 {
                     'id': 'claims-heat',
                     'type': 'heatmap',
@@ -146,8 +151,10 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
             <div>
                 <div ref={el => this.mapContainer = el} style={{
                     borderRadius: '8px',
-                    height: 500,
-                }} />
+                    height: '403px',
+                    margin: '32px 0px',
+                    filter: 'drop-shadow(0px 0px 14px #E9ECEF)',
+                }} onFocus={() => this.map.dragPan.enable()} onBlur={() => this.map.dragPan.disable()} />
             </div>
         )
     }
