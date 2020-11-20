@@ -50,7 +50,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     postsubtitle: 'cUSD',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.claimed)) })).reverse(),
                     line: false,
-                    tooltip: '{{date}} were claimed ${{value}}',
+                    tooltip: '${{value}} claimed on {{date}}',
                 },
                 {
                     title: '# Claims',
@@ -58,7 +58,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.claims })).reverse(),
                     line: true,
-                    tooltip: '{{date}} were realized {{value}} claims',
+                    tooltip: '{{value}} claims on {{date}}',
                 },
                 {
                     title: 'New Beneficiaries',
@@ -66,7 +66,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.beneficiaries })).reverse(),
                     line: true,
-                    tooltip: '{{date}} were added {{value}} new beneficiaries',
+                    tooltip: '{{value}} new beneficiaries on {{date}}',
                 },
             ]
             console.log(props.globalValues[0].date, new Date(props.globalValues[0].date))

@@ -50,7 +50,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: 'cUSD',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.raised)) })).reverse(),
                     line: false,
-                    tooltip: '{{date}} were raised ${{value}}',
+                    tooltip: '${{value}} raised on {{date}}',
                 },
                 {
                     title: '# Backers',
@@ -58,7 +58,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
                     line: true,
-                    tooltip: '{{date}} were {{value}} new backers',
+                    tooltip: '{{value}} new backers on {{date}}',
                 },
                 {
                     title: 'Funding Rate',
@@ -66,7 +66,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: '%',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.fundingRate })).reverse(),
                     line: true,
-                    tooltip: '{{date}} had {{value}} funding rate',
+                    tooltip: '{{value}} funding rate on {{date}}',
                 },
             ]
             setFundraising(charts);

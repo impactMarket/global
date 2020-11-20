@@ -51,7 +51,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: 'cUSD',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.volume)) })).reverse(),
                     line: false,
-                    tooltip: '{{date}} were transacted ${{value}}',
+                    tooltip: '${{value}} transacted on {{date}}',
                 },
                 {
                     title: '# Transactions',
@@ -59,7 +59,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.transactions })).reverse(),
                     line: true,
-                    tooltip: '{{date}} happened {{value}} transactions',
+                    tooltip: '{{value}} transactions on {{date}}',
                 },
                 {
                     title: 'Reach',
@@ -67,7 +67,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
-                    tooltip: '{{date}} new {{value}} addresses were reach',
+                    tooltip: '{{value}} addresses were reach on {{date}}',
                 },
             ]
             setFundraising(charts);
