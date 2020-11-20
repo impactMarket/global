@@ -1,5 +1,5 @@
 export interface IClaimLocation {
-    communityPublicId: string;
+    communityId: string;
     gps: {
         latitude: number,
         longitude: number;

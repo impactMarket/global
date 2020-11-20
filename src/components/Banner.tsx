@@ -9,7 +9,7 @@ export default function Banner() {
     return <div className={bannerClasses.blueBackground}>
         <Container maxWidth="lg">
             <Grid container justify="space-between" spacing={2}>
-                <Grid item xs={12} sm={7}>
+                <Grid item xs={12} sm={6}>
                     <img
                         style={{
                             height: '88px',
@@ -56,7 +56,7 @@ export default function Banner() {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={5} className={bannerClasses.mobileAppBox}>
+                <Grid item xs={12} sm={6} className={bannerClasses.mobileAppBox}>
                     <img
                         className={bannerClasses.mobileApp}
                         src="assets/banner/mobileapp.png"

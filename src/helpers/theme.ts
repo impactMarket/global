@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) =>
             backgroundColor: 'white',
             [theme.breakpoints.down('sm')]: {
                 paddingTop: '160px',
-                paddingBottom: '3%',
+                paddingBottom: '34px',
             },
             [theme.breakpoints.up('md')]: {
-                padding: '3% 0px',
+                padding: '21px 0px',
             },
         },
         footer: {
