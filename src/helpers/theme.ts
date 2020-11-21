@@ -1,4 +1,5 @@
 import { makeStyles, createStyles, createMuiTheme } from "@material-ui/core";
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 import { colors } from "../contants";
 
 const useStyles = makeStyles((theme) =>
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+const breakpoints = createBreakpoints({})
 const muiTheme = createMuiTheme({
     palette: {
         text: {
@@ -56,6 +58,22 @@ const muiTheme = createMuiTheme({
                 lineHeight: '15px',
                 color: colors.almostBlack,
             }
+        },
+        MuiContainer: {
+            maxWidthLg: {
+                [breakpoints.up('sm')]: {
+                    paddingLeft: '60px',
+                    paddingRight: '60px',
+                },
+                [breakpoints.down('sm')]: {
+                    paddingLeft: '24px',
+                    paddingRight: '24px',
+                },
+                [breakpoints.down('xs')]: {
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                },
+            },
         }
     },
     typography: {
