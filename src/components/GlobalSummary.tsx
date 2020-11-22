@@ -100,7 +100,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
                 </Typography>
                 <Grid container justify="space-between" spacing={2}>
                     {inflowOutflowValues.map((total) => (
-                        <Grid key={total.title} item xs={6} sm={3}>
+                        <Grid key={total.title} item xs={12} sm={6} md={3}>
                             <Paper style={{ padding: 16 }}>
                                 {/* <Typography variant="h4">
                                     {total.title}

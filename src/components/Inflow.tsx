@@ -57,7 +57,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
                     line: true,
-                    tooltip: '{{value}} new backers on {{date}}',
+                    tooltip: '{{value}} monthy active backers on {{date}}',
                 },
                 {
                     title: 'Funding Rate',
