@@ -36,7 +36,7 @@ function CustomTooltip(props: {
     return null;
 }
 
-export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
+export default function Economic(props: { globalValues: IGlobalDailyState[], reachedLastMonth: number }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<any[]>([]);
 
@@ -61,11 +61,11 @@ export default function Economic(props: { globalValues: IGlobalDailyState[] }) {
                 },
                 {
                     title: 'Reach',
-                    subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.reach, 0).toString()),
+                    subtitle: numericalValue(props.reachedLastMonth.toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
-                    tooltip: '{{value}} addresses were reach on {{date}}',
+                    tooltip: '{{value}} addresses reached on {{date}}',
                 },
             ]
             setFundraising(charts);

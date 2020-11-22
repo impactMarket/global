@@ -19,6 +19,7 @@ export default function App() {
     const [lastQuarterAvgSSI, setLastQuarterAvgSSI] = useState<{ date: Date, avgMedianSSI: number }[]>([]);
     const [todayData, setTodayData] = useState<{ totalClaimed: string, totalBeneficiaries: number, totalRaised: string } | undefined>(undefined);
     const [totalBackers, setTotalBackers] = useState<number>(0);
+    const [reachedLastMonth, setReachedLastMonth] = useState<number>(0);
 
     useEffect(() => {
         const loadGlobalValues = async () => {
@@ -28,6 +29,7 @@ export default function App() {
                 setLastQuarterAvgSSI(values.lastQuarterAvgSSI);
                 setTodayData(values.today);
                 setTotalBackers(values.totalBackers);
+                setReachedLastMonth(values.reachedLastMonth);
             }
         }
         loadGlobalValues();
@@ -46,7 +48,7 @@ export default function App() {
                 <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
                 <Distribution globalValues={globalValues} />
                 <Inflow globalValues={globalValues} />
-                <Economic globalValues={globalValues} />
+                <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} />
             </Container>
             <Footer />
         </ThemeProvider>
