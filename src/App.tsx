@@ -35,7 +35,7 @@ export default function App() {
         loadGlobalValues();
     }, []);
 
-    if (globalValues.length === 0 || lastQuarterAvgSSI.length === 0 || todayData === undefined || totalBackers === 0) {
+    if (globalValues.length === 0 || lastQuarterAvgSSI.length === 0 || todayData === undefined || totalBackers === 0 || reachedLastMonth === 0) {
         return null;
     }
 
