@@ -108,9 +108,9 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                     <span style={{ color: colors.softGray }}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center" variant="body">~${community.metrics!.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
-                                <TableCell align="center" variant="body">~{Math.floor(community.metrics!.estimatedDuration)} months</TableCell>
-                                <TableCell align="center" variant="body">{community.metrics!.ssi}</TableCell>
+                                <TableCell align="center" variant="body">~${community.metrics === undefined ? 0 : community.metrics!.ubiRate} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center" variant="body">~{Math.floor(community.metrics === undefined ? 0 : community.metrics!.estimatedDuration)} months</TableCell>
+                                <TableCell align="center" variant="body">{community.metrics === undefined ? 0 : community.metrics!.ssi}</TableCell>
                                 <TableCell align="center" variant="body">{community.state.beneficiaries}</TableCell>
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
                                 <TableCell align="center" variant="body">{community.state.backers}</TableCell>
