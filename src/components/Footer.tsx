@@ -27,6 +27,9 @@ export default function Footer() {
             <Typography variant="subtitle1">
                 impactMarket is an open, free, borderless, censorship-resistant and transparent crowdfinance infrastructure. It operates on top of <a href="http://celo.org/">Celo</a> protocol, uses cUSD (Celo Dollar) as main underlying digital asset, and runs autonomously through smart contracts.
             </Typography>
+            <Typography variant="subtitle1" style={{ padding: '20px 0px' }}>
+                © 2020 impactLabs
+            </Typography>
         </Container>
     </div>
 
