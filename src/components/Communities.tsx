@@ -1,4 +1,5 @@
 import {
+    Button,
     Grid,
     Table,
     TableBody,
@@ -43,6 +44,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
     const classes = useStyles();
     const [communities, setCommunities] = useState<ICommunityInfo[]>([]);
     const [chartAverageSSIData, setChartAverageSSIData] = useState<{ name: number, uv: any }[]>([]);
+    const [seeMore, setSeeMore] = useState(true);
 
     useEffect(() => {
         const loadCommunities = () => Api.getAllValidCommunities().then(setCommunities);
@@ -76,7 +78,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
     return <>
         <div>
             <Typography variant="h2" className={classes.headerSection}>
-                Communities
+                Communities ({communities.length})
             </Typography>
             <Typography variant="subtitle1">
                 UBI communities are usually managed and promoted by community leaders and social, governamental, or local organizations, who set up the initial UBI parameters, and add/remove which beneficiaries they believe would most benefit from it.
@@ -88,7 +90,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                     <TableHead>
                         <TableRow>
                             <TableCell variant="head">Community name<br /> & location</TableCell>
-                            <TableCell align="center" variant="head" >Allowance<br /> / Beneficiary</TableCell>
+                            <TableCell align="center" variant="head">Allowance<br /> / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Rate<br /> / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Duration</TableCell>
                             <TableCell align="center" variant="head">SSI*</TableCell>
@@ -100,7 +102,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {communities.map(community => (
+                        {communities.slice(0, seeMore ? 5 : communities.length).map(community => (
                             <TableRow key={community.publicId}>
                                 <TableCell variant="body">
                                     <span style={{ fontFamily: 'Gelion-Bold', lineHeight: '17px' }}>{community.name}</span>
@@ -125,6 +127,18 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 <TableCell align="center" variant="body"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
                             </TableRow>
                         ))}
+                        {seeMore && <TableRow key="seeMore">
+                            <TableCell colSpan={10} style={{ textAlign: 'center' }}>
+                                <Button
+                                    style={{ textTransform: 'capitalize', width: '20%' }}
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={() => setSeeMore(false)}
+                                >
+                                    See More
+                                </Button>
+                            </TableCell>
+                        </TableRow>}
                     </TableBody>
                 </Table>
             </TableContainer>
