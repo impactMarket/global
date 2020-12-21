@@ -70,6 +70,10 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 return '🇻🇪';
             case 'argentina':
                 return '🇦🇷';
+            case 'philippines':
+                return '🇵🇭';
+            case 'honduras':
+                return '🇭🇳';
             default:
                 return '';
         }
