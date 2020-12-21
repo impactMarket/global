@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IClaimLocation, ICommunityInfo, IGlobalApiResult } from '../types';
+import { IClaimLocation, ICommunity, IGlobalApiResult } from '../types';
 
 import config from './../config';
 
@@ -32,9 +32,9 @@ export default class Api {
         return result;
     }
 
-    static async getAllValidCommunities(): Promise<ICommunityInfo[]> {
-        const result = await getRequest<ICommunityInfo[]>(
-            '/community/all/valid'
+    static async getAllValidCommunities(): Promise<ICommunity[]> {
+        const result = await getRequest<ICommunity[]>(
+            '/community/list/full'
         );
         return result ? result : [];
     }

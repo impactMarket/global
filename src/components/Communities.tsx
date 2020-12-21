@@ -12,7 +12,7 @@ import {
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import Api from '../services/api';
-import { ICommunityInfo, IGlobalDailyState } from '../types';
+import { ICommunity, IGlobalDailyState } from '../types';
 import { claimFrequencyToText, currencyValue, humanifyNumber } from '../helpers';
 import { useStyles } from '../helpers/theme';
 import config from '../config';
@@ -42,7 +42,7 @@ function CustomTooltip(props: {
 
 export default function Communities(props: { globalValues: IGlobalDailyState[], lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[] }) {
     const classes = useStyles();
-    const [communities, setCommunities] = useState<ICommunityInfo[]>([]);
+    const [communities, setCommunities] = useState<ICommunity[]>([]);
     const [chartAverageSSIData, setChartAverageSSIData] = useState<{ name: number, uv: any }[]>([]);
     const [seeMore, setSeeMore] = useState(true);
 
@@ -109,10 +109,10 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                     <br />
                                     <span style={{ color: colors.softGray }}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
                                 </TableCell>
-                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.contractParams.claimAmount))} / {claimFrequencyToText(community.contractParams.baseInterval.toString())}</TableCell>
+                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.contract.claimAmount))} / {claimFrequencyToText(community.contract.baseInterval.toString())}</TableCell>
                                 <TableCell align="center" variant="body">
                                     {community.metrics === undefined ? '-' :
-                                        `~$${community.metrics.ubiRate} / ${claimFrequencyToText(community.contractParams.baseInterval.toString())}`}
+                                        `~$${community.metrics.ubiRate} / ${claimFrequencyToText(community.contract.baseInterval.toString())}`}
                                 </TableCell>
                                 <TableCell align="center" variant="body">
                                     {community.metrics === undefined ? '-' : `~${Math.floor(community.metrics.estimatedDuration)} months`}
@@ -123,8 +123,8 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 <TableCell align="center" variant="body">{community.state.beneficiaries}</TableCell>
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.claimed))} ({new BigNumber(community.state.claimed).dividedBy(community.state.raised).multipliedBy(100).decimalPlaces(0).toString()}%)</TableCell>
                                 <TableCell align="center" variant="body">{community.state.backers}</TableCell>
-                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contractParams.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
-                                <TableCell align="center" variant="body"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress)}</a></TableCell>
+                                <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.state.raised))} / {currencyValue(humanifyNumber(new BigNumber(community.contract.maxClaim).multipliedBy(community.state.beneficiaries)))}</TableCell>
+                                <TableCell align="center" variant="body"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress!)}</a></TableCell>
                             </TableRow>
                         ))}
                         {seeMore && <TableRow key="seeMore">

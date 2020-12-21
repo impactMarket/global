@@ -48,99 +48,53 @@ export interface IGlobalValue {
 
 // API and app
 
-export interface ICommunity {
+export interface CommunityAttributes {
     publicId: string;
     requestByAddress: string;
-    contractAddress: string;
+    contractAddress: string | null;
     name: string;
     description: string;
-    descriptionEn: string;
+    descriptionEn: string | null;
     language: string;
     currency: string;
-    country: string;
     city: string;
+    country: string;
     gps: {
         latitude: number;
         longitude: number;
     };
-    visibility: string;
     email: string;
+    visibility: 'public' | 'private';
     coverImage: string;
-    status: string;
-    /**
-     * @deprecated
-     */
-    txCreationObj: ICommunityVars; // TODO: remove in future
+    status: 'pending' | 'valid' | 'removed';
+    started: Date;
 }
 
-export interface ICommunityState {
+export interface CommunityStateAttributes {
     claimed: string;
-    raised: string;
+    claims: number;
     beneficiaries: number;
+    raised: string;
     backers: number;
 }
 
-export interface ICommunityMetrics {
+export interface CommunityContractAttributes {
+    claimAmount: string;
+    maxClaim: string;
+    baseInterval: number;
+    incrementInterval: number;
+}
+
+export interface CommunityDailyMetricsAttributes {
     ssiDayAlone: number;
     ssi: number;
     ubiRate: number;
     estimatedDuration: number;
-    historicalSSI: number[];
+    date: Date;
 }
 
-export interface ICommunityInfo extends ICommunity {
-    /**
-     * @deprecated
-     */
-    backers: string[];
-    beneficiaries: {
-        added: ICommunityInfoBeneficiary[];
-        removed: ICommunityInfoBeneficiary[];
-    };
-    managers: string[];
-    /**
-     * @deprecated
-     */
-    ssi: {
-        dates: Date[],
-        values: number[],
-    };
-    /**
-     * @deprecated
-     */
-    totalClaimed: string;
-    /**
-     * @deprecated
-     */
-    totalRaised: string;
-    /**
-     * @deprecated
-     */
-    vars: ICommunityVars; // TODO: remove
-    state: ICommunityState;
-    metrics?: ICommunityMetrics;
-    contractParams: ICommunityContractParams;
-}
-
-/**
- * @deprecated
- */
-export interface ICommunityVars {
-    _claimAmount: string;
-    _baseInterval: string;
-    _incrementInterval: string;
-    _maxClaim: string;
-}
-
-export interface ICommunityContractParams {
-    claimAmount: string,
-    maxClaim: string,
-    baseInterval: number,
-    incrementInterval: number,
-}
-
-export interface ICommunityInfoBeneficiary {
-    address: string;
-    name: string;
-    claimed: string;
+export interface ICommunity extends CommunityAttributes {
+    state: CommunityStateAttributes;
+    contract: CommunityContractAttributes;
+    metrics: CommunityDailyMetricsAttributes;
 }
