@@ -1,13 +1,19 @@
 import {
-    Button,
+    FormControl,
     Grid,
+    IconButton,
+    MenuItem,
+    Select,
     Table,
     TableBody,
     TableCell,
     TableContainer,
+    TableFooter,
     TableHead,
+    TablePagination,
     TableRow,
     Typography,
+    useTheme,
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
@@ -20,6 +26,10 @@ import Paper from './Paper';
 import { colors } from '../contants';
 import moment from 'moment';
 import { LineChart, XAxis, Line, Tooltip, ResponsiveContainer } from 'recharts';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 
 
 function CustomTooltip(props: {
@@ -40,14 +50,74 @@ function CustomTooltip(props: {
     return null;
 }
 
+function TablePaginationActions(props: {
+    count: number
+    onChangePage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, page: number) => void,
+    page: number,
+    rowsPerPage: number,
+}) {
+    const theme = useTheme();
+    const { count, page, rowsPerPage, onChangePage } = props;
+
+    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onChangePage(event, 0);
+    };
+
+    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onChangePage(event, page - 1);
+    };
+
+    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onChangePage(event, page + 1);
+    };
+
+    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+
+    return (
+        <div style={{
+            flexShrink: 0,
+            marginLeft: theme.spacing(2.5),
+        }}>
+            <IconButton
+                onClick={handleFirstPageButtonClick}
+                disabled={page === 0}
+                aria-label="first page"
+            >
+                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+            </IconButton>
+            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            </IconButton>
+            <IconButton
+                onClick={handleNextButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="next page"
+            >
+                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            </IconButton>
+            <IconButton
+                onClick={handleLastPageButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="last page"
+            >
+                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+            </IconButton>
+        </div>
+    );
+}
+
 export default function Communities(props: { globalValues: IGlobalDailyState[], lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[] }) {
     const classes = useStyles();
     const [communities, setCommunities] = useState<ICommunity[]>([]);
     const [chartAverageSSIData, setChartAverageSSIData] = useState<{ name: number, uv: any }[]>([]);
-    const [seeMore, setSeeMore] = useState(true);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [communitiesFilter, setCommunitiesFilter] = useState('bigger');
 
     useEffect(() => {
-        const loadCommunities = () => Api.getAllValidCommunities().then(setCommunities);
+        const loadCommunities = () => Api.listCommunities(communitiesFilter).then(setCommunities);
         loadCommunities();
         setChartAverageSSIData(props.lastQuarterAvgSSI.map((g) => ({ name: new Date(g.date).getTime(), uv: g.avgMedianSSI })).reverse());
     }, [props.globalValues, props.lastQuarterAvgSSI]);
@@ -79,6 +149,23 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
         }
     }
 
+    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: any) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const handleChangeFilter = (event: React.ChangeEvent<{
+        name?: string | undefined;
+        value: unknown;
+    }>, child: React.ReactNode) => {
+        setCommunitiesFilter(event.target.value as string);
+        Api.listCommunities(event.target.value as string).then(setCommunities);
+    }
+
     return <>
         <div>
             <Typography variant="h2" className={classes.headerSection}>
@@ -93,6 +180,22 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                 <Table >
                     <TableHead>
                         <TableRow>
+                            <TableCell variant="head" colSpan={10} align="right">
+                                <FormControl>
+                                    <Select
+                                        disableUnderline={true}
+                                        style={{ fontSize: '18px', color: colors.almostBlack }}
+                                        id="communities-filter-label-select"
+                                        value={communitiesFilter}
+                                        onChange={handleChangeFilter}
+                                    >
+                                        <MenuItem value="newest">Newest first</MenuItem>
+                                        <MenuItem value="bigger">Bigger first</MenuItem>
+                                        <MenuItem value="out_of_funds">Running out of funds first</MenuItem>
+                                    </Select>
+                                </FormControl></TableCell>
+                        </TableRow>
+                        <TableRow>
                             <TableCell variant="head">Community name<br /> & location</TableCell>
                             <TableCell align="center" variant="head">Allowance<br /> / Beneficiary</TableCell>
                             <TableCell align="center" variant="head">UBI Rate<br /> / Beneficiary</TableCell>
@@ -106,7 +209,10 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {communities.slice(0, seeMore ? 5 : communities.length).map(community => (
+                        {(rowsPerPage > 0
+                            ? communities.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : communities
+                        ).map(community => (
                             <TableRow key={community.publicId}>
                                 <TableCell variant="body">
                                     <span style={{ fontFamily: 'Gelion-Bold', lineHeight: '17px' }}>{community.name}</span>
@@ -131,19 +237,25 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 <TableCell align="center" variant="body"><a style={{ textDecoration: 'none' }} href={`${config.chainExplorer}/${community.contractAddress}/token_transfers`}>{shortenAddress(community.contractAddress!)}</a></TableCell>
                             </TableRow>
                         ))}
-                        {seeMore && <TableRow key="seeMore">
-                            <TableCell colSpan={10} style={{ textAlign: 'center' }}>
-                                <Button
-                                    style={{ textTransform: 'capitalize', width: '20%' }}
-                                    variant="outlined"
-                                    color="primary"
-                                    onClick={() => setSeeMore(false)}
-                                >
-                                    See More
-                                </Button>
-                            </TableCell>
-                        </TableRow>}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                colSpan={10}
+                                count={communities.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: { 'aria-label': 'rows per page' },
+                                    native: true,
+                                }}
+                                onChangePage={handleChangePage}
+                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </TableContainer>
             <Grid item xs={12} sm={12} style={{ marginTop: '32px' }}>

@@ -32,9 +32,9 @@ export default class Api {
         return result;
     }
 
-    static async getAllValidCommunities(): Promise<ICommunity[]> {
+    static async listCommunities(order: string): Promise<ICommunity[]> {
         const result = await getRequest<ICommunity[]>(
-            '/community/list/full'
+            '/community/list/full/' + order
         );
         return result ? result : [];
     }
