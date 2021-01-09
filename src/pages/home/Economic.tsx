@@ -1,48 +1,18 @@
 import { Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
-
-import {
-    LineChart,
-    Line,
-    BarChart,
-    Bar, Tooltip, XAxis, ResponsiveContainer
-} from 'recharts';
-import { colors } from '../../contants';
 import { useStyles } from '../../helpers/theme';
-
-import moment from 'moment';
 import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
-import { IGlobalDailyState } from '../../types';
-import Paper from '../../components/Paper';
-import Box from '../../components/Box';
-import config from '../../config';
-
-function CustomTooltip(props: {
-    tooltip: string,
-    type?: string,
-    payload?: any[],
-    label?: string,
-    active?: boolean,
-}) {
-    const { active, payload, label, tooltip } = props;
-    if (active && payload !== null && tooltip !== undefined) {
-        return (
-            <Paper style={{ padding: 10, textAlign: "center" }}>
-                <Typography variant="body1" >{tooltip.replace('{{date}}', moment(parseInt(label!)).format('MMMM Do')).replace('{{value}}', payload![0].value)}</Typography>
-            </Paper>
-        );
-    }
-    return null;
-}
+import { ChartData, IGlobalDailyState } from '../../types';
+import ChartBox from '../../components/ChartBox';
 
 export default function Economic(props: { globalValues: IGlobalDailyState[], reachedLastMonth: number }) {
     const classes = useStyles();
-    const [fundraising, setFundraising] = useState<any[]>([]);
+    const [fundraising, setFundraising] = useState<ChartData[]>([]);
 
     useEffect(() => {
         const loadFundraising = () => {
-            const charts = [
+            const charts: ChartData[] = [
                 {
                     title: 'Volume',
                     subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.volume), new BigNumber('0')).toString())),
@@ -50,6 +20,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.volume)) })).reverse(),
                     line: false,
                     tooltip: '${{value}} transacted on {{date}}',
+                    growth: Math.ceil((parseFloat(humanifyNumber(props.globalValues[0].volume)) - parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].volume))) / parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].volume)) * 100),
                 },
                 {
                     title: '# Transactions',
@@ -58,6 +29,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.transactions })).reverse(),
                     line: true,
                     tooltip: '{{value}} transactions on {{date}}',
+                    growth: Math.ceil((props.globalValues[0].transactions - props.globalValues[props.globalValues.length - 1].transactions) / props.globalValues[props.globalValues.length - 1].transactions * 100),
                 },
                 {
                     title: 'Reach',
@@ -66,29 +38,13 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
                     tooltip: '{{value}} addresses reached on {{date}}',
+                    growth: Math.ceil((props.globalValues[0].reach - props.globalValues[props.globalValues.length - 1].reach) / props.globalValues[props.globalValues.length - 1].reach * 100),
                 },
             ]
             setFundraising(charts);
         }
         loadFundraising();
     }, [props.globalValues]);
-
-    const drawChart = (chart: any) => {
-        if (chart.line) {
-            return <LineChart data={chart.data}>
-                <XAxis dataKey="name" hide />
-                <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
-                <Line type="monotone" dataKey="uv" stroke={colors.aquaBlue} strokeWidth={2} dot={<></>} />
-            </LineChart>
-        }
-        return <BarChart
-            data={chart.data}
-        >
-            <XAxis dataKey="name" hide />
-            <Tooltip content={<CustomTooltip tooltip={chart.tooltip} />} />
-            <Bar dataKey="uv" radius={[4, 4, 4, 4]} fill={colors.aquaBlue} barSize={4} />
-        </BarChart>
-    }
 
     return <>
         <div>
@@ -103,18 +59,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
             <Grid container justify="space-between" spacing={2}>
                 {fundraising.map((chart) => (
                     <Grid key={chart.title} item xs={12} sm={4}>
-                        <Paper style={{ padding: 16 }}>
-                            <Box
-                                title={chart.title}
-                                subtitle={chart.subtitle}
-                                postsubtitle={chart.postsubtitle}
-                                hasChart={true}
-                            >
-                                <ResponsiveContainer width="100%" height={config.chartsHeight}>
-                                    {drawChart(chart)}
-                                </ResponsiveContainer>
-                            </Box>
-                        </Paper>
+                        <ChartBox chart={chart} />
                     </Grid>
                 ))}
             </Grid>

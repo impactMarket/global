@@ -102,3 +102,19 @@ export interface ICommunity extends CommunityAttributes {
     contract: CommunityContractAttributes;
     metrics: CommunityDailyMetricsAttributes;
 }
+
+
+// in app
+
+export interface ChartData {
+    title: string;
+    subtitle: string;
+    postsubtitle: string;
+    data: {
+        name: number;
+        uv: number;
+    }[];
+    line: boolean;
+    tooltip: string;
+    growth: number;
+}
