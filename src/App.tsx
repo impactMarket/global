@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Container } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
-import GlobalSummary from './components/GlobalSummary';
-import Distribution from './components/Distribution';
+import GlobalSummary from './pages/home/GlobalSummary';
+import Distribution from './pages/home/Distribution';
 import { IGlobalDailyState } from './types';
-import Communities from './components/Communities';
+import Communities from './pages/home/Communities';
 import { muiTheme } from './helpers/theme';
-import Inflow from './components/Inflow';
+import Inflow from './pages/home/Inflow';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
-import HealingTheWorld from './components/HealingTheWorld';
-import Economic from './components/Economic';
+import HealingTheWorld from './pages/home/HealingTheWorld';
+import Economic from './pages/home/Economic';
 
 
 export default function App() {

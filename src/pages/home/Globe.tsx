@@ -1,9 +1,8 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import { withCookies, Cookies } from 'react-cookie';
-import Api from '../services/api';
-import config from '../config';
-import { IClaimLocation } from '../types';
+import Api from '../../services/api';
+import config from '../../config';
 
 mapboxgl.accessToken = config.mapBoxApiKey;
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Grid, Typography } from '@material-ui/core';
-import { IGlobalDailyState } from '../types';
-import Paper from './Paper';
-import { useStyles } from '../helpers/theme';
-import Box from './Box';
-import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
+import { IGlobalDailyState } from '../../types';
+import Paper from '../../components/Paper';
+import { useStyles } from '../../helpers/theme';
+import Box from '../../components/Box';
+import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
 import BigNumber from 'bignumber.js';
 
 export default function GlobalSummary(props: { globalValues: IGlobalDailyState; todayData: { totalClaimed: string, totalBeneficiaries: number, totalRaised: string }; totalBackers: number }) {

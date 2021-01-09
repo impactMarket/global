@@ -8,15 +8,15 @@ import {
     BarChart,
     Bar, Tooltip, XAxis, ResponsiveContainer
 } from 'recharts';
-import { colors } from '../contants';
-import { useStyles } from '../helpers/theme';
+import { colors } from '../../contants';
+import { useStyles } from '../../helpers/theme';
 
 import moment from 'moment';
-import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
-import { IGlobalDailyState } from '../types';
-import Paper from './Paper';
-import Box from './Box';
-import config from '../config';
+import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
+import { IGlobalDailyState } from '../../types';
+import Paper from '../../components/Paper';
+import Box from '../../components/Box';
+import config from '../../config';
 
 function CustomTooltip(props: {
     tooltip: string,

@@ -8,15 +8,15 @@ import {
     BarChart,
     Bar, Tooltip, XAxis, ResponsiveContainer
 } from 'recharts';
-import { colors } from '../contants';
-import { useStyles } from '../helpers/theme';
-import { IGlobalDailyState } from '../types';
+import { colors } from '../../contants';
+import { useStyles } from '../../helpers/theme';
+import { IGlobalDailyState } from '../../types';
 
 import moment from 'moment';
-import { currencyValue, humanifyNumber, numericalValue } from '../helpers';
-import Paper from './Paper';
-import Box from './Box';
-import config from '../config';
+import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
+import Paper from '../../components/Paper';
+import Box from '../../components/Box';
+import config from '../../config';
 
 function CustomTooltip(props: {
     tooltip: string,
@@ -36,13 +36,26 @@ function CustomTooltip(props: {
     return null;
 }
 
+interface ChartData {
+    title: string;
+    subtitle: string;
+    postsubtitle: string;
+    data: {
+        name: number;
+        uv: number;
+    }[];
+    line: boolean;
+    tooltip: string;
+    growth: number;
+}
+
 export default function Distribution(props: { globalValues: IGlobalDailyState[] }) {
     const classes = useStyles();
-    const [outflow, setOutflow] = useState<any[]>([]);
+    const [outflow, setOutflow] = useState<ChartData[]>([]);
 
     useEffect(() => {
         const loadOutflow = () => {
-            const charts = [
+            const charts: ChartData[] = [
                 {
                     title: 'Claimed',
                     subtitle: currencyValue(humanifyNumber(props.globalValues.reduce((acc, c) => acc.plus(c.claimed), new BigNumber('0')).toString())),
@@ -50,6 +63,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.claimed)) })).reverse(),
                     line: false,
                     tooltip: '${{value}} claimed on {{date}}',
+                    growth: Math.ceil((parseFloat(humanifyNumber(props.globalValues[0].claimed)) - parseFloat(humanifyNumber(props.globalValues[29].claimed))) / parseFloat(humanifyNumber(props.globalValues[29].claimed)) * 100)
                 },
                 {
                     title: '# Claims',
@@ -58,6 +72,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.claims })).reverse(),
                     line: true,
                     tooltip: '{{value}} claims on {{date}}',
+                    growth: Math.ceil((props.globalValues[0].claims - props.globalValues[29].claims) / props.globalValues[29].claims * 100)
                 },
                 {
                     title: 'New Beneficiaries',
@@ -66,6 +81,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.beneficiaries })).reverse(),
                     line: true,
                     tooltip: '{{value}} new beneficiaries on {{date}}',
+                    growth: Math.ceil((props.globalValues[0].beneficiaries - props.globalValues[29].beneficiaries) / props.globalValues[29].beneficiaries * 100)
                 },
             ]
             console.log(props.globalValues[0].date, new Date(props.globalValues[0].date))
@@ -74,7 +90,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
         loadOutflow();
     }, [props.globalValues]);
 
-    const drawChart = (chart: any) => {
+    const drawChart = (chart: ChartData) => {
         if (chart.line) {
             return <LineChart data={chart.data}>
                 <XAxis dataKey="name" hide />
@@ -117,6 +133,9 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                                     {drawChart(chart)}
                                 </ResponsiveContainer>
                             </Box>
+                            <Typography variant="body1" style={{ marginTop: '10px' }}>
+                                <img src="assets/chart/up.svg" /> <b>{chart.growth}%</b> Last 30 days
+                            </Typography>
                         </Paper>
                     </Grid>
                 ))}

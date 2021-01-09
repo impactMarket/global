@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
-import { useStyles } from '../helpers/theme';
+import { useStyles } from '../../helpers/theme';
 import Globe from './Globe';
 
 
