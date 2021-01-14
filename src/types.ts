@@ -1,9 +1,13 @@
+// export interface IClaimLocation {
+//     communityId: string;
+//     gps: {
+//         latitude: number,
+//         longitude: number;
+//     };
+// }
 export interface IClaimLocation {
-    communityId: string;
-    gps: {
-        latitude: number,
-        longitude: number;
-    };
+    latitude: number,
+    longitude: number;
 }
 
 export interface IGlobalDailyState {

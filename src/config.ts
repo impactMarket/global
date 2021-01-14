@@ -46,5 +46,13 @@ export default {
      */
     useFirebase: process.env.REACT_APP_USE_FIREBASE === 'true',
 
+    /**
+     * Charts fixed hight
+     */
     chartsHeight: 148,
+
+    /**
+     * MaxAge for caching claims on users browser
+     */
+    cacheClaimsMaxAge: process.env.REACT_APP_CACHE_CLAIMS_MAX_AGE,
 };
