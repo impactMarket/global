@@ -135,31 +135,6 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
 
     const shortenAddress = (address: string) => `${address.slice(0, 6)}..${address.slice(38, 42)}`;
 
-    function getCountryFlag(countryName: string) {
-        switch (countryName) {
-            case 'portugal':
-                return '🇵🇹';
-            case 'brasil':
-                return '🇧🇷';
-            case 'ghana':
-                return '🇬🇭';
-            case 'cabo verde':
-                return '🇨🇻';
-            case 'nigeria':
-                return '🇳🇬';
-            case 'venezuela':
-                return '🇻🇪';
-            case 'argentina':
-                return '🇦🇷';
-            case 'philippines':
-                return '🇵🇭';
-            case 'honduras':
-                return '🇭🇳';
-            default:
-                return '';
-        }
-    }
-
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         setPage(newPage);
     };
