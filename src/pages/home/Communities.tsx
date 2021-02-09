@@ -30,8 +30,19 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import countriesJSON from '../../components/countries.json';
 
 
+const countries: {
+    [key: string]: {
+        name: string;
+        native: string;
+        phone: string;
+        currency: string;
+        languages: string[];
+        emoji: string;
+    };
+} = countriesJSON;
 function CustomTooltip(props: {
     tooltip: string,
     type?: string,
@@ -124,31 +135,6 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
 
     const shortenAddress = (address: string) => `${address.slice(0, 6)}..${address.slice(38, 42)}`;
 
-    function getCountryFlag(countryName: string) {
-        switch (countryName) {
-            case 'portugal':
-                return '🇵🇹';
-            case 'brasil':
-                return '🇧🇷';
-            case 'ghana':
-                return '🇬🇭';
-            case 'cabo verde':
-                return '🇨🇻';
-            case 'nigeria':
-                return '🇳🇬';
-            case 'venezuela':
-                return '🇻🇪';
-            case 'argentina':
-                return '🇦🇷';
-            case 'philippines':
-                return '🇵🇭';
-            case 'honduras':
-                return '🇭🇳';
-            default:
-                return '';
-        }
-    }
-
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         setPage(newPage);
     };
@@ -217,7 +203,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
                                 <TableCell variant="body">
                                     <span style={{ fontFamily: 'Gelion-Bold', lineHeight: '17px' }}>{community.name}</span>
                                     <br />
-                                    <span style={{ color: colors.softGray }}>{community.city}, {community.country}&ensp;{getCountryFlag(community.country.toLowerCase())}</span>
+                                    <span style={{ color: colors.softGray }}>{community.city}, {countries[community.country].name}&ensp;{countries[community.country].emoji}</span>
                                 </TableCell>
                                 <TableCell align="center" variant="body">{currencyValue(humanifyNumber(community.contract.claimAmount))} / {claimFrequencyToText(community.contract.baseInterval.toString())}</TableCell>
                                 <TableCell align="center" variant="body">

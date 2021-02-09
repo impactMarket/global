@@ -113,7 +113,7 @@ export interface CommunityDailyMetricsAttributes {
 export interface ICommunity extends CommunityAttributes {
     state: CommunityStateAttributes;
     contract: CommunityContractAttributes;
-    metrics: CommunityDailyMetricsAttributes;
+    metrics?: CommunityDailyMetricsAttributes;
 }
 
 
