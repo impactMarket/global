@@ -3,6 +3,11 @@ import { Paper } from "@material-ui/core";
 
 export default styled(Paper)`
     background: #FFFFFF;
-    box-shadow: 0px 2px 14px #E1E4E7;
     border-radius: 8px;
+    box-shadow: 0px 2px 14px #E1E4E7;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction:column;
+    height: 100%;
+    overflow: hidden;
 `;

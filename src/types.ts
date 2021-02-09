@@ -133,3 +133,19 @@ export interface ChartData {
     tooltip: string;
     growth: number;
 }
+
+export interface IDemographics {
+  id: string | number;
+  date: Date;
+  country: string;
+  male: number;
+  female: number;
+  ageRange1: number;
+  ageRange2: number;
+  ageRange3: number;
+  ageRange4: number;
+  ageRange5: number;
+  ageRange6: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
