@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { useStyles } from '../../helpers/theme';
 import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
-import { ChartData, IGlobalDailyState } from '../../types';
+import { ChartData, GlobalGrowth, IGlobalDailyState } from '../../types';
 import ChartBox from '../../components/ChartBox';
 
-export default function Economic(props: { globalValues: IGlobalDailyState[], reachedLastMonth: number }) {
+export default function Economic(props: { globalValues: IGlobalDailyState[], reachedLastMonth: number,  growth: GlobalGrowth }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<ChartData[]>([]);
 
@@ -20,7 +20,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.volume)) })).reverse(),
                     line: false,
                     tooltip: '${{value}} transacted on {{date}}',
-                    growth: Math.ceil((parseFloat(humanifyNumber(props.globalValues[0].volume)) - parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].volume))) / parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].volume)) * 100),
+                    growth: props.growth.volume,
                 },
                 {
                     title: '# Transactions',
@@ -29,7 +29,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.transactions })).reverse(),
                     line: true,
                     tooltip: '{{value}} transactions on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].transactions - props.globalValues[props.globalValues.length - 1].transactions) / props.globalValues[props.globalValues.length - 1].transactions * 100),
+                    growth: props.growth.transactions,
                 },
                 {
                     title: 'Reach',
@@ -38,7 +38,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.reach })).reverse(),
                     line: true,
                     tooltip: '{{value}} addresses reached on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].reach - props.globalValues[props.globalValues.length - 1].reach) / props.globalValues[props.globalValues.length - 1].reach * 100),
+                    growth: props.growth.reach,
                 },
             ]
             setFundraising(charts);

@@ -1,10 +1,17 @@
-// export interface IClaimLocation {
-//     communityId: string;
-//     gps: {
-//         latitude: number,
-//         longitude: number;
-//     };
-// }
+export interface GlobalGrowth {
+    date: Date;
+    claimed: number;
+    claims: number;
+    beneficiaries: number;
+    raised: number;
+    backers: number;
+    fundingRate: number;
+    volume: number;
+    transactions: number;
+    reach: number;
+    reachOut: number;
+}
+
 export interface IClaimLocation {
     latitude: number,
     longitude: number;
@@ -21,6 +28,7 @@ export interface IGlobalDailyState {
     volume: string;
     transactions: number;
     reach: number;
+    reachOut: number;
     totalRaised: string;
     totalDistributed: string;
     totalBackers: number;
@@ -34,6 +42,7 @@ export interface IGlobalDailyState {
     totalVolume: string;
     totalTransactions: BigInt;
     totalReach: BigInt;
+    totalReachOut: BigInt;
 }
 
 export interface IGlobalApiResult {
@@ -41,7 +50,11 @@ export interface IGlobalApiResult {
     lastQuarterAvgSSI: { date: Date, avgMedianSSI: number }[];
     today: { totalClaimed: string, totalBeneficiaries: number, totalRaised: string };
     totalBackers: number;
-    reachedLastMonth: number;
+    reachedLastMonth: {
+        reach: number;
+        reachOut: number;
+    };
+    growth: GlobalGrowth;
 }
 
 export interface IGlobalValue {

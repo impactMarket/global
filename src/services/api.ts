@@ -27,7 +27,7 @@ async function getRequest<T>(endpoint: string): Promise<T | undefined> {
 export default class Api {
     static async getGlobalValues(): Promise<IGlobalApiResult | undefined> {
         const result = await getRequest<IGlobalApiResult>(
-            '/global-status'
+            '/global/status'
         );
         return result;
     }

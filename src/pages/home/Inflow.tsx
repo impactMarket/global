@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { useStyles } from '../../helpers/theme';
 import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
-import { ChartData, IGlobalDailyState } from '../../types';
+import { ChartData, GlobalGrowth, IGlobalDailyState } from '../../types';
 import ChartBox from '../../components/ChartBox';
 
-export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
+export default function Inflow(props: { globalValues: IGlobalDailyState[],  growth: GlobalGrowth }) {
     const classes = useStyles();
     const [fundraising, setFundraising] = useState<ChartData[]>([]);
 
@@ -20,7 +20,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.raised)) })).reverse(),
                     line: false,
                     tooltip: '${{value}} raised on {{date}}',
-                    growth: Math.ceil((parseFloat(humanifyNumber(props.globalValues[0].raised)) - parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].raised))) / parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].raised)) * 100),
+                    growth: props.growth.raised,
                 },
                 {
                     title: '# Backers',
@@ -29,7 +29,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.backers })).reverse(),
                     line: true,
                     tooltip: '{{value}} monthy active backers on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].backers - props.globalValues[props.globalValues.length - 1].backers) / props.globalValues[props.globalValues.length - 1].backers * 100),
+                    growth: props.growth.backers,
                 },
                 {
                     title: 'Funding Rate',
@@ -38,7 +38,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[] }) {
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.fundingRate })).reverse(),
                     line: true,
                     tooltip: '{{value}} funding rate on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].fundingRate - props.globalValues[props.globalValues.length - 1].fundingRate) / props.globalValues[props.globalValues.length - 1].fundingRate * 100),
+                    growth: props.growth.fundingRate,
                 },
             ]
             setFundraising(charts);

@@ -2,11 +2,11 @@ import { Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { useStyles } from '../../helpers/theme';
-import { ChartData, IGlobalDailyState } from '../../types';
+import { ChartData, GlobalGrowth, IGlobalDailyState } from '../../types';
 import { currencyValue, humanifyNumber, numericalValue } from '../../helpers';
 import ChartBox from '../../components/ChartBox';
 
-export default function Distribution(props: { globalValues: IGlobalDailyState[] }) {
+export default function Distribution(props: { globalValues: IGlobalDailyState[],  growth: GlobalGrowth }) {
     const classes = useStyles();
     const [outflow, setOutflow] = useState<ChartData[]>([]);
 
@@ -20,7 +20,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.claimed)) })).reverse(),
                     line: false,
                     tooltip: '${{value}} claimed on {{date}}',
-                    growth: Math.ceil((parseFloat(humanifyNumber(props.globalValues[0].claimed)) - parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].claimed))) / parseFloat(humanifyNumber(props.globalValues[props.globalValues.length - 1].claimed)) * 100),
+                    growth: props.growth.claimed,
                 },
                 {
                     title: '# Claims',
@@ -29,7 +29,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.claims })).reverse(),
                     line: true,
                     tooltip: '{{value}} claims on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].claims - props.globalValues[props.globalValues.length - 1].claims) / props.globalValues[props.globalValues.length - 1].claims * 100),
+                    growth: props.growth.claims,
                 },
                 {
                     title: 'New Beneficiaries',
@@ -38,7 +38,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[] 
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.beneficiaries })).reverse(),
                     line: true,
                     tooltip: '{{value}} new beneficiaries on {{date}}',
-                    growth: Math.ceil((props.globalValues[0].beneficiaries - props.globalValues[props.globalValues.length - 1].beneficiaries) / props.globalValues[props.globalValues.length - 1].beneficiaries * 100),
+                    growth: props.growth.beneficiaries,
                 },
             ]
             console.log(props.globalValues[0].date, new Date(props.globalValues[0].date))

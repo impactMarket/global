@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
 import GlobalSummary from './pages/home/GlobalSummary';
 import Distribution from './pages/home/Distribution';
-import { IGlobalDailyState } from './types';
+import { GlobalGrowth, IGlobalDailyState } from './types';
 import Communities from './pages/home/Communities';
 import { muiTheme } from './helpers/theme';
 import Inflow from './pages/home/Inflow';
@@ -20,6 +20,7 @@ export default function App() {
     const [todayData, setTodayData] = useState<{ totalClaimed: string, totalBeneficiaries: number, totalRaised: string } | undefined>(undefined);
     const [totalBackers, setTotalBackers] = useState<number>(0);
     const [reachedLastMonth, setReachedLastMonth] = useState<number>(0);
+    const [globalGrowth, setGlobalGrowth] = useState<GlobalGrowth>();
 
     useEffect(() => {
         const loadGlobalValues = async () => {
@@ -29,13 +30,14 @@ export default function App() {
                 setLastQuarterAvgSSI(values.lastQuarterAvgSSI);
                 setTodayData(values.today);
                 setTotalBackers(values.totalBackers);
-                setReachedLastMonth(values.reachedLastMonth);
+                setReachedLastMonth(values.reachedLastMonth.reach);
+                setGlobalGrowth(values.growth);
             }
         }
         loadGlobalValues();
     }, []);
 
-    if (globalValues.length === 0 || lastQuarterAvgSSI.length === 0 || todayData === undefined || totalBackers === 0 || reachedLastMonth === 0) {
+    if (globalValues.length === 0 || lastQuarterAvgSSI.length === 0 || todayData === undefined || totalBackers === 0 || reachedLastMonth === 0 || globalGrowth === undefined) {
         return null;
     }
 
@@ -46,9 +48,9 @@ export default function App() {
             <Container maxWidth="lg">
                 <HealingTheWorld />
                 <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
-                <Distribution globalValues={globalValues} />
-                <Inflow globalValues={globalValues} />
-                <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} />
+                <Distribution globalValues={globalValues} growth={globalGrowth} />
+                <Inflow globalValues={globalValues} growth={globalGrowth} />
+                <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} growth={globalGrowth} />
             </Container>
             <Footer />
         </ThemeProvider>
