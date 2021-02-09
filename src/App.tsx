@@ -5,6 +5,7 @@ import Api from './services/api';
 import GlobalSummary from './pages/home/GlobalSummary';
 import Distribution from './pages/home/Distribution';
 import { GlobalGrowth, IGlobalDailyState } from './types';
+import Demographics from './components/Demographics';
 import Communities from './pages/home/Communities';
 import { muiTheme } from './helpers/theme';
 import Inflow from './pages/home/Inflow';
@@ -16,6 +17,7 @@ import Economic from './pages/home/Economic';
 
 export default function App() {
     const [globalValues, setGlobalValues] = useState<IGlobalDailyState[]>([]);
+    const [globalDemographics, setGlobalDemographics] = useState<any>([]);
     const [lastQuarterAvgSSI, setLastQuarterAvgSSI] = useState<{ date: Date, avgMedianSSI: number }[]>([]);
     const [todayData, setTodayData] = useState<{ totalClaimed: string, totalBeneficiaries: number, totalRaised: string } | undefined>(undefined);
     const [totalBackers, setTotalBackers] = useState<number>(0);
@@ -34,7 +36,16 @@ export default function App() {
                 setGlobalGrowth(values.growth);
             }
         }
+
+        const getGlobalDemographics = async () => {
+          const results = await Api.getGlobalDemographics();
+
+          setGlobalDemographics(results);
+        };
+
         loadGlobalValues();
+        getGlobalDemographics();
+
     }, []);
 
     if (globalValues.length === 0 || lastQuarterAvgSSI.length === 0 || todayData === undefined || totalBackers === 0 || reachedLastMonth === 0 || globalGrowth === undefined) {
@@ -48,6 +59,7 @@ export default function App() {
             <Container maxWidth="lg">
                 <HealingTheWorld />
                 <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
+                <Demographics globalDemographics={globalDemographics} />
                 <Distribution globalValues={globalValues} growth={globalGrowth} />
                 <Inflow globalValues={globalValues} growth={globalGrowth} />
                 <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} growth={globalGrowth} />

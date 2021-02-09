@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IClaimLocation, ICommunity, IGlobalApiResult } from '../types';
+import { IClaimLocation, ICommunity, IDemographics, IGlobalApiResult } from '../types';
 
 import config from './../config';
 
@@ -29,6 +29,14 @@ export default class Api {
         const result = await getRequest<IGlobalApiResult>(
             '/global/status'
         );
+        return result;
+    }
+
+    static async getGlobalDemographics(): Promise<IDemographics[] | undefined> {
+        const result = await getRequest<IDemographics[]>(
+            '/global/demographics'
+        );
+
         return result;
     }
 

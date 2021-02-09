@@ -126,6 +126,11 @@ const muiTheme = createMuiTheme({
             lineHeight: '17px',
             color: colors.almostBlack,
         },
+        caption: {
+            fontSize: '14px',
+            lineHeight: 1.25,
+            color: colors.secondaryText
+        }
     },
     shape: {
         borderRadius: 8
