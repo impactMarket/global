@@ -54,5 +54,5 @@ export default {
     /**
      * MaxAge for caching claims on users browser
      */
-    cacheClaimsMaxAge: process.env.REACT_APP_CACHE_CLAIMS_MAX_AGE,
+    cacheClaimsMaxAge: parseInt(process.env.REACT_APP_CACHE_CLAIMS_MAX_AGE!, 10),
 };
