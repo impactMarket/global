@@ -66,7 +66,7 @@ export default class ChartBox extends Component<IChartBoxProps, {}> {
                     </ResponsiveContainer>
                 </Box>
                 <Typography variant="body1" style={{ marginTop: '10px' }}>
-                    {chart.growth > 0 ? <img src="assets/chart/up.svg" /> : <img src="assets/chart/down.svg" />} <b>{chart.growth}%</b> Last 30 days
+                    {chart.growth > 0 ? <img src="assets/chart/up.svg" /> : <img src="assets/chart/down.svg" />} <b>{chart.growth}%</b> vs previous 30 days
                 </Typography>
             </Paper>
         )
