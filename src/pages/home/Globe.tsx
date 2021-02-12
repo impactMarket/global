@@ -31,19 +31,18 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
             return;
         }
         const { cookies } = this.props;
-        const previousClaims = cookies.get('claims');
+        const previousClaims = localStorage.getItem('claims');
         let claims: IClaimLocation[];
-        if (previousClaims) {
-            claims = previousClaims;
+        if (previousClaims !== null && cookies.get('claims') === true) {
+            claims = JSON.parse(previousClaims);
         } else {
             claims = await Api.getAllClaimLocation();
-            cookies.set('claims', {
-                maxAge: config.cacheClaimsMaxAge
-            });
+            localStorage.setItem('claims', JSON.stringify(claims));
+            cookies.set('claims', true, { path: '/', maxAge: config.cacheClaimsMaxAge });
         }
         const bounds = new mapboxgl.LngLatBounds();
 
-        claims.map((c) => bounds.extend([c.longitude, c.latitude]));
+        claims.map((c) => bounds.extend([c.gps.longitude, c.gps.latitude]));
         bounds.setNorthEast({ lng: bounds.getNorthEast().lng, lat: bounds.getNorthEast().lat + 2 })
         bounds.setSouthWest({ lng: bounds.getSouthWest().lng, lat: bounds.getSouthWest().lat - 2 })
 
@@ -71,7 +70,7 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
                     type: "Feature",
                     geometry: {
                         type: "Point",
-                        coordinates: [c.longitude, c.latitude]
+                        coordinates: [c.gps.longitude, c.gps.latitude]
                     }
                 }
             ))

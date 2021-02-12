@@ -23,7 +23,7 @@ export default function Economic(props: { globalValues: IGlobalDailyState[], rea
                     growth: props.growth.volume,
                 },
                 {
-                    title: '# Transactions',
+                    title: '# Transfers',
                     subtitle: numericalValue(props.globalValues.reduce((acc, c) => acc + c.transactions, 0).toString()),
                     postsubtitle: '',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: g.transactions })).reverse(),

@@ -61,7 +61,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
             postsubtitle: 'cUSD',
         },
         {
-            title: '# Transactions',
+            title: '# Transfers',
             subtitle: numericalValue(props.globalValues.totalTransactions.toString()),
         },
         {

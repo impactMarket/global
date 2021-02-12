@@ -13,8 +13,10 @@ export interface GlobalGrowth {
 }
 
 export interface IClaimLocation {
-    latitude: number,
-    longitude: number;
+    gps: {
+        latitude: number,
+        longitude: number;
+    }
 }
 
 export interface IGlobalDailyState {
