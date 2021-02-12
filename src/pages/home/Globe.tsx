@@ -33,12 +33,12 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
         const { cookies } = this.props;
         const previousClaims = localStorage.getItem('claims');
         let claims: IClaimLocation[];
-        if (previousClaims !== null && cookies.get('claims') === true) {
+        if (previousClaims !== null && cookies.get('claims') === 'true') {
             claims = JSON.parse(previousClaims);
         } else {
             claims = await Api.getAllClaimLocation();
             localStorage.setItem('claims', JSON.stringify(claims));
-            cookies.set('claims', true, { path: '/', maxAge: config.cacheClaimsMaxAge });
+            cookies.set('claims', 'true', { path: '/', maxAge: config.cacheClaimsMaxAge });
         }
         const bounds = new mapboxgl.LngLatBounds();
 
