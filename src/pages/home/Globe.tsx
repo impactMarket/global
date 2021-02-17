@@ -31,15 +31,7 @@ class Globe extends React.Component<{ cookies: Cookies }, IGlobeState> {
             return;
         }
         const { cookies } = this.props;
-        const previousClaims = localStorage.getItem('claims');
-        let claims: IClaimLocation[];
-        if (previousClaims !== null && cookies.get('claims') === 'true') {
-            claims = JSON.parse(previousClaims);
-        } else {
-            claims = await Api.getAllClaimLocation();
-            localStorage.setItem('claims', JSON.stringify(claims));
-            cookies.set('claims', 'true', { path: '/', maxAge: config.cacheClaimsMaxAge });
-        }
+        const claims = await Api.getAllClaimLocation();
         const bounds = new mapboxgl.LngLatBounds();
 
         claims.map((c) => bounds.extend([c.gps.longitude, c.gps.latitude]));
