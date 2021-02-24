@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Api from './services/api';
 import GlobalSummary from './pages/home/GlobalSummary';
 import Distribution from './pages/home/Distribution';
-import { GlobalGrowth, IGlobalDailyState } from './types';
+import { GlobalGrowth, IDemographics, IGlobalDailyState } from './types';
 import Demographics from './components/Demographics';
 import Communities from './pages/home/Communities';
 import { muiTheme } from './helpers/theme';
@@ -17,7 +17,7 @@ import Economic from './pages/home/Economic';
 
 export default function App() {
     const [globalValues, setGlobalValues] = useState<IGlobalDailyState[]>([]);
-    const [globalDemographics, setGlobalDemographics] = useState<any>([]);
+    const [globalDemographics, setGlobalDemographics] = useState<IDemographics[]>([]);
     const [lastQuarterAvgSSI, setLastQuarterAvgSSI] = useState<{ date: Date, avgMedianSSI: number }[]>([]);
     const [todayData, setTodayData] = useState<{ totalClaimed: string, totalBeneficiaries: number, totalRaised: string } | undefined>(undefined);
     const [totalBackers, setTotalBackers] = useState<number>(0);
@@ -37,10 +37,11 @@ export default function App() {
             }
         }
 
-        const getGlobalDemographics = async () => {
-          const results = await Api.getGlobalDemographics();
-
-          setGlobalDemographics(results);
+        const getGlobalDemographics = async () => {
+            const results = await Api.getGlobalDemographics();
+            if (results) {
+                setGlobalDemographics(results);
+            }
         };
 
         loadGlobalValues();
