@@ -13,7 +13,9 @@ import Footer from './components/Footer';
 import Banner from './components/Banner';
 import HealingTheWorld from './pages/home/HealingTheWorld';
 import Economic from './pages/home/Economic';
-
+import './App.css';
+import { ModalManager } from './lib/modalManager/ModalManager';
+import { modals } from './modals';
 
 export default function App() {
     const [globalValues, setGlobalValues] = useState<IGlobalDailyState[]>([]);
@@ -55,6 +57,7 @@ export default function App() {
 
     return (
         <ThemeProvider theme={muiTheme}>
+            <ModalManager modals={modals} />
             <Banner />
             <GlobalSummary globalValues={globalValues[0]} todayData={todayData} totalBackers={totalBackers} />
             <Container maxWidth="lg">
