@@ -106,9 +106,10 @@ const CustomTooltip = (props: {
 }) => {
   const { active, payload = [] } = props;
 
-  if (active && payload !== null) {
-      return (
-          <Paper style={{ padding: 10, textAlign: 'center' }}>
+if (active && payload !== null) {
+        const undisclosedPercentage = +((payload[0]?.payload?.undisclosed / payload[0]?.payload?.total) * 100).toFixed(2)
+        return (
+            <Paper style={{ padding: 10, textAlign: 'center' }}>
                 {payload.map(({name, payload: { total }, value}, index) => {
                     const percentage = +((value / total) * 100).toFixed(2);
 
@@ -118,7 +119,10 @@ const CustomTooltip = (props: {
                         </Typography>
                     )
                 })}
-          </Paper>
+                <Typography variant='body1' style={{ textAlign: 'left' }}>
+                    Undisclosed: {!isNaN(undisclosedPercentage) ? `${undisclosedPercentage}%` : '---'}
+                </Typography>
+            </Paper>
       );
   }
   return null;
@@ -160,66 +164,66 @@ const Demographics = (props: { globalDemographics: IDemographics[] }) => {
             </Typography>
             <DemographicsWrapper style={{ margin: "16px 0px" }}>
                 <Grid alignItems="stretch" container justify="flex-start" spacing={2}>
-					<Grid item lg={4} md={6} xs={12}>
+                    <Grid item lg={4} md={6} xs={12}>
                         <Paper style={{ padding: 16 }}>
-							<Box flex hasChart title="Age Range">
-								<ResponsiveContainer width="100%" height={config.chartsHeight}>
-									<BarChart data={ageRankData} margin={{ top: 16 }}>
-										<XAxis axisLine={false} dataKey="label" tickLine={false} />
-										<Bar
-											barSize={32}
-											dataKey="percentage"
-											fill="rgba(116, 114, 243, 0.5)"
-											radius={[4, 4, 4, 4]}
-										>
-											<LabelList dataKey="percentage" formatter={(val) => `${val}%`} offset={8} position="top" />
-										</Bar>
-									</BarChart>
-								</ResponsiveContainer>
-							</Box>
+                        <Box flex hasChart title="Age Range">
+                            <ResponsiveContainer width="100%" height={config.chartsHeight}>
+                            <BarChart data={ageRankData} margin={{ top: 16 }}>
+                                <XAxis axisLine={false} dataKey="label" tickLine={false} />
+                                <Bar
+                                    barSize={32}
+                                    dataKey="percentage"
+                                    fill="rgba(116, 114, 243, 0.5)"
+                                    radius={[4, 4, 4, 4]}
+                                >
+                                <LabelList dataKey="percentage" formatter={(val) => `${val}%`} offset={8} position="top" />
+                                </Bar>
+                            </BarChart>
+                            </ResponsiveContainer>
+                        </Box>
                         </Paper>
-					</Grid>
-					<Grid item lg={8} md={6} xs={12}>
-						<Paper style={{ padding: 16 }}>
-							<Box flex legend={<Legend />} title="Country (Number of beneficiaries)">
-								<CountryChartsWrapper>
-									{countriesData.map((countryData, index) => (
-										<CountryChartPage key={index} activePage={countryPage} index={index}>
-											<ResponsiveContainer height={config.chartsHeight}>
-												<BarChart data={countryData} layout="vertical" margin={{ right: 50 }}>
-                                                    <XAxis hide={true} type="number" />
-													<YAxis axisLine={false} dataKey="country" width={80} tickLine={false} type="category" />
-                                                    <Tooltip content={<CustomTooltip />} />
-													<Bar
-														barSize={10}
-														dataKey="male"
-														fill={colors.male}
-														radius={[4, 0, 0, 4]}
-														stackId="a"
-													/>
-													<Bar
-														barSize={10}
-														dataKey="female"
-														fill={colors.female}
-														radius={[0, 4, 4, 0]}
-														stackId="a"
-													>
-                                                        <LabelList dataKey="total" offset={5} position="right" />
-                                                    </Bar>
-												</BarChart>
-											</ResponsiveContainer>
-										</CountryChartPage>
-									))}
-								</CountryChartsWrapper>
-                                <Pagination
-                                    activePage={countryPage}
-                                    handlePageChange={changePage}
-                                    isLastPage={(countryPage + 1) * countriesPerPage >= countriesCount}
-                                    label={getPaginationLabel(countryPage, countriesCount)}
-                                />
-							</Box>
-						</Paper>
-					</Grid>
+                    </Grid>
+                    <Grid item lg={8} md={6} xs={12}>
+                        <Paper style={{ padding: 16 }}>
+                        <Box flex legend={<Legend />} title="Country (Number of beneficiaries)">
+                            <CountryChartsWrapper>
+                            {countriesData.map((countryData, index) => (
+                                <CountryChartPage key={index} activePage={countryPage} index={index}>
+                                <ResponsiveContainer height={config.chartsHeight}>
+                                    <BarChart data={countryData} layout="vertical" margin={{ right: 50 }}>
+                                    <XAxis hide={true} type="number" />
+                                    <YAxis axisLine={false} dataKey="country" width={80} tickLine={false} type="category" />
+                                    <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f2f2f2' }} />
+                                    <Bar
+                                        barSize={10}
+                                        dataKey="male"
+                                        fill={colors.male}
+                                        radius={[4, 0, 0, 4]}
+                                        stackId="a"
+                                    />
+                                    <Bar
+                                        barSize={10}
+                                        dataKey="female"
+                                        fill={colors.female}
+                                        radius={[0, 4, 4, 0]}
+                                        stackId="a"
+                                    >
+                                        <LabelList dataKey="total" offset={5} position="right" />
+                                    </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                                </CountryChartPage>
+                            ))}
+                            </CountryChartsWrapper>
+                            <Pagination
+                                activePage={countryPage}
+                                handlePageChange={changePage}
+                                isLastPage={(countryPage + 1) * countriesPerPage >= countriesCount}
+                                label={getPaginationLabel(countryPage, countriesCount)}
+                            />
+                        </Box>
+                        </Paper>
+                    </Grid>
                 </Grid>
             </DemographicsWrapper>
         </>

@@ -10,6 +10,7 @@ interface IBeneficaryItem {
     female: number;
     male: number;
     total: number;
+    undisclosed: number;
 }
 
 const countries: {
@@ -66,20 +67,21 @@ export const getDemographicsBeneficiariesByCountry = (
         return [];
     }
 
-    const result = data.map(({ country: countryCode, female, male }) => {
+    const result = data.map(({ country: countryCode, female, male, totalGender, undisclosed }) => {
         const country = countries[countryCode]?.name;
 
         return {
             country,
             female,
             male,
-            total: female + male,
+            total: totalGender,
+            undisclosed,
         };
     });
 
     const chunks = chunk(sortBy(result, ['total']).reverse(), chunkSize);
 
-    chunks[chunks.length - 1] = [...chunks[chunks.length - 1], ...new Array(chunkSize - chunks[chunks.length - 1].length).map(() => ({ country: '', female: 0, male: 0, total: 0 }))];
+    chunks[chunks.length - 1] = [...chunks[chunks.length - 1], ...new Array(chunkSize - chunks[chunks.length - 1].length).map(() => ({ country: '', female: 0, male: 0, total: 0, undisclosed: 0 }))];
 
     return chunks;
 };
