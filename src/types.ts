@@ -147,5 +147,7 @@ export interface IDemographics {
   ageRange5: number;
   ageRange6: number;
   createdAt: Date;
+  totalGender: number;
+  undisclosed: number;
   updatedAt: Date;
 }
