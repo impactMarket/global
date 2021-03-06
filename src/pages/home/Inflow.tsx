@@ -19,6 +19,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[],  grow
                     postsubtitle: 'cUSD',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.raised)) })).reverse(),
                     line: false,
+                    // eslint-disable-next-line no-template-curly-in-string
                     tooltip: '${{value}} raised on {{date}}',
                     growth: props.growth.raised,
                 },
@@ -44,6 +45,7 @@ export default function Inflow(props: { globalValues: IGlobalDailyState[],  grow
             setFundraising(charts);
         }
         loadFundraising();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalValues]);
 
     return <>

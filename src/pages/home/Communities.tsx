@@ -131,6 +131,7 @@ export default function Communities(props: { globalValues: IGlobalDailyState[], 
         const loadCommunities = () => Api.listCommunities(communitiesFilter).then(setCommunities);
         loadCommunities();
         setChartAverageSSIData(props.lastQuarterAvgSSI.map((g) => ({ name: new Date(g.date).getTime(), uv: g.avgMedianSSI })).reverse());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalValues, props.lastQuarterAvgSSI]);
 
     const shortenAddress = (address: string) => `${address.slice(0, 6)}..${address.slice(38, 42)}`;

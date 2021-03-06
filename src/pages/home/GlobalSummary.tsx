@@ -74,6 +74,7 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
         },
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dataText = (data: { title: string, value: string, isMoney: boolean }) => {
         if (data.isMoney) {
             return (<>
