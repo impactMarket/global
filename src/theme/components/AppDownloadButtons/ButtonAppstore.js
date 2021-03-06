@@ -12,9 +12,9 @@ const Svg = styled.svg.attrs({
 const attrs = {
     as: 'a',
     fluid: true,
-    minPadding: true,
     rel: 'noopener, noreferrer',
     target: '_blank',
+    tight: true,
     white: true
 }
 
