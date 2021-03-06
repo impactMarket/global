@@ -192,7 +192,7 @@ const Demographics = (props: { globalDemographics: IDemographics[] }) => {
                                 <ResponsiveContainer height={config.chartsHeight}>
                                     <BarChart data={countryData} layout="vertical" margin={{ right: 50 }}>
                                     <XAxis hide={true} type="number" />
-                                    <YAxis axisLine={false} dataKey="country" width={80} tickLine={false} type="category" />
+                                    <YAxis axisLine={false} dataKey="country" interval={0} width={80} tickLine={false} type="category" />
                                     <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f2f2f2' }} />
                                     <Bar
                                         barSize={10}
