@@ -19,6 +19,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[],
                     postsubtitle: 'cUSD',
                     data: props.globalValues.map((g) => ({ name: new Date(g.date).getTime(), uv: parseFloat(humanifyNumber(g.claimed)) })).reverse(),
                     line: false,
+                    // eslint-disable-next-line no-template-curly-in-string
                     tooltip: '${{value}} claimed on {{date}}',
                     growth: props.growth.claimed,
                 },
@@ -45,6 +46,7 @@ export default function Distribution(props: { globalValues: IGlobalDailyState[],
             setOutflow(charts);
         }
         loadOutflow();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalValues]);
 
     return <>

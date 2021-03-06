@@ -3,7 +3,6 @@ import mapboxgl from 'mapbox-gl';
 import { withCookies, Cookies } from 'react-cookie';
 import Api from '../../services/api';
 import config from '../../config';
-import { IClaimLocation } from '../../types';
 
 mapboxgl.accessToken = config.mapBoxApiKey;
 
