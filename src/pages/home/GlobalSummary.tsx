@@ -84,78 +84,76 @@ export default function GlobalSummary(props: { globalValues: IGlobalDailyState; 
         return <Typography variant="h3">{data.value}</Typography>;
     }
 
-    return <div className={classes.headerContainer}>
-        <Container maxWidth="lg">
-            <div>
-                <Typography variant="h2" className={classes.headerSection}>
-                    Global Summary
-                </Typography>
-                <Typography variant="subtitle1">
-                    Explore the main indicators of impactMarket system, including inflow of funds, distribution of basic income to beneficiaries through their UBI community contracts, and usage of those funds.
-                </Typography>
-            </div>
-            <div style={{ margin: '16px 0px' }}>
-                <Typography variant="h5" className={classes.header}>
-                    Inflow / Outflow
-                </Typography>
-                <Grid container justify="space-between" spacing={2}>
-                    {inflowOutflowValues.map((total) => (
-                        <Grid key={total.title} item xs={12} sm={6} md={3}>
-                            <Paper style={{ padding: 16 }}>
-                                {/* <Typography variant="h4">
-                                    {total.title}
-                                </Typography>
-                                {dataText(total)} */}
-                                <Box
-                                    title={total.title}
-                                    subtitle={total.subtitle}
-                                    postsubtitle={total.postsubtitle}
-                                />
-                            </Paper>
-                        </Grid>
-                    ))}
-                </Grid>
-                <Typography variant="h5" className={classes.header}>
-                    UBI Pulse
-                </Typography>
-                <Grid container justify="space-between" spacing={2}>
-                    {ubiPulseValues.map((total) => (
-                        <Grid key={total.title} item xs={12} sm={6} md={3}>
-                            <Paper style={{ padding: 16 }}>
-                                {/* <Typography variant="h4">
-                                    {total.title}
-                                </Typography>
-                                {dataText(total)} */}
-                                <Box
-                                    title={total.title}
-                                    subtitle={total.subtitle}
-                                    postsubtitle={total.postsubtitle}
-                                />
-                            </Paper>
-                        </Grid>
-                    ))}
-                </Grid>
-                <Typography variant="h5" className={classes.header}>
-                    Economic beneficiaries' activity
-                </Typography>
-                <Grid container justify="space-between" spacing={2}>
-                    {economicActivityValues.map((total) => (
-                        <Grid key={total.title} item xs={6} sm={3}>
-                            <Paper style={{ padding: 16 }}>
-                                {/* <Typography variant="h4">
-                                    {total.title}
-                                </Typography>
-                                {dataText(total)} */}
-                                <Box
-                                    title={total.title}
-                                    subtitle={total.subtitle}
-                                    postsubtitle={total.postsubtitle}
-                                />
-                            </Paper>
-                        </Grid>
-                    ))}
-                </Grid>
-            </div>
-        </Container>
-    </div>
+    return <Container maxWidth="lg" style={{ position: 'relative' }}>
+          <div>
+              <Typography variant="h2" className={classes.headerSection}>
+                  Global Summary
+              </Typography>
+              <Typography variant="subtitle1">
+                  Explore the main indicators of impactMarket system, including inflow of funds, distribution of basic income to beneficiaries through their UBI community contracts, and usage of those funds.
+              </Typography>
+          </div>
+          <div style={{ margin: '16px 0px' }}>
+              <Typography variant="h5" className={classes.header}>
+                  Inflow / Outflow
+              </Typography>
+              <Grid container justify="space-between" spacing={2}>
+                  {inflowOutflowValues.map((total) => (
+                      <Grid key={total.title} item xs={12} sm={6} md={3}>
+                          <Paper style={{ padding: 16 }}>
+                              {/* <Typography variant="h4">
+                                  {total.title}
+                              </Typography>
+                              {dataText(total)} */}
+                              <Box
+                                  title={total.title}
+                                  subtitle={total.subtitle}
+                                  postsubtitle={total.postsubtitle}
+                              />
+                          </Paper>
+                      </Grid>
+                  ))}
+              </Grid>
+              <Typography variant="h5" className={classes.header}>
+                  UBI Pulse
+              </Typography>
+              <Grid container justify="space-between" spacing={2}>
+                  {ubiPulseValues.map((total) => (
+                      <Grid key={total.title} item xs={12} sm={6} md={3}>
+                          <Paper style={{ padding: 16 }}>
+                              {/* <Typography variant="h4">
+                                  {total.title}
+                              </Typography>
+                              {dataText(total)} */}
+                              <Box
+                                  title={total.title}
+                                  subtitle={total.subtitle}
+                                  postsubtitle={total.postsubtitle}
+                              />
+                          </Paper>
+                      </Grid>
+                  ))}
+              </Grid>
+              <Typography variant="h5" className={classes.header}>
+                  Economic beneficiaries' activity
+              </Typography>
+              <Grid container justify="space-between" spacing={2}>
+                  {economicActivityValues.map((total) => (
+                      <Grid key={total.title} item xs={6} sm={3}>
+                          <Paper style={{ padding: 16 }}>
+                              {/* <Typography variant="h4">
+                                  {total.title}
+                              </Typography>
+                              {dataText(total)} */}
+                              <Box
+                                  title={total.title}
+                                  subtitle={total.subtitle}
+                                  postsubtitle={total.postsubtitle}
+                              />
+                          </Paper>
+                      </Grid>
+                  ))}
+              </Grid>
+          </div>
+      </Container>
 }

@@ -24,8 +24,9 @@ export default function Banner() {
     }
 
     return (
-        <div className={bannerClasses.blueBackground}>
-            <Container maxWidth="lg">
+        <>
+            <div className={bannerClasses.blueBackground}></div>
+            <Container maxWidth="lg" style={{ position: 'relative' }}>
                 <Grid container justify="space-between" spacing={2}>
                     <Grid item xs={12} md={6}>
                         <Logo href="/" large style={{ marginTop: 58 }} white />
@@ -38,7 +39,7 @@ export default function Banner() {
                                 variant="subtitle1"
                                 className={classes.bannerText}
                             >
-                               {description}
+                                {description}
                             </Typography>
                             <div className={bannerClasses.buttonsWrapper}>
                                 <AppDownloadButtons style={{ marginTop: 32 }} />
@@ -56,7 +57,7 @@ export default function Banner() {
                     </Grid>
                 </Grid>
             </Container>
-        </div>
+        </>
     )
 }
 
@@ -83,7 +84,9 @@ const bannerStyles = makeStyles((theme) =>
         },
         blueBackground: {
             backgroundColor: colors.p06,
-            position: 'relative',
+            position: 'absolute',
+            width: '100%',
+            zIndex: 0,
             [theme.breakpoints.down('xs')]: {
                 height: 825,
             },
@@ -95,6 +98,7 @@ const bannerStyles = makeStyles((theme) =>
             },
         },
         mobileAppBox: {
+            position: 'relative',
             [theme.breakpoints.down('sm')]: {
                 textAlign: 'center',
             },
@@ -111,6 +115,7 @@ const bannerStyles = makeStyles((theme) =>
             [theme.breakpoints.up('md')]: {
                 maxHeight: 520,
                 paddingTop: 50,
+                marginBottom: -54
             },
         },
     })
