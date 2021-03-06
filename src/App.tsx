@@ -60,14 +60,16 @@ export default function App() {
             <ModalManager modals={modals} />
             <Banner />
             <GlobalSummary globalValues={globalValues[0]} todayData={todayData} totalBackers={totalBackers} />
-            <Container maxWidth="lg">
-                <HealingTheWorld />
-                <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
-                <Demographics globalDemographics={globalDemographics} />
-                <Distribution globalValues={globalValues} growth={globalGrowth} />
-                <Inflow globalValues={globalValues} growth={globalGrowth} />
-                <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} growth={globalGrowth} />
-            </Container>
+            <div style={{ backgroundColor: '#FAFAFA', maxWidth: '100%', padding: '32px 0 40px', boxSizing: 'border-box', marginTop: 36 }}>
+              <Container maxWidth="lg">
+                  <HealingTheWorld />
+                  <Communities globalValues={globalValues} lastQuarterAvgSSI={lastQuarterAvgSSI} />
+                  <Demographics globalDemographics={globalDemographics} />
+                  <Distribution globalValues={globalValues} growth={globalGrowth} />
+                  <Inflow globalValues={globalValues} growth={globalGrowth} />
+                  <Economic globalValues={globalValues} reachedLastMonth={reachedLastMonth} growth={globalGrowth} />
+              </Container>
+            </div>
             <Footer />
         </ThemeProvider>
     );

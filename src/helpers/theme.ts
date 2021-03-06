@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) =>
         footer: {
             paddingTop: 50,
             paddingBottom: 50,
-            marginTop: 57,
             backgroundColor: 'white',
             display: 'flex',
             alignItems: 'center',

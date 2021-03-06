@@ -9,7 +9,7 @@ export default function HealingTheWorld() {
 
     return <>
         <div>
-            <Typography variant="h2" className={classes.headerSection}>
+            <Typography variant="h2" className={classes.headerSection} style={{ marginTop: 0 }}>
                 Healing the world, fighting poverty.
             </Typography>
             <Typography variant="subtitle1">
