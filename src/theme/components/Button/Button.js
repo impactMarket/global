@@ -30,10 +30,6 @@ const colorVariations = {
 }
 
 const miscVariations = {
-    minPadding: css`
-        padding: 0 8px;
-    `,
-
     fluid: css`
         width: 100%;
     `,
@@ -51,6 +47,12 @@ const sizeVariations = {
         height: 44px;
         padding: 0 16px;
     `,
+
+    tight: css`
+        font-size: 18px;
+        height: 44px;
+        padding: 0 8px;
+    `,
 }
 
 const ButtonWrapper = styled.button`
@@ -62,8 +64,8 @@ const ButtonWrapper = styled.button`
     font-weight: 700;
     justify-content: center;
     outline: 0;
-	overflow: hidden;
-	position: relative;
+    overflow: hidden;
+    position: relative;
     white-space: nowrap;
 
 	&:not(:disabled) {
