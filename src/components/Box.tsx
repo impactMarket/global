@@ -12,13 +12,14 @@ const Content = styled.div`
     margin-top: auto;
 `;
 
-const TitleWrapper = styled.div`
-    margin-bottom: 16px;
+const Header = styled.div`
+  margin-bottom: 8px;
+`;
 
+const TitleWrapper = styled.div`
     @media (min-width: 769px) {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 0;
     }
 `;
 
@@ -36,33 +37,35 @@ export default function Box(props: IBoxProps) {
 
     return (
         <BoxContainer>
-            {(title || legend) && (
-                <TitleWrapper>
-                    {title && (
-                        <Typography variant="h6" style={{ marginBottom: '8px' }}>
-                            {title}
-                        </Typography>
-                    )}
-                    {legend && <Typography variant="caption">{legend}</Typography>}
-                </TitleWrapper>
-            )}
-            {(subtitle || postsubtitle) && (
-                <div>
-                    {subtitle && (
-                        <Typography
-                            variant="h3"
-                            display="inline"
-                            style={{
-                                marginBottom: children ? '19px' : '0px',
-                                fontFamily: 'Gelion-SemiBold'
-                            }}
-                        >
-                            {subtitle}
-                        </Typography>
-                    )}
-                    {postsubtitle && <Typography variant="subtitle2" style={{ display: 'inline', marginLeft: subtitle ? 4 : 0 }}>{postsubtitle}</Typography>}
-                </div>
-            )}
+            <Header>
+              {(title || legend) && (
+                  <TitleWrapper>
+                      {title && (
+                          <Typography variant="h6" style={{ marginBottom: '8px' }}>
+                              {title}
+                          </Typography>
+                      )}
+                      {legend && <Typography variant="caption">{legend}</Typography>}
+                  </TitleWrapper>
+              )}
+              {(subtitle || postsubtitle) && (
+                  <div>
+                      {subtitle && (
+                          <Typography
+                              variant="h3"
+                              display="inline"
+                              style={{
+                                  marginBottom: children ? '19px' : '0px',
+                                  fontFamily: 'Gelion-SemiBold'
+                              }}
+                          >
+                              {subtitle}
+                          </Typography>
+                      )}
+                      {postsubtitle && <Typography variant="subtitle2" style={{ display: 'inline', marginLeft: subtitle ? 4 : 0 }}>{postsubtitle}</Typography>}
+                  </div>
+              )}
+            </Header>
             <Content>
                 {children}
             </Content>
