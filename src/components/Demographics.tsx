@@ -11,16 +11,17 @@ import { BarChart, Bar, LabelList, ResponsiveContainer, XAxis, YAxis, Tooltip } 
 import { getDemographicsAgeRange, getDemographicsBeneficiariesByCountry } from '../helpers/demographics';
 import { Pagination } from './Pagination';
 
-type GenderType = 'female' | 'male';
+type GenderType = 'female' | 'male' | 'undisclosed';
 
 const countriesPerPage = 6;
 
 const colors: {[key: string]: string} = {
 	female: '#E6B8E7',
-	male: 'rgba(35, 98, 251, 0.5)'
+	male: 'rgba(35, 98, 251, 0.5)',
+  undisclosed: '#E5EAF2'
 }
 
-const gender: {[key: string]: string} = { female: 'Woman', male: 'Man' };
+const gender: {[key: string]: string} = { female: 'Woman', male: 'Man', undisclosed: 'Undisclosed' };
 
 interface ICircleProps {
 	gender: string
@@ -107,22 +108,18 @@ const CustomTooltip = (props: {
   const { active, payload = [] } = props;
 
 if (active && payload !== null) {
-        const undisclosedPercentage = +((payload[0]?.payload?.undisclosed / payload[0]?.payload?.total) * 100).toFixed(2)
         return (
-            <Paper style={{ padding: 10, textAlign: 'center' }}>
-                {payload.map(({name, payload: { total }, value}, index) => {
-                    const percentage = +((value / total) * 100).toFixed(2);
+          <Paper style={{ padding: 10, textAlign: 'center' }}>
+              {payload.map(({name, payload: { total }, value}, index) => {
+                  const percentage = +((value / total) * 100).toFixed(2);
 
-                    return (
-                        <Typography variant='body1' key={index} style={{ textAlign: 'left' }}>
-                            {gender[name]}: {!isNaN(percentage) ? `${percentage}%` : '---'}
-                        </Typography>
-                    )
-                })}
-                <Typography variant='body1' style={{ textAlign: 'left' }}>
-                    Undisclosed: {!isNaN(undisclosedPercentage) ? `${undisclosedPercentage}%` : '---'}
-                </Typography>
-            </Paper>
+                  return (
+                      <Typography variant='body1' key={index} style={{ textAlign: 'left' }}>
+                          {gender[name]}: {!isNaN(percentage) ? `${percentage}%` : '---'}
+                      </Typography>
+                  )
+              })}
+          </Paper>
       );
   }
   return null;
@@ -194,22 +191,28 @@ const Demographics = (props: { globalDemographics: IDemographics[] }) => {
                                     <XAxis hide={true} type="number" />
                                     <YAxis axisLine={false} dataKey="country" interval={0} width={80} tickLine={false} type="category" />
                                     <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f2f2f2' }} />
-                                    <Bar
-                                        barSize={10}
-                                        dataKey="male"
-                                        fill={colors.male}
-                                        radius={[4, 0, 0, 4]}
-                                        stackId="a"
-                                    />
-                                    <Bar
-                                        barSize={10}
-                                        dataKey="female"
-                                        fill={colors.female}
-                                        radius={[0, 4, 4, 0]}
-                                        stackId="a"
-                                    >
-                                        <LabelList dataKey="total" offset={5} position="right" />
-                                    </Bar>
+                                    {Object.keys(gender).map((genderType, index) => {
+                                        const isLast = Object.keys(gender).length === index + 1;
+                                        const isFirst = !index;
+
+                                        return (
+                                          <Bar
+                                              barSize={10}
+                                              dataKey={genderType}
+                                              fill={colors[genderType]}
+                                              radius={
+                                                (isFirst || isLast)
+                                                    ? isFirst
+                                                      ? [4, 0, 0, 4]
+                                                      : [0, 4, 4, 0]
+                                                    : undefined
+                                              }
+                                              stackId="a"
+                                          >
+                                              {isLast && <LabelList dataKey="total" offset={5} position="right" />}
+                                          </Bar>
+                                        )
+                                    })}
                                     </BarChart>
                                 </ResponsiveContainer>
                                 </CountryChartPage>
