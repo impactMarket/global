@@ -7,3 +7,4 @@ export * from './ItemsRow/ItemsRow';
 export * from './Logo/Logo';
 export * from './Spinner/Spinner';
 export * from './Text/Text';
+export * from './Tooltip/Tooltip';

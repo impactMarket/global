@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useStyles } from '../helpers/theme';
+import { Tooltip as InfoTooltip } from '../theme/components';
 import Box from './Box';
 import Paper from './Paper';
 import config from '../config';
@@ -8,20 +9,19 @@ import { IDemographics } from '../types';
 import styled from 'styled-components';
 
 import { BarChart, Bar, LabelList, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { getDemographicsAgeRange, getDemographicsBeneficiariesByCountry } from '../helpers/demographics';
+import { getDemographicsAgeRange, getDemographicsBeneficiariesByCountry, getDemographicsTotalPercentage } from '../helpers/demographics';
 import { Pagination } from './Pagination';
 
-type GenderType = 'female' | 'male' | 'undisclosed';
+type GenderType = 'female' | 'male';
 
 const countriesPerPage = 6;
 
 const colors: {[key: string]: string} = {
 	female: '#E6B8E7',
-	male: 'rgba(35, 98, 251, 0.5)',
-  undisclosed: '#E5EAF2'
+	male: 'rgba(35, 98, 251, 0.5)'
 }
 
-const gender: {[key: string]: string} = { female: 'Woman', male: 'Man', undisclosed: 'Undisclosed' };
+const gender: {[key: string]: string} = { female: 'Woman', male: 'Man' };
 
 interface ICircleProps {
 	gender: string
@@ -107,21 +107,26 @@ const CustomTooltip = (props: {
 }) => {
   const { active, payload = [] } = props;
 
-if (active && payload !== null) {
-        return (
-          <Paper style={{ padding: 10, textAlign: 'center' }}>
-              {payload.map(({name, payload: { total }, value}, index) => {
-                  const percentage = +((value / total) * 100).toFixed(2);
+  if (active && payload !== null) {
+    const undisclosedPercentage = +((payload[0]?.payload?.undisclosed / payload[0]?.payload?.total) * 100).toFixed(2)
+    return (
+        <Paper style={{ padding: 10, textAlign: 'center' }}>
+            {payload.map(({name, payload: { total }, value}, index) => {
+                const percentage = +((value / total) * 100).toFixed(2);
 
-                  return (
-                      <Typography variant='body1' key={index} style={{ textAlign: 'left' }}>
-                          {gender[name]}: {!isNaN(percentage) ? `${percentage}%` : '---'}
-                      </Typography>
-                  )
-              })}
-          </Paper>
-      );
+                return (
+                    <Typography variant='body1' key={index} style={{ textAlign: 'left' }}>
+                        {gender[name]}: {!isNaN(percentage) ? `${percentage}%` : '---'}
+                    </Typography>
+                )
+            })}
+            <Typography variant='body1' style={{ textAlign: 'left' }}>
+                Undisclosed: {!isNaN(undisclosedPercentage) ? `${undisclosedPercentage}%` : '---'}
+            </Typography>
+        </Paper>
+    );
   }
+
   return null;
 }
 
@@ -136,28 +141,31 @@ const getPaginationLabel = (countryPage: number, countriesCount: number) => {
 
 const Demographics = (props: { globalDemographics: IDemographics[] }) => {
     const classes = useStyles();
-	const { globalDemographics } = props;
-	const [countryPage, setCountryPage] = useState<number>(0);
+    const { globalDemographics } = props;
+    const [countryPage, setCountryPage] = useState<number>(0);
 
-	const ageRankData = getDemographicsAgeRange(globalDemographics)
+    const ageRankData = getDemographicsAgeRange(globalDemographics)
 
-	const countriesData = getDemographicsBeneficiariesByCountry(globalDemographics)
-    const countriesCount = globalDemographics.length;
+    const countriesData = getDemographicsBeneficiariesByCountry(globalDemographics)
+      const countriesCount = globalDemographics.length;
 
-	const changePage = (page: number) => {
-		if (page < 0) {
-			return setCountryPage(countriesData.length - 1);
-		}
+    const changePage = (page: number) => {
+      if (page < 0) {
+        return setCountryPage(countriesData.length - 1);
+      }
 
-		const nextPage = countriesData.length > page ? page : 0;
+      const nextPage = countriesData.length > page ? page : 0;
 
-		return setCountryPage(nextPage);
-	}
+      return setCountryPage(nextPage);
+    }
+
+    const totalPercentage = getDemographicsTotalPercentage(globalDemographics);
 
     return (
         <>
             <Typography variant="h2" className={classes.headerSection}>
                 Demographics
+                <InfoTooltip>{`This data is based on a self-reported sample size of ${totalPercentage}%`}</InfoTooltip>
             </Typography>
             <DemographicsWrapper style={{ margin: "16px 0px" }}>
                 <Grid alignItems="stretch" container justify="flex-start" spacing={2}>
@@ -199,6 +207,7 @@ const Demographics = (props: { globalDemographics: IDemographics[] }) => {
                                           <Bar
                                               barSize={10}
                                               dataKey={genderType}
+                                              key={index}
                                               fill={colors[genderType]}
                                               radius={
                                                 (isFirst || isLast)

@@ -85,3 +85,12 @@ export const getDemographicsBeneficiariesByCountry = (
 
     return chunks;
 };
+
+export const getDemographicsTotalPercentage = (data: any[] | undefined): number => {
+    const { totalGender, undisclosed } = data?.reduce((result, { totalGender, undisclosed }) => ({
+        totalGender: result.totalGender + totalGender,
+        undisclosed: result.undisclosed + undisclosed,
+    }), { totalGender: 0, undisclosed: 0 });
+
+    return +((undisclosed / totalGender) * 100).toFixed();
+}
