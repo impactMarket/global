@@ -1,6 +1,6 @@
 import { IDemographics } from '../types';
 import countriesJSON from '../constants/countries.json';
-import { chunk, sortBy } from 'lodash';
+import { chunk, sortBy } from 'lodash';
 interface IDataItem {
     label: string;
     value: number;
@@ -70,10 +70,14 @@ export const getDemographicsBeneficiariesByCountry = (
     const result = data.map(({ country: countryCode, female, male, totalGender, undisclosed }) => {
         const country = countries[countryCode]?.name;
 
+        const totalMF = male + female;
+        const nMale = (male / totalMF) * totalGender;
+        const nFemale = (female / totalMF) * totalGender;
+
         return {
             country,
-            female,
-            male,
+            female: totalMF === 0 ? 0 : nFemale,
+            male: totalMF === 0 ? 0 : nMale,
             total: totalGender,
             undisclosed,
         };
