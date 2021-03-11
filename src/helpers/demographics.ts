@@ -91,10 +91,12 @@ export const getDemographicsBeneficiariesByCountry = (
 };
 
 export const getDemographicsTotalPercentage = (data: any[] | undefined): number => {
-    const { totalGender, undisclosed } = data?.reduce((result, { totalGender, undisclosed }) => ({
-        totalGender: result.totalGender + totalGender,
-        undisclosed: result.undisclosed + undisclosed,
-    }), { totalGender: 0, undisclosed: 0 });
+    const { total, totalFromGender } = data?.reduce((result, { female, male, totalGender }) => ({
+        total: result.total + totalGender,
+        totalFromGender: result.totalFromGender + female + male,
+    }), { total: 0, totalFromGender: 0 });
 
-    return +((undisclosed / totalGender) * 100).toFixed();
+    const percentage = +((totalFromGender / total) * 100).toFixed();
+
+    return percentage;
 }
