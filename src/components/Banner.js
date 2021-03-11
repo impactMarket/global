@@ -42,7 +42,9 @@ export default function Banner() {
                                 {description}
                             </Typography>
                             <div className={bannerClasses.buttonsWrapper}>
-                                <AppDownloadButtons style={{ marginTop: 32 }} />
+                                <div style={{ flexShrink: 0, minWidth: 286 }}>
+                                  <AppDownloadButtons style={{ marginTop: 32 }} />
+                                </div>
                                 <div className={bannerClasses.donateButtonWrapper}>
                                     <Button fluid onClick={handleDonateButtonClick} white >
                                         Donate
@@ -64,6 +66,7 @@ export default function Banner() {
 const bannerStyles = makeStyles((theme) =>
     createStyles({
         buttonsWrapper: {
+            flexShrink: 0,
             [theme.breakpoints.up('md')]: {
                 display: 'flex',
                 alignItems: 'flex-end',
