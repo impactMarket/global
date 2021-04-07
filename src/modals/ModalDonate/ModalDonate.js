@@ -24,9 +24,9 @@ const strings = {
 }
 
 const currencies = [
-    { label: 'Bitcoin', name: 'BTC' },
+    { label: 'BITCOIN', name: 'BTC' },
     { label: 'ETH / ERC20', name: 'ETH/ERC20' },
-    { label: 'Celo', name: 'CELO' },
+    { label: 'CELO / cUSD', name: 'CELO' },
 ]
 
 export const Modal = () => {
@@ -61,6 +61,7 @@ export const Modal = () => {
                                 isActive={isSelected === name}
                                 key={name}
                                 onClick={() => handleChipClick(address, name)}
+                                noUppercase
                             >
                                 {label}
                                 <Currency
