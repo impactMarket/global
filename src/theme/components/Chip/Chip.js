@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components'
 import { colors, fonts } from '../../variables'
 
 export const Chip = styled.div`
-	font-size: 12px;
-	line-height: 1;
+    font-size: 12px;
+    line-height: 1;
     align-items: center;
     background-color: ${colors.n04};
     border-radius: 22px;
@@ -15,9 +15,9 @@ export const Chip = styled.div`
     justify-content: center;
     letter-spacing: 0.3px;
     padding: 0 16px;
-    text-transform: uppercase;
-	user-select: none;
-	white-space: nowrap;
+    text-transform: ${({ noUppercase }) => !noUppercase ? 'uppercase' : undefined};
+    user-select: none;
+    white-space: nowrap;
 
     ${({ isActive }) =>
         isActive &&
